@@ -59,6 +59,7 @@ public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
     // stop preview before making changes
     try {
         mCamera.stopPreview();
+        mCamera.release();   //This might need to go here 
     } catch (Exception e){
       // ignore: tried to stop a non-existent preview
     }
@@ -71,7 +72,7 @@ public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
         mCamera.startPreview();
 
     } catch (Exception e){
-        Log.d(TAG, "Error starting camera preview: " + e.getMessage());
+        Log.d(TAG, "Error starting camera preview from surfaceChanged: " + e.getMessage());
     }
   }
 }

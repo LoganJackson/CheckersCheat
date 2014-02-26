@@ -30,9 +30,10 @@ public class FirstUse extends Activity {
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
         if (requestCode == 100 && resultCode == RESULT_OK) {  
-            Bitmap photo = (Bitmap) data.getExtras().get("data"); 
+            Bitmap photo = (Bitmap) data.getExtras().get("photo"); 
             Intent intent2 = new Intent(this, CorrectionActivity.class);
             intent2.putExtra("photo", photo);
+            startActivity(intent2);
             //imageView.setImageBitmap(photo);
         }  
     } 

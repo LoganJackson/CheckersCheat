@@ -113,8 +113,10 @@ public class CamActivity extends Activity {
                     "Filse is saved at sdcard-&gt;Pictures-&gt;MyCameraApp");
             //Prepare to return an intent and finish
             Intent intent1 = new Intent(getApplicationContext(), FirstUse.class);
-            intent1.putExtra(data);
-            finish();
+            intent1.putExtra("photo",data);
+            releaseCamera(); //do we want to release the camera here? 
+            //finish(); this causes alot of errors to happen 
+            return;
         }
     };
  
@@ -175,12 +177,12 @@ public class CamActivity extends Activity {
         // Getting the camera resources back
         try {
             // open the default camera
-            mCamera = Camera.open(0);
-            // mCamera = getCameraInstance();
+        	Log.d(TAG, "check point 1 in camAct onResume");    
+            mCamera = Camera.open(0);  //this is throwing an error saying failed to connect to camera service 
+            //mCamera = getCameraInstance();
             mCamera.setPreviewCallback(null);
-            mPreview = new CameraPreview(CamActivity.this, mCamera);// set
-                                                                        // preview
- 
+            mPreview = new CameraPreview(CamActivity.this, mCamera);// set                
+            // preview
             RelativeLayout preview = (RelativeLayout) findViewById(R.id.camera_preview);
             preview.addView(mPreview);
             mSnapButton = (ImageButton) findViewById(R.id.button_capture);
@@ -188,7 +190,7 @@ public class CamActivity extends Activity {
             mOutline = (ImageView) findViewById(R.id.imageView1);
             mOutline.bringToFront();
         } catch (Exception e) {
-            Log.d(TAG, "Error starting camera preview: " + e.getMessage());
+            Log.d(TAG, "Error starting camera preview from onResume: " + e.getMessage());
         }
     }
  
