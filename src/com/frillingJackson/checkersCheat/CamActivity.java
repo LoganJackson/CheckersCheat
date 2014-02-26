@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
  
 public class CamActivity extends Activity {
@@ -111,6 +112,9 @@ public class CamActivity extends Activity {
             alertDialog("File Saved",
                     "Filse is saved at sdcard-&gt;Pictures-&gt;MyCameraApp");
             //Prepare to return an intent and finish
+            Intent intent1 = new Intent(getApplicationContext(), FirstUse.class);
+            intent1.putExtra(data);
+            finish();
         }
     };
  
