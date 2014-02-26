@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.frillingJackson.checkersCheat"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="19" />
+
+    <!-- Accessing camera feature -->
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.frillingJackson.checkersCheat.FirstUse"
+            android:label="@string/title_activity_first_use" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.frillingJackson.checkersCheat.Home"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.frillingJackson.checkersCheat.Suggestion"
+            android:label="@string/title_activity_suggestion" >
+        </activity>
+        <activity
+            android:name="com.frillingJackson.checkersCheat.CamActivity"
+            android:label="@string/title_activity_cam" >
+        </activity>
+        <activity
+            android:name="com.frillingJackson.checkersCheat.CorrectionActivity"
+            android:label="@string/title_activity_correction" >
+        </activity>
+    </application>
+
+</manifest>

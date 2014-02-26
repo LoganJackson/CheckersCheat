@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">CheckerCheat</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="colorSelect">Now that we know what the board and the pieces look like, 
+        and which pieces are yours, we can help you decide on a good move!
+        Whenever you find yourself without a move in mind just take a photo of the gameboard 
+        (with the side of the board your defending closest to you).
+        After you snap your photo we will show you how we are understanding the board state.
+        If you notice anything out of place or the wrong color just tap that piece until its the correct color!</string>
+    <string name="takePic">Take Picture</string>
+    <string name="title_activity_first_use">FirstUse</string>
+    <string name="firstUseTxt">Welcome to Checkers Cheat!
+        This app can be used to help you decide on your best move during a tough game of chekers. 
+        Before we look at the checkerboard we will need you to calibrate the camera. 
+        To do this you will need to take a photo of a 2x2 section of the board with pieces centered in each section. 
+        Your pieces should be in the squares closest to you and the Kings should be placed in the leftmost squares.
+        Here is an example of what your photo should look like.</string>
+    <string name="calibration">Calibrate</string>
+    <string name="title_activity_suggestion">Suggestion</string>
+    <string name="DoneCorrecting">Everything is correct!</string>
+    <string name="Done">Back to camera!</string>
+    <string name="SuggestionTxt">Here is what we found !</string>
+    <string name="CorrectionTxt">Tap the pieces that are not correct until they are the right color!</string>
+    <string name="title_activity_cam">CamActivity</string>
+    <string name="title_activity_correction">CorrectionActivity</string>
+
+</resources>
