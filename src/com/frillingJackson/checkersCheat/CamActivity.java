@@ -116,9 +116,9 @@ public class CamActivity extends Activity {
             //Prepare to return an intent and finish
             Intent intent1 = new Intent(getApplicationContext(), FirstUse.class);
             intent1.putExtra("photo",data);
+            setResult(RESULT_OK, intent1);
             releaseCamera(); //do we want to release the camera here? 
-            finishActivity(100); //this causes alot of errors to happen 
-            return;
+            finish(); //this causes alot of errors to happen 
         }
     };
  

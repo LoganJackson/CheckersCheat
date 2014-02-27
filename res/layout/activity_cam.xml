@@ -14,13 +14,13 @@
 
         <ImageView
             android:id="@+id/imageView1"
-            android:layout_width="330dp"
-            android:layout_height="330dp"
+            android:layout_width="310dp"
+            android:layout_height="310dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
             android:alpha=".7"
             android:contentDescription="@null"
-            android:src="@drawable/redSquare" />
+            android:src="@drawable/red_square" />
  
     </RelativeLayout>
