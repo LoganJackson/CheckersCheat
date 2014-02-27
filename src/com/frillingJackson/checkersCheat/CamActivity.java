@@ -70,6 +70,7 @@ public class CamActivity extends Activity {
                 // TODO Auto-generated method stub
                 // get an image from the camera
                 mCamera.takePicture(null, null, mPicture);
+                
             }
         });
         }
@@ -82,6 +83,7 @@ public class CamActivity extends Activity {
  
         } catch (Exception e) {
             // Camera is not available (in use or does not exist)
+        	Log.d(TAG, "error in getCamInstance");
         }
         return c; // returns null if camera is unavailable
     }
@@ -115,7 +117,7 @@ public class CamActivity extends Activity {
             Intent intent1 = new Intent(getApplicationContext(), FirstUse.class);
             intent1.putExtra("photo",data);
             releaseCamera(); //do we want to release the camera here? 
-            //finish(); this causes alot of errors to happen 
+            finishActivity(100); //this causes alot of errors to happen 
             return;
         }
     };
@@ -178,7 +180,7 @@ public class CamActivity extends Activity {
         try {
             // open the default camera
         	Log.d(TAG, "check point 1 in camAct onResume");    
-            mCamera = Camera.open(0);  //this is throwing an error saying failed to connect to camera service 
+            mCamera = Camera.open();  //this is throwing an error saying failed to connect to camera service 
             //mCamera = getCameraInstance();
             mCamera.setPreviewCallback(null);
             mPreview = new CameraPreview(CamActivity.this, mCamera);// set                
