@@ -34,6 +34,7 @@ public class FirstUse extends Activity {
             Intent intent2 = new Intent(this, CorrectionActivity.class);
             intent2.putExtra("photo", photo);
             startActivity(intent2);
+            
             //imageView.setImageBitmap(photo);
         }  
     } 
