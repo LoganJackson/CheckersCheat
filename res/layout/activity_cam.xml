@@ -21,6 +21,6 @@
             android:layout_marginTop="30dp"
             android:alpha=".7"
             android:contentDescription="@null"
-            android:src="@drawable/clear_board" />
+            android:src="@drawable/redSquare" />
  
     </RelativeLayout>
