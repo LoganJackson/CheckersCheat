@@ -113,12 +113,18 @@ public class CamActivity extends Activity {
             // call alert dialog to display file saved location
             alertDialog("File Saved",
                     "Filse is saved at sdcard-&gt;Pictures-&gt;MyCameraApp");
+            //
+            //
             //Prepare to return an intent and finish
             Intent intent1 = new Intent(getApplicationContext(), FirstUse.class);
-            intent1.putExtra("photo",data);
-            releaseCamera(); //do we want to release the camera here? 
-            finishActivity(100); //this causes alot of errors to happen 
-            return;
+            //what kind of extra should we be putting in here ? 
+            intent1.putExtra("filePath",pictureFile.getPath());//"photo",data
+            setResult(RESULT_OK, intent1);
+            //releaseCamera(); //do we want to release the camera here? 
+            //maybe mCamera.stopPreview();
+            finish(); 
+            //
+            //
         }
     };
  
@@ -181,6 +187,7 @@ public class CamActivity extends Activity {
             // open the default camera
         	Log.d(TAG, "check point 1 in camAct onResume");    
             mCamera = Camera.open();  //this is throwing an error saying failed to connect to camera service 
+            Log.d(TAG, "check point 2 in camAct onResume");
             //mCamera = getCameraInstance();
             mCamera.setPreviewCallback(null);
             mPreview = new CameraPreview(CamActivity.this, mCamera);// set                
