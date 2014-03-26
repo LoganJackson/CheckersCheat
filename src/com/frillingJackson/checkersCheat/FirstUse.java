@@ -1,5 +1,8 @@
 package com.frillingJackson.checkersCheat;
 
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -36,6 +39,11 @@ public class FirstUse extends Activity {
         	Bitmap photo = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         	ImageView newView = (ImageView) findViewById(R.id.imageView1);
         	newView.setImageBitmap(photo);
+        	
+        	
+        	//Mat mat = new Mat();
+        	//Utils.bitmapToMat(photo, mat);
+        	//bool found = findChessboardCorners(mat, boardSize, ptvec, CV_CALIB_CB_ADAPTIVE_THRESH );
         	
             //Intent intent2 = new Intent(this, CorrectionActivity.class);
             //intent2.putExtra("photo", photo);
