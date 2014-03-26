@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.os.Bundle;
@@ -113,18 +114,16 @@ public class CamActivity extends Activity {
             // call alert dialog to display file saved location
             alertDialog("File Saved",
                     "Filse is saved at sdcard-&gt;Pictures-&gt;MyCameraApp");
-            //
-            //
+            
+            mCamera.stopPreview();
+            
             //Prepare to return an intent and finish
-            Intent intent1 = new Intent(getApplicationContext(), FirstUse.class);
-            //what kind of extra should we be putting in here ? 
-            intent1.putExtra("filePath",pictureFile.getPath());//"photo",data
-            setResult(RESULT_OK, intent1);
+            Intent in1 = new Intent(getApplicationContext(), FirstUse.class);
+            in1.putExtra("image",data);
+            setResult(RESULT_OK, in1);
             //releaseCamera(); //do we want to release the camera here? 
-            //maybe mCamera.stopPreview();
+            
             finish(); 
-            //
-            //
         }
     };
  
@@ -199,7 +198,7 @@ public class CamActivity extends Activity {
             mOutline = (ImageView) findViewById(R.id.imageView1);
             mOutline.bringToFront();
         } catch (Exception e) {
-            Log.d(TAG, "Error starting camera preview from onResume: " + e.getMessage());
+            Log.d(TAG, "Error starting camera from onResume: " + e.getMessage());
         }
     }
  
