@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageView;
 
 public class FirstUse extends Activity {
 
@@ -30,13 +32,14 @@ public class FirstUse extends Activity {
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
         if (requestCode == 100 && resultCode == RESULT_OK) {  
-            Bitmap photo = (Bitmap) data.getExtras().get("filePath"); //"photo"
-            
-            Intent intent2 = new Intent(this, CorrectionActivity.class);
-            intent2.putExtra("photo", photo);
-            startActivity(intent2);
-            
-            //imageView.setImageBitmap(photo);
+        	byte[] byteArray = getIntent().getByteArrayExtra("image");
+        	Bitmap photo = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        	ImageView newView = (ImageView) findViewById(R.id.imageView1);
+        	newView.setImageBitmap(photo);
+        	
+            //Intent intent2 = new Intent(this, CorrectionActivity.class);
+            //intent2.putExtra("photo", photo);
+            //startActivity(intent2);
         }  
     } 
 
