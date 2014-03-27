@@ -23,7 +23,7 @@
     <string name="DoneCorrecting">Everything is correct!</string>
     <string name="Done">Back to camera!</string>
     <string name="SuggestionTxt">Here is what we found !</string>
-    <string name="CorrectionTxt">Tap the pieces that are not correct until they are the right color!</string>
+    <string name="CorrectionTxt">If a piece is a wrong color, touch it and pick the right color from the menu.</string>
     <string name="title_activity_cam">CamActivity</string>
     <string name="title_activity_correction">CorrectionActivity</string>
 
