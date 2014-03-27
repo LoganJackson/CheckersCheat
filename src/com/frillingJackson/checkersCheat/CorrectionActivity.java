@@ -3,6 +3,9 @@ package com.frillingJackson.checkersCheat;
 import android.os.Bundle;
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,6 +28,43 @@ public class CorrectionActivity extends Activity {
 		//}
 		//correctionView = (ImageView)findViewById(R.id.correctionView);
 		//correctionView.setImageBitmap(photo);
+		Paint paint = new Paint();
+		paint.setStyle(Paint.Style.FILL);
+		paint.setARGB(255, 0, 255, 0);
+		
+		Paint paint1 = new Paint();
+		paint1.setStyle(Paint.Style.FILL);
+		paint1.setARGB(255, 255, 0, 0);
+		Bitmap newImage= Bitmap.createBitmap(256, 256,Bitmap.Config.ARGB_8888); 
+		Canvas canvas= new Canvas(newImage);
+		for(int i=0; i<newImage.getWidth()-32;i+=64){
+			for(int j=0; j<newImage.getHeight()-32;j+=64){
+				canvas.drawRect(i, j, i+32, j+32, paint);
+			}
+		}
+		for(int i=32; i<newImage.getWidth()-32;i+=64){
+			for(int j=0; j<newImage.getHeight()-32;j+=64){
+				canvas.drawRect(i, j, i+32, j+32, paint1);
+			}
+		}		
+		for(int i=32; i<newImage.getWidth()-32;i+=64){
+			for(int j=32; j<newImage.getHeight()-32;j+=64){
+				canvas.drawRect(i, j, i+32, j+32, paint);
+			}
+		}
+		for(int i=0; i<newImage.getWidth()-32;i+=64){
+			for(int j=32; j<newImage.getHeight()-32;j+=64){
+				canvas.drawRect(i, j, i+32, j+32, paint1);
+			}
+		}	
+		
+		
+		ImageView mImage = (ImageView)findViewById(R.id.correctionView);
+		mImage.setImageBitmap(newImage);
+		
+	
+		
+		
 	}
 
 	@Override
@@ -33,6 +73,10 @@ public class CorrectionActivity extends Activity {
 		getMenuInflater().inflate(R.menu.correction, menu);
 		return true;
 	}
+	
+	
+	
+	
 	
 	public GameState correctBoard(GameState old){
 	
@@ -64,7 +108,6 @@ public class CorrectionActivity extends Activity {
 	board.set(6,7,'t');
 	
 	board.set(5,4,'t');
-	
 	
 	/*correctionView.setOnTouchListener(new View.OnTouchListener()
 	{

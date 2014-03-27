@@ -27,7 +27,7 @@
         android:layout_above="@+id/button1"
         android:layout_alignLeft="@+id/textView1"
         android:contentDescription="@null"
-        android:src="@drawable/clear_board" />
+         />
 
     <TextView
         android:id="@+id/textView1"
