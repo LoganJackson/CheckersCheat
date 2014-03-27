@@ -16,15 +16,15 @@ public class CorrectionActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_correction);
 		
-		Bundle bundle = this.getIntent().getExtras();
-		Bitmap photo = bundle.getParcelable("photo");
-		for(int x=0; x < photo.getHeight(); x+=2){
-			for(int y=0; y<photo.getWidth(); y+=2){
-				photo.setPixel(x, y, 0);
-			}
-		}
-		correctionView = (ImageView)findViewById(R.id.correctionView);
-		correctionView.setImageBitmap(photo);
+		//Bundle bundle = this.getIntent().getExtras();
+		//Bitmap photo = bundle.getParcelable("photo");
+		//for(int x=0; x < photo.getHeight(); x+=2){
+			//for(int y=0; y<photo.getWidth(); y+=2){
+			//	photo.setPixel(x, y, 0);
+			//}
+		//}
+		//correctionView = (ImageView)findViewById(R.id.correctionView);
+		//correctionView.setImageBitmap(photo);
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package com.frillingJackson.checkersCheat;
 
-import org.opencv.android.Utils;
-import org.opencv.core.Mat;
+//import org.opencv.android.Utils;
+//import org.opencv.core.Mat;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -48,7 +48,12 @@ public class FirstUse extends Activity {
             //Intent intent2 = new Intent(this, CorrectionActivity.class);
             //intent2.putExtra("photo", photo);
             //startActivity(intent2);
-        }  
+        }
     } 
+	
+	public void correct(View view){
+		Intent intent1 = new Intent(this,CorrectionActivity.class);
+		startActivity(intent1);
+	}
 
 }
