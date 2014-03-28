@@ -84,7 +84,7 @@ public class CamActivity extends Activity {
  
         } catch (Exception e) {
             // Camera is not available (in use or does not exist)
-        	Log.d(TAG, "error in getCamInstance");
+        	Log.d(TAG, "error in getCamInstance"+e.getMessage());
         }
         return c; // returns null if camera is unavailable
     }
@@ -121,7 +121,7 @@ public class CamActivity extends Activity {
             Intent in1 = new Intent(getApplicationContext(), FirstUse.class);
             in1.putExtra("image",data);
             setResult(RESULT_OK, in1);
-            //releaseCamera(); //do we want to release the camera here? 
+            releaseCamera(); //do we want to release the camera here? 
             
             finish(); 
         }
@@ -185,9 +185,9 @@ public class CamActivity extends Activity {
         try {
             // open the default camera
         	Log.d(TAG, "check point 1 in camAct onResume");    
-            mCamera = Camera.open();  //this is throwing an error saying failed to connect to camera service 
+            //mCamera = Camera.open();  //this is throwing an error saying failed to connect to camera service 
             Log.d(TAG, "check point 2 in camAct onResume");
-            //mCamera = getCameraInstance();
+            mCamera = getCameraInstance();
             mCamera.setPreviewCallback(null);
             mPreview = new CameraPreview(CamActivity.this, mCamera);// set                
             // preview
