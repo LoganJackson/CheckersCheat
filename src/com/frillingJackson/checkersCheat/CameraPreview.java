@@ -45,6 +45,12 @@ public void surfaceCreated(SurfaceHolder holder) {
 
 public void surfaceDestroyed(SurfaceHolder holder) {
     // empty releasing the Camera preview in the activity.
+	if (mCamera != null) {
+        mCamera.stopPreview();
+        mCamera.setPreviewCallback(null);
+        mCamera.release();
+        mCamera = null;
+    }
 }
 
 public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
