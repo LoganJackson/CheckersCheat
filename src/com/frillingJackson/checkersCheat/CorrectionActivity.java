@@ -7,12 +7,17 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 
 public class CorrectionActivity extends Activity {
 	
-	ImageView correctionView;
+	ImageView mImage;
+	Canvas canvas;
+	Paint paint;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,22 +47,22 @@ public class CorrectionActivity extends Activity {
 		
 		board.set(0,1,'b');
 		board.set(0,3,'b');
-		board.set(0,5,'b');
+		board.set(0,5,'P');
 		board.set(0,7,'b');
 		
-		board.set(1,0,'b');
+		board.set(1,0,'P');
 		board.set(1,2,'b');
 		board.set(1,4,'b');
 		board.set(1,6,'b');
 		
 		board.set(2,3,'b');
 		
-		board.set(7,0,'t');
+		board.set(7,0,'G');
 		board.set(7,2,'t');
 		board.set(7,4,'t');
 		board.set(7,6,'t');
 		
-		board.set(6,1,'t');
+		board.set(6,1,'G');
 		board.set(6,3,'t');
 		board.set(6,5,'t');
 		board.set(6,7,'t');
@@ -78,22 +83,22 @@ public class CorrectionActivity extends Activity {
 		Canvas canvas= new Canvas(newImage);
 		for(int i=0; i<newImage.getWidth();i+=64){
 			for(int j=0; j<newImage.getHeight();j+=64){
-				canvas.drawRect(i, j, i+32, j+32, paint);
+				canvas.drawRect(i, j, i+32, j+32, paint1);
 			}
 		}
 		for(int i=32; i<newImage.getWidth();i+=64){
 			for(int j=0; j<newImage.getHeight();j+=64){
-				canvas.drawRect(i, j, i+32, j+32, paint1);
+				canvas.drawRect(i, j, i+32, j+32, paint);
 			}
 		}		
 		for(int i=32; i<newImage.getWidth();i+=64){
 			for(int j=32; j<newImage.getHeight();j+=64){
-				canvas.drawRect(i, j, i+32, j+32, paint);
+				canvas.drawRect(i, j, i+32, j+32, paint1);
 			}
 		}
 		for(int i=0; i<newImage.getWidth();i+=64){
 			for(int j=32; j<newImage.getHeight();j+=64){
-				canvas.drawRect(i, j, i+32, j+32, paint1);
+				canvas.drawRect(i, j, i+32, j+32, paint);
 			}
 		}	
 		for(int i=0; i<8;i++){
@@ -110,9 +115,22 @@ public class CorrectionActivity extends Activity {
 					blue.setStyle(Paint.Style.FILL);
 					canvas.drawCircle(j*32+15, i*32+15, 10, blue);
 				}
-					
+				else if(board.get(i, j)=='P'){
+					Paint pink = new Paint();
+					pink.setARGB(255, 50, 0, 200);
+					pink.setStyle(Paint.Style.FILL);
+					canvas.drawCircle(j*32+15, i*32+15, 10,pink );
 				}
-			}
+				else if(board.get(i, j)=='G'){
+					Paint green = new Paint();
+					green.setARGB(255, 0, 200, 0);
+					green.setStyle(Paint.Style.FILL);
+					canvas.drawCircle(j*32+15, i*32+15, 10,green);
+				}
+				}
+					
+		}
+	
 		
 		
 		ImageView mImage = (ImageView)findViewById(R.id.correctionView);
@@ -141,36 +159,39 @@ public class CorrectionActivity extends Activity {
 	
 	//dummy gamestate
 	
-	board.set(0,1,'b');
+	board.set(0,1,'P');
 	board.set(0,3,'b');
 	board.set(0,5,'b');
 	board.set(0,7,'b');
 	
 	board.set(1,0,'b');
 	board.set(1,2,'b');
-	board.set(1,4,'b');
+	board.set(1,4,'P');
 	board.set(1,6,'b');
 	
 	board.set(2,3,'b');
 	
-	board.set(7,0,'t');
+	board.set(5,0,'G');
 	board.set(7,2,'t');
 	board.set(7,4,'t');
 	board.set(7,6,'t');
 	
 	board.set(6,1,'t');
-	board.set(6,3,'t');
+	board.set(6,3,'G');
 	board.set(6,5,'t');
 	board.set(6,7,'t');
 	
 	board.set(5,4,'t');
 	
-	/*correctionView.setOnTouchListener(new View.OnTouchListener()
-	{
-		public boolean onTouch(){
-			return true;
+	
+				
+			
 		
-	}
+			
+		return board;
+	
+			
+			
 		/*	
 			public boolean onContextItemSelected(MenuItem item) {
 			    
@@ -189,8 +210,11 @@ public class CorrectionActivity extends Activity {
 		}
 	  */  
 	
+	}
 	
-	return old;
+}
+	
+	
+	
 
-}
-}
+
