@@ -35,7 +35,7 @@ public class FirstUse extends Activity {
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
         if (requestCode == 100 && resultCode == RESULT_OK) {  
-        	byte[] byteArray = getIntent().getByteArrayExtra("image");
+        	byte[] byteArray = data.getByteArrayExtra("image");
         	Bitmap photo = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         	ImageView newView = (ImageView) findViewById(R.id.imageView1);
         	newView.setImageBitmap(photo);
