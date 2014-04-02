@@ -47,40 +47,15 @@ public class CamActivity extends Activity {
         Boolean hasCamera = checkCameraHardware(getApplicationContext());
         if(!hasCamera){
             Toast.makeText(getApplicationContext(), "Camera Not Available", Toast.LENGTH_LONG).show();
-        }else{
-        // Create an instance of Camera
-        mCamera = getCameraInstance();
-        mCamera.setDisplayOrientation(90);
-        
-        // Create our Preview view and set it as the content of our activity.
-        mPreview = new CameraPreview(this, mCamera);
-        RelativeLayout preview = (RelativeLayout) findViewById(R.id.camera_preview);
-        preview.addView(mPreview);
-        
-        mSnapButton = (ImageButton) findViewById(R.id.button_capture);
-        mSnapButton.bringToFront();
-        
-        mOutline = (ImageView) findViewById(R.id.imageView1);
-        mOutline.bringToFront();
- 
-        // capture image button
-        mSnapButton.setOnClickListener(new OnClickListener() {
- 
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                // get an image from the camera
-                mCamera.takePicture(null, null, mPicture);
-                
-            }
-        });
         }
+       
     }
  
     private Camera getCameraInstance() {
         Camera c = null;
         try {
             c = Camera.open(); // attempt to get a Camera instance
+            //mCamera.setDisplayOrientation(90);
  
         } catch (Exception e) {
             // Camera is not available (in use or does not exist)
@@ -94,33 +69,35 @@ public class CamActivity extends Activity {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
  
-            File pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
-            if (pictureFile == null) {
-                Log.d(TAG,
-                        "Error creating media file, check storage permissions");
-                return;
-            }
- 
-            try {
-                FileOutputStream fos = new FileOutputStream(pictureFile);
-                fos.write(data);
-                fos.close();
-            } catch (FileNotFoundException e) {
-                Log.d(TAG, "File not found: " + e.getMessage());
-            } catch (IOException e) {
-                Log.d(TAG, "Error accessing file: " + e.getMessage());
-            }
-            mCamera.startPreview();
-            // call alert dialog to display file saved location
-            alertDialog("File Saved",
-                    "Filse is saved at sdcard-&gt;Pictures-&gt;MyCameraApp");
-            
-            mCamera.stopPreview();
-            
-            //Prepare to return an intent and finish
+//            File pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
+//            if (pictureFile == null) {
+//                Log.d(TAG,
+//                        "Error creating media file, check storage permissions");
+//                return;
+//            }
+// 
+//            try {
+//                FileOutputStream fos = new FileOutputStream(pictureFile);
+//                fos.write(data);
+//                fos.close();
+//            } catch (FileNotFoundException e) {
+//                Log.d(TAG, "File not found: " + e.getMessage());
+//            } catch (IOException e) {
+//                Log.d(TAG, "Error accessing file: " + e.getMessage());
+//            }
+//            //mCamera.startPreview();
+//            
+//            // call alert dialog to display file saved location
+//            alertDialog("File Saved",
+//                    "Filse is saved at sdcard-&gt;Pictures-&gt;MyCameraApp");
+//            
+//            //mCamera.stopPreview();
+//            
+//            //Prepare to return an intent and finish
             Intent in1 = new Intent(getApplicationContext(), FirstUse.class);
             in1.putExtra("image",data);
             setResult(RESULT_OK, in1);
+            
             releaseCamera(); //do we want to release the camera here? 
             
             finish(); 
@@ -135,7 +112,7 @@ public class CamActivity extends Activity {
         File mediaStorageDir = new File(
                 Environment
                         .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                "MyCameraApp");
+                "CheckersCheat");
         // This location works best if you want the created images to be shared
         // between applications and persist after your app has been uninstalled.
  
@@ -169,7 +146,8 @@ public class CamActivity extends Activity {
         if (mCamera != null) {
             mCamera.setPreviewCallback(null);
             mPreview.getHolder().removeCallback(mPreview);
-            releaseCamera();
+            mCamera.release(); // release the camera for other applications
+            mCamera = null;
             RelativeLayout preview = (RelativeLayout) findViewById(R.id.camera_preview);
             preview.removeView(mPreview);
             mPreview = null;
@@ -183,20 +161,31 @@ public class CamActivity extends Activity {
  
         // Getting the camera resources back
         try {
-            // open the default camera
-        	Log.d(TAG, "check point 1 in camAct onResume");    
-            //mCamera = Camera.open();  //this is throwing an error saying failed to connect to camera service 
-            Log.d(TAG, "check point 2 in camAct onResume");
-            mCamera = getCameraInstance();
-            mCamera.setPreviewCallback(null);
-            mPreview = new CameraPreview(CamActivity.this, mCamera);// set                
-            // preview
+        	mCamera = getCameraInstance();
+        	mCamera.setDisplayOrientation(90);
+             
+            // Create our Preview view and set it as the content of our activity.
+            mPreview = new CameraPreview(this, mCamera);
             RelativeLayout preview = (RelativeLayout) findViewById(R.id.camera_preview);
             preview.addView(mPreview);
+            
             mSnapButton = (ImageButton) findViewById(R.id.button_capture);
             mSnapButton.bringToFront();
+             
             mOutline = (ImageView) findViewById(R.id.imageView1);
             mOutline.bringToFront();
+      
+            mCamera.setPreviewCallback(null);
+             // capture image button
+            mSnapButton.setOnClickListener(new OnClickListener() {
+      
+                 @Override
+                 public void onClick(View v) {
+                     // TODO Auto-generated method stub
+                     // get an image from the camera
+                     mCamera.takePicture(null, null, mPicture);     
+                 }
+             });
         } catch (Exception e) {
             Log.d(TAG, "Error starting camera from onResume: " + e.getMessage());
         }
