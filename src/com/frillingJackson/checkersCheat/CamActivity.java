@@ -53,13 +53,15 @@ public class CamActivity extends Activity {
         return c; // returns null if camera is unavailable
     }
 
-
     private PictureCallback mPicture = new PictureCallback() { 
-        @Override
         public void onPictureTaken(byte[] data, Camera camera) {
+        	Log.d(TAG, "onPicTaken 1:");
             Intent in1 = new Intent(getApplicationContext(), FirstUse.class);
+            Log.d(TAG, "onPicTaken 2:");
             in1.putExtra("image",data);
-            setResult(RESULT_OK, in1);            
+            Log.d(TAG, "onPicTaken 3:");
+            setResult(RESULT_OK, in1);  
+            Log.d(TAG, "onPicTaken 4:");
             finish(); 
         }
     };
@@ -69,12 +71,15 @@ public class CamActivity extends Activity {
         super.onPause();
         
 	if (mCamera != null) {
-	    mCamera.release(); // release the camera for other applications
+		Log.d(TAG, "onPause 1:");
 	    mCamera.setPreviewCallback(null); 
+	    Log.d(TAG, "onPicTaken 2:");
 	    mPreview.getHolder().removeCallback(mPreview);//What does this do? --bpj
-	    mCamera = null;
+	    Log.d(TAG, "onPicTaken 3:");
+	    //mCamera = null;
+	    mCamera.release(); // release the camera for other applications
         }
-         
+	Log.d(TAG, "onPicTaken 4:");     
 	RelativeLayout preview = (RelativeLayout)findViewById(R.id.camera_preview);
 	preview.removeView(mPreview);
 	mPreview = null;            
@@ -85,8 +90,8 @@ public class CamActivity extends Activity {
         // TODO Auto-generated method stub
         super.onResume();
  
-	//mcamera = getCameraInstance();
-	//mCamera.setPreviewCallback(mPicture); 
+	mCamera = getCameraInstance();
+	mCamera.setPreviewCallback(null); 
              
 	// Create our Preview view and set it as the content of our activity.
 	mPreview = new CameraPreview(this, mCamera);
@@ -99,7 +104,6 @@ public class CamActivity extends Activity {
 	mOutline = (ImageView) findViewById(R.id.imageView1);
 	mOutline.bringToFront();
       
-	//mCamera.setPreviewCallback(null);
 	mSnapButton.setOnClickListener(new OnClickListener() {
 		@Override
 		    public void onClick(View v) {
