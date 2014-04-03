@@ -39,6 +39,15 @@ public class CorrectionActivity extends Activity {
 		setContentView(R.layout.activity_correction);
 		ImageView gameBoard = (ImageView)findViewById(R.id.correctionView);
 		registerForContextMenu(gameBoard);  
+<<<<<<< HEAD
+=======
+		//Bundle bundle = this.getIntent().getExtras();
+			//	photo.setPixel(x, y, 0);
+			//}
+		//}
+		//correctionView = (ImageView)findViewById(R.id.correctionView);
+		//correctionView.setImageBitmap(photo);
+>>>>>>> 444e575e50be2055ef54621e577ad9eac5a5ed6c
 		
 		
 		//O (pink) = king for the dark pieces 
@@ -174,9 +183,14 @@ public class CorrectionActivity extends Activity {
 			  Toast.makeText(getApplicationContext(),String.valueOf(y), Toast.LENGTH_SHORT).show();
 			  //GameState board1=new GameState();   
 			   correctBoard(board.board, x,y, 'b');
+<<<<<<< HEAD
 			   break;
 		   case R.id.Blue:
 			   correctBoard(board.board,x,y,'o');
+=======
+		   case R.id.Blue:
+			   //draw();
+>>>>>>> 444e575e50be2055ef54621e577ad9eac5a5ed6c
 			   return true;
 			   
 			   
