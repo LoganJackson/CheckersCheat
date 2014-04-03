@@ -37,8 +37,12 @@ public class FirstUse extends Activity {
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
         if (requestCode == 100 && resultCode == RESULT_OK) {  
-        	Bitmap photo = (Bitmap)data.getExtras().get("image");
+	    try {
+		InputStream stream = getContentResolver().openInputStream(data.getStringExtra("image"));
+		Bitmap photo = BitmapFactory.decodeStream(stream);
         	
+        	Log.d(TAG, "Rec'd size of photo" + photo.getWidth() + " x " + photo.getHeight()); 
+
         	//byte[] byteArray = data.getByteArrayExtra("image");
         	
 //        	BitmapFactory.Options options = new BitmapFactory.Options();

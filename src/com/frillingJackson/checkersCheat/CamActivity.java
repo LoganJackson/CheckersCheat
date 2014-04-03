@@ -54,35 +54,43 @@ public class CamActivity extends Activity {
         }
         return c; // returns null if camera is unavailable
     }
-    public static Bitmap scaleDownBitmap(Bitmap photo, int newHeight, Context context) {
-
-   	 	//final float densityMultiplier = context.getResources().getDisplayMetrics().density;        
-
-   	 	int h= (int) (newHeight);
-   	 	int w= (int) (h * photo.getWidth()/((double) photo.getHeight()));
-
-   	 	return Bitmap.createScaledBitmap(photo, w, h, true);
-   	 }
 
     private PictureCallback mPicture = new PictureCallback() { 
-        public void onPictureTaken(byte[] data, Camera camera) {
-        	Log.d(TAG, "Don't skip this.");
-        	
+	    public void onPictureTaken(byte[] data, Camera camera) {
         	Bitmap photo = BitmapFactory.decodeByteArray(data, 0, data.length);
-        	Log.d(TAG, "Size of photo" + photo.getWidth() + " x " + photo.getHeight());
-        	photo = scaleDownBitmap(photo, 500, getApplicationContext());
-        	Log.d(TAG, "Size of photo" + photo.getWidth() + " x " + photo.getHeight());
+        	Log.d(TAG, "Orig. size of photo" + photo.getWidth() + " x " + photo.getHeight()); 
         	
-        	
-        	Log.d(TAG, "onPicTaken 1:");
-            Intent in1 = new Intent(getApplicationContext(), FirstUse.class);
-            Log.d(TAG, "onPicTaken 2:");
-            in1.putExtra("image", photo);
-            Log.d(TAG, "onPicTaken 3:");
-            setResult(RESULT_OK, in1);  
-            Log.d(TAG, "onPicTaken 4:");
-         
-            finish(); 
+		File pictureFileDir = getFilesDir();
+
+		if (!pictureFileDir.exists() && !pictureFileDir.mkdirs()) {
+		    Log.d(TAG, "Can't create directory to save image.");
+		    Toast.makeText(context, "Can't create directory to save image.", Toast.LENGTH_LONG).show();
+		    return;
+		}        	
+
+		String filename = pictureFileDir.getPath() + File.separator + "photo.jpg";
+
+		File pictureFile = new File(filename);
+		
+		try {
+		    FileOutputStream fos = new FileOutputStream(pictureFile);
+		    fos.write(data);
+		    fos.close();
+		    Toast.makeText(context, "New Image saved:" + photoFile,
+				   Toast.LENGTH_LONG).show();
+		} catch (Exception error) {
+		    Log.d(TAG, "File" + filename + "not saved: " + error.getMessage());
+		    Toast.makeText(context, "Image could not be saved.", Toast.LENGTH_LONG).show();
+		}
+
+		Intent in1 = new Intent(getApplicationContext(), FirstUse.class);
+		in1.putExtra("image", pictureFile)
+;
+		setResult(RESULT_OK, in1);  
+		
+		Log.d(TAG, "onPictureTaken about to finish.");
+		
+		finish(); 
         }
     };
  
