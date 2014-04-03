@@ -26,5 +26,6 @@
     <string name="CorrectionTxt">If a piece is a wrong color, touch it and pick the right color from the menu.</string>
     <string name="title_activity_cam">CamActivity</string>
     <string name="title_activity_correction">CorrectionActivity</string>
+    <string name="Correction">Correction</string>
 
 </resources>
