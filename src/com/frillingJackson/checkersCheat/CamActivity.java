@@ -1,5 +1,8 @@
 package com.frillingJackson.checkersCheat;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
@@ -64,7 +67,7 @@ public class CamActivity extends Activity {
 
 		if (!pictureFileDir.exists() && !pictureFileDir.mkdirs()) {
 		    Log.d(TAG, "Can't create directory to save image.");
-		    Toast.makeText(context, "Can't create directory to save image.", Toast.LENGTH_LONG).show();
+		    Toast.makeText(getApplicationContext(), "Can't create directory to save image.", Toast.LENGTH_LONG).show();
 		    return;
 		}        	
 
@@ -76,11 +79,11 @@ public class CamActivity extends Activity {
 		    FileOutputStream fos = new FileOutputStream(pictureFile);
 		    fos.write(data);
 		    fos.close();
-		    Toast.makeText(context, "New Image saved:" + photoFile,
+		    Toast.makeText(getApplicationContext(), "New Image saved:" + pictureFile,
 				   Toast.LENGTH_LONG).show();
 		} catch (Exception error) {
 		    Log.d(TAG, "File" + filename + "not saved: " + error.getMessage());
-		    Toast.makeText(context, "Image could not be saved.", Toast.LENGTH_LONG).show();
+		    Toast.makeText(getApplicationContext(), "Image could not be saved.", Toast.LENGTH_LONG).show();
 		}
 
 		Intent in1 = new Intent(getApplicationContext(), FirstUse.class);

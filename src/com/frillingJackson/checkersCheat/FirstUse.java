@@ -3,11 +3,14 @@ package com.frillingJackson.checkersCheat;
 //import org.opencv.android.Utils;
 //import org.opencv.core.Mat;
 
-import android.os.Bundle;
+import java.io.InputStream;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -37,11 +40,11 @@ public class FirstUse extends Activity {
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
         if (requestCode == 100 && resultCode == RESULT_OK) {  
-	    try {
-		InputStream stream = getContentResolver().openInputStream(data.getStringExtra("image"));
-		Bitmap photo = BitmapFactory.decodeStream(stream);
+        	try {
+        		InputStream stream = getContentResolver().openInputStream(Uri.parse(data.getStringExtra("image")));
+        		Bitmap photo = BitmapFactory.decodeStream(stream);
         	
-        	Log.d(TAG, "Rec'd size of photo" + photo.getWidth() + " x " + photo.getHeight()); 
+        		Log.d(TAG, "Rec'd size of photo" + photo.getWidth() + " x " + photo.getHeight()); 
 
         	//byte[] byteArray = data.getByteArrayExtra("image");
         	
@@ -76,6 +79,10 @@ public class FirstUse extends Activity {
             //Intent intent2 = new Intent(this, CorrectionActivity.class);
             //intent2.putExtra("photo", photo);
             //startActivity(intent2);
+        	}
+        	catch (Exception e) {
+        		Log.d(TAG, "Exception.");
+        	}
         }
     } 
 	
