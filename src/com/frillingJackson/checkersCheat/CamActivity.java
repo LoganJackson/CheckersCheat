@@ -62,18 +62,8 @@ public class CamActivity extends Activity {
 	    public void onPictureTaken(byte[] data, Camera camera) {
         	Bitmap photo = BitmapFactory.decodeByteArray(data, 0, data.length);
         	Log.d(TAG, "Orig. size of photo" + photo.getWidth() + " x " + photo.getHeight()); 
-        	
-		File pictureFileDir = getFilesDir();
-
-		if (!pictureFileDir.exists() && !pictureFileDir.mkdirs()) {
-		    Log.d(TAG, "Can't create directory to save image.");
-		    Toast.makeText(getApplicationContext(), "Can't create directory to save image.", Toast.LENGTH_LONG).show();
-		    return;
-		}        	
-
-		String filename = pictureFileDir.getPath() + File.separator + "photo.jpg";
-
-		File pictureFile = new File(filename);
+           
+		File pictureFile = new File(getFilesDir(), "photo.jpg");
 		
 		try {
 		    FileOutputStream fos = new FileOutputStream(pictureFile);
