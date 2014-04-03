@@ -72,8 +72,7 @@ public class CamActivity extends Activity {
 		    Toast.makeText(getApplicationContext(), "New Image saved:" + pictureFile,
 				   Toast.LENGTH_LONG).show();
 		} catch (Exception error) {
-		    Log.d(TAG, "File" + filename + "not saved: " + error.getMessage());
-		    Toast.makeText(getApplicationContext(), "Image could not be saved.", Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), "Image could not be saved.", Toast.LENGTH_LONG).show();
 		}
 
 		Intent in1 = new Intent(getApplicationContext(), FirstUse.class);

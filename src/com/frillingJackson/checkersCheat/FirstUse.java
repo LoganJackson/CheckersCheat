@@ -4,13 +4,16 @@ package com.frillingJackson.checkersCheat;
 //import org.opencv.core.Mat;
 
 import java.io.File;
-import java.io.InputStream;
 
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
+import org.opencv.core.Size;
+
+import android.R.bool;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -42,43 +45,25 @@ public class FirstUse extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
         if (requestCode == 100 && resultCode == RESULT_OK) {  
         	try {
-		    File pictureFile = new File(getFilesDir(), "photo.jpg");
+		    File file = new File(getFilesDir(), "photo.jpg");
+		    ImageView newView = (ImageView) findViewById(R.id.imageView1);
 		    Log.d(TAG, "Trying to open " + file.getAbsolutePath());
-		    Bitmap photo = BitmapFactory.decodeStream(file.getAbsolutePath());
+		    Bitmap photo = BitmapFactory.decodeFile(file.getAbsolutePath());
 		    Log.d(TAG, "Rec'd size of photo" + photo.getWidth() + " x " + photo.getHeight()); 
-
-        	//byte[] byteArray = data.getByteArrayExtra("image");
+		    //newView.setImageBitmap(photo);
+		    photo = Bitmap.createScaledBitmap(photo, 1024, 1024, false);
+		    newView.setImageBitmap(photo);	
+       	
+        	Mat mat = new Mat();
+        	Utils.bitmapToMat(photo, mat);
         	
-//        	BitmapFactory.Options options = new BitmapFactory.Options();
-//        	options.inJustDecodeBounds = true;
-//        	BitmapFactory.decodeResource(getResources(), R.id.imageView1, options);
-//        	
-//        	Log.d(TAG,"Height"+options.outHeight);
-//        	Log.d(TAG,"Width"+options.outWidth);
-//        	
-        	
-//        	int pow = 0;
-//        	while (options.outHeight >> pow > reqHeight || options.outWidth >> pow > reqWidth)
-//        	    pow += 1;
-//        	options.inSampleSize = 1 << pow; 
-//        	options.inJustDecodeBounds = false;
-//        	
-//        	image = BitmapFactory.decodeStream(imagefile, null, options);
-//        	int imageHeight = options.outHeight;
-//        	int imageWidth = options.outWidth;
-//        	String imageType = options.outMimeType;
-//        	
-//        	Bitmap photo = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-        	ImageView newView = (ImageView) findViewById(R.id.imageView1);
-        	newView.setImageBitmap(photo);
-        	
-        	
-        	//Mat mat = new Mat();
-        	//Utils.bitmapToMat(photo, mat);
-        	//bool found = findChessboardCorners(mat, boardSize, ptvec, CV_CALIB_CB_ADAPTIVE_THRESH );
+		    //Size boardSize = new Size (7,7);
+//		    ptvec = ;
+        	//bool found = findChessboardCorners(mat, boardSize , ptvec, CV_CALIB_CB_ADAPTIVE_THRESH );
+        	//boardSize = 7x7
         	
             //Intent intent2 = new Intent(this, CorrectionActivity.class);
-            //intent2.putExtra("photo", photo);
+            //intent2.putExtra("boardStateString", state);
             //startActivity(intent2);
         	}
         	catch (Exception e) {

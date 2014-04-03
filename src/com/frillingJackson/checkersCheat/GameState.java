@@ -54,6 +54,19 @@ public class GameState {
 		board = state;
 	}
 	
+	GameState(String state){
+		char[] charArray = state.toCharArray();
+		char[][] newState = new char[8][8];
+		int index =0;
+		for (int row= 0 ; row<= 7 ; row++){
+			for(int col =0; col<=7; col++){
+				newState[row][col]= charArray[index];
+				index++;
+			}
+		}
+		board = newState;
+	}
+	
 	GameState(){
 		for (int row = 0; row <= 7; row++) {
 			//for every row, mark only the "dark" spaces
