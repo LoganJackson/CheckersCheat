@@ -41,36 +41,14 @@ public class FirstUse extends Activity {
         if (requestCode == 100 && resultCode == RESULT_OK) {  
         	try {
 		    File file = new File(getFilesDir(), "photo.jpg");
+		    ImageView newView = (ImageView) findViewById(R.id.imageView1);
 		    Log.d(TAG, "Trying to open " + file.getAbsolutePath());
 		    Bitmap photo = BitmapFactory.decodeFile(file.getAbsolutePath());
 		    Log.d(TAG, "Rec'd size of photo" + photo.getWidth() + " x " + photo.getHeight()); 
-
-        	//byte[] byteArray = data.getByteArrayExtra("image");
-        	
-//        	BitmapFactory.Options options = new BitmapFactory.Options();
-//        	options.inJustDecodeBounds = true;
-//        	BitmapFactory.decodeResource(getResources(), R.id.imageView1, options);
-//        	
-//        	Log.d(TAG,"Height"+options.outHeight);
-//        	Log.d(TAG,"Width"+options.outWidth);
-//        	
-        	
-//        	int pow = 0;
-//        	while (options.outHeight >> pow > reqHeight || options.outWidth >> pow > reqWidth)
-//        	    pow += 1;
-//        	options.inSampleSize = 1 << pow; 
-//        	options.inJustDecodeBounds = false;
-//        	
-//        	image = BitmapFactory.decodeStream(imagefile, null, options);
-//        	int imageHeight = options.outHeight;
-//        	int imageWidth = options.outWidth;
-//        	String imageType = options.outMimeType;
-//        	
-//        	Bitmap photo = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-        	ImageView newView = (ImageView) findViewById(R.id.imageView1);
-        	newView.setImageBitmap(photo);
-        	
-        	
+		    //newView.setImageBitmap(photo);
+		    
+		    newView.setImageBitmap(Bitmap.createScaledBitmap(photo, 1024, 1024, false));	
+       	
         	//Mat mat = new Mat();
         	//Utils.bitmapToMat(photo, mat);
         	//bool found = findChessboardCorners(mat, boardSize, ptvec, CV_CALIB_CB_ADAPTIVE_THRESH );
