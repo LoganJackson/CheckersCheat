@@ -11,7 +11,7 @@
           android:title="Green" 
           android:visible="true"/>
       <item android:id="@+id/Tan"
-          android:title="Tan"/>"
+          android:title="Tan"/>
   
 </menu>
 
