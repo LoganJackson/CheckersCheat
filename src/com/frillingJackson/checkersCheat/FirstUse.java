@@ -5,6 +5,11 @@ package com.frillingJackson.checkersCheat;
 
 import java.io.File;
 
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
+import org.opencv.core.Size;
+
+import android.R.bool;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -46,15 +51,19 @@ public class FirstUse extends Activity {
 		    Bitmap photo = BitmapFactory.decodeFile(file.getAbsolutePath());
 		    Log.d(TAG, "Rec'd size of photo" + photo.getWidth() + " x " + photo.getHeight()); 
 		    //newView.setImageBitmap(photo);
-		    
-		    newView.setImageBitmap(Bitmap.createScaledBitmap(photo, 1024, 1024, false));	
+		    photo = Bitmap.createScaledBitmap(photo, 1024, 1024, false);
+		    newView.setImageBitmap(photo);	
        	
-        	//Mat mat = new Mat();
-        	//Utils.bitmapToMat(photo, mat);
-        	//bool found = findChessboardCorners(mat, boardSize, ptvec, CV_CALIB_CB_ADAPTIVE_THRESH );
+        	Mat mat = new Mat();
+        	Utils.bitmapToMat(photo, mat);
+        	
+		    //Size boardSize = new Size (7,7);
+//		    ptvec = ;
+        	//bool found = findChessboardCorners(mat, boardSize , ptvec, CV_CALIB_CB_ADAPTIVE_THRESH );
+        	//boardSize = 7x7
         	
             //Intent intent2 = new Intent(this, CorrectionActivity.class);
-            //intent2.putExtra("photo", photo);
+            //intent2.putExtra("boardStateString", state);
             //startActivity(intent2);
         	}
         	catch (Exception e) {
