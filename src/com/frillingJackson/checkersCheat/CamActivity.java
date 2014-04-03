@@ -1,5 +1,7 @@
 package com.frillingJackson.checkersCheat;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.os.Bundle;
@@ -17,7 +19,7 @@ import android.content.pm.PackageManager;
  
 public class CamActivity extends Activity {
     // Log tag for camera
-    private static final String TAG = "CameraRecorderActivity";
+    private static final String TAG = "CamActivity";
 
     // set the type of media -&gt; for image code is 1
     public static final int MEDIA_TYPE_IMAGE = 1;
@@ -52,16 +54,34 @@ public class CamActivity extends Activity {
         }
         return c; // returns null if camera is unavailable
     }
+    public static Bitmap scaleDownBitmap(Bitmap photo, int newHeight, Context context) {
+
+   	 	//final float densityMultiplier = context.getResources().getDisplayMetrics().density;        
+
+   	 	int h= (int) (newHeight);
+   	 	int w= (int) (h * photo.getWidth()/((double) photo.getHeight()));
+
+   	 	return Bitmap.createScaledBitmap(photo, w, h, true);
+   	 }
 
     private PictureCallback mPicture = new PictureCallback() { 
         public void onPictureTaken(byte[] data, Camera camera) {
+        	Log.d(TAG, "Don't skip this.");
+        	
+        	Bitmap photo = BitmapFactory.decodeByteArray(data, 0, data.length);
+        	Log.d(TAG, "Size of photo" + photo.getWidth() + " x " + photo.getHeight());
+        	photo = scaleDownBitmap(photo, 500, getApplicationContext());
+        	Log.d(TAG, "Size of photo" + photo.getWidth() + " x " + photo.getHeight());
+        	
+        	
         	Log.d(TAG, "onPicTaken 1:");
             Intent in1 = new Intent(getApplicationContext(), FirstUse.class);
             Log.d(TAG, "onPicTaken 2:");
-            in1.putExtra("image",data);
+            in1.putExtra("image", photo);
             Log.d(TAG, "onPicTaken 3:");
             setResult(RESULT_OK, in1);  
             Log.d(TAG, "onPicTaken 4:");
+         
             finish(); 
         }
     };
@@ -72,14 +92,14 @@ public class CamActivity extends Activity {
         
 	if (mCamera != null) {
 		Log.d(TAG, "onPause 1:");
-	    mCamera.setPreviewCallback(null); 
-	    Log.d(TAG, "onPicTaken 2:");
+	    //mCamera.setPreviewCallback(null); 
+	    Log.d(TAG, "onPause 2:");
 	    mPreview.getHolder().removeCallback(mPreview);//What does this do? --bpj
-	    Log.d(TAG, "onPicTaken 3:");
+	    Log.d(TAG, "onPause 3:");
 	    //mCamera = null;
 	    mCamera.release(); // release the camera for other applications
         }
-	Log.d(TAG, "onPicTaken 4:");     
+	Log.d(TAG, "onPause 4:");     
 	RelativeLayout preview = (RelativeLayout)findViewById(R.id.camera_preview);
 	preview.removeView(mPreview);
 	mPreview = null;            

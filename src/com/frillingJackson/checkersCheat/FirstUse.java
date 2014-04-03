@@ -8,11 +8,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 
 public class FirstUse extends Activity {
+	private static final String TAG = "FirstUseAct";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +37,30 @@ public class FirstUse extends Activity {
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
         if (requestCode == 100 && resultCode == RESULT_OK) {  
-        	byte[] byteArray = data.getByteArrayExtra("image");
-        	Bitmap photo = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        	Bitmap photo = (Bitmap)data.getExtras().get("image");
+        	
+        	//byte[] byteArray = data.getByteArrayExtra("image");
+        	
+//        	BitmapFactory.Options options = new BitmapFactory.Options();
+//        	options.inJustDecodeBounds = true;
+//        	BitmapFactory.decodeResource(getResources(), R.id.imageView1, options);
+//        	
+//        	Log.d(TAG,"Height"+options.outHeight);
+//        	Log.d(TAG,"Width"+options.outWidth);
+//        	
+        	
+//        	int pow = 0;
+//        	while (options.outHeight >> pow > reqHeight || options.outWidth >> pow > reqWidth)
+//        	    pow += 1;
+//        	options.inSampleSize = 1 << pow; 
+//        	options.inJustDecodeBounds = false;
+//        	
+//        	image = BitmapFactory.decodeStream(imagefile, null, options);
+//        	int imageHeight = options.outHeight;
+//        	int imageWidth = options.outWidth;
+//        	String imageType = options.outMimeType;
+//        	
+//        	Bitmap photo = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         	ImageView newView = (ImageView) findViewById(R.id.imageView1);
         	newView.setImageBitmap(photo);
         	
