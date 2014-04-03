@@ -177,14 +177,8 @@ public class CorrectionActivity extends Activity {
 			   correctBoard(board.board, x,y, 'b');
 
 			   break;
-		   case R.id.Blue:
-			   correctBoard(board.board,x,y,'o');
-
-		   case R.id.Blue:
-			   //draw();
-
-			   return true;
-			   
+		   case R.id.Brown:
+			   correctBoard(board.board,x,y,'o');			   
 			   
 			   
 		   }
