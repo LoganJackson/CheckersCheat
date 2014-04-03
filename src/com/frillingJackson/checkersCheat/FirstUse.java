@@ -42,12 +42,10 @@ public class FirstUse extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
         if (requestCode == 100 && resultCode == RESULT_OK) {  
         	try {
-        		File file = (File)data.getExtras().get("image");
-        		Log.d(TAG, "Trying to open " + file.getAbsolutePath());
-        		InputStream stream = getContentResolver().openInputStream(Uri.parse(file.getAbsolutePath()));
-        		Log.d(TAG, "Opened input stream");
-        		Bitmap photo = BitmapFactory.decodeStream(stream);
-        		Log.d(TAG, "Rec'd size of photo" + photo.getWidth() + " x " + photo.getHeight()); 
+		    File pictureFile = new File(getFilesDir(), "photo.jpg");
+		    Log.d(TAG, "Trying to open " + file.getAbsolutePath());
+		    Bitmap photo = BitmapFactory.decodeStream(file.getAbsolutePath());
+		    Log.d(TAG, "Rec'd size of photo" + photo.getWidth() + " x " + photo.getHeight()); 
 
         	//byte[] byteArray = data.getByteArrayExtra("image");
         	
