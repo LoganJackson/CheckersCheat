@@ -6,24 +6,39 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 public class CorrectionActivity extends Activity {
+	
+	public int lastKnownX; // Might be float types - can't remember
+	public int lastKnownY;
 	
 	ImageView mImage;
 	Canvas canvas;
 	Paint paint;
-	
+	ImageView gameBoard;
+	GameState board;
+	Bitmap newImage;
+	float x;
+	float y;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_correction);
-		
+		ImageView gameBoard = (ImageView)findViewById(R.id.correctionView);
+		registerForContextMenu(gameBoard);  
 		//Bundle bundle = this.getIntent().getExtras();
 		//Bitmap photo = bundle.getParcelable("photo");
 		//for(int x=0; x < photo.getHeight(); x+=2){
@@ -127,19 +142,56 @@ public class CorrectionActivity extends Activity {
 					green.setStyle(Paint.Style.FILL);
 					canvas.drawCircle(j*32+15, i*32+15, 10,green);
 				}
-				}
-					
+			}
 		}
-	
+					
+		gameBoard.setOnTouchListener(new ImageView.OnTouchListener() {
+			
+	        @Override
+	        public boolean onTouch(View v, MotionEvent event) {
+	            if (event.getAction() == MotionEvent.ACTION_DOWN){
+	                x=event.getX();
+	                y=event.getY();
+	                showPopupMenu(v);
+	                
+	                return true;
+	                
+	            }
+	            if(event.getAction()==MotionEvent.ACTION_UP){
+	            	
+	            }
+	            return true;
+	        }
+	    });
 		
 		
-		ImageView mImage = (ImageView)findViewById(R.id.correctionView);
-		mImage.setImageBitmap(newImage);
-		
+		gameBoard.setImageBitmap(newImage);
+
 	}
-		
-		
 	
+	 private void showPopupMenu(View v){
+		   PopupMenu popupMenu = new PopupMenu(CorrectionActivity.this, v);
+		      popupMenu.getMenuInflater().inflate(R.menu.popupmenu, popupMenu.getMenu());
+		    
+		      popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+		   
+		   @Override
+		   public boolean onMenuItemClick(MenuItem item) {
+		   switch(item.getItemId()){
+		   case R.id.Red:
+			   draw();
+		   case R.id.Blue:
+			   draw();
+			   return true;
+			   
+			   
+			   
+		   }
+		    return true;
+		   }
+		  });
+		      popupMenu.show();
+	 }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -149,9 +201,46 @@ public class CorrectionActivity extends Activity {
 	}
 	
 	
+
+	
+	public void draw(){
+		
+		Paint black= new Paint();
+		black.setARGB(255, 100, 100, 100);
+		black.setStyle(Paint.Style.FILL);
+		Bitmap newImage1= Bitmap.createBitmap(256, 256,Bitmap.Config.ARGB_8888); 
+		Canvas canvas1=new Canvas(newImage1);
+		canvas1.drawCircle(100, 100, 20, black);
+		
+		ImageView gameBoard1=(ImageView)findViewById(R.id.correctionView);
+		gameBoard1.setImageBitmap(newImage1);
+		
+		
+		
+	}
+	 public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo) {  
+		 super.onCreateContextMenu(menu, v, menuInfo);
+		 MenuInflater inflater = getMenuInflater();
+		    inflater.inflate(R.menu.correction, menu); 
+		    }  
+	 @Override
+	 public boolean onContextItemSelected(MenuItem item) {
+	     
+	     switch (item.getItemId()) {
+	         case R.id.menu_red:
+	        	 draw();
+	        	 
+	             return true;
+	         case R.id.menu_Blue:
+	             
+	             return true;
+	         default:
+	             return super.onContextItemSelected(item);
+	     }
+	 }
 	
 	
-	
+
 	public GameState correctBoard(GameState old){
 	
 		
@@ -188,29 +277,15 @@ public class CorrectionActivity extends Activity {
 			
 		
 			
-		return board;
+	return board;
 	
 			
-			
-		/*	
-			public boolean onContextItemSelected(MenuItem item) {
-			    
-			   switch (item.getItemId()) {
-			        case R.id.edit:
-			            editNote(info.id);
-			            return true;
-			        case R.id.delete:
-			            deleteNote(info.id);
-			            return true;
-			        default:
-			            return super.onContextItemSelected(item);
-			    }
-			}
-			
-		}
-	  */  
+		
 	
 	}
+
+
+	
 	
 }
 	
