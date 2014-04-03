@@ -4,13 +4,11 @@ package com.frillingJackson.checkersCheat;
 //import org.opencv.core.Mat;
 
 import java.io.File;
-import java.io.InputStream;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -42,9 +40,9 @@ public class FirstUse extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
         if (requestCode == 100 && resultCode == RESULT_OK) {  
         	try {
-		    File pictureFile = new File(getFilesDir(), "photo.jpg");
+		    File file = new File(getFilesDir(), "photo.jpg");
 		    Log.d(TAG, "Trying to open " + file.getAbsolutePath());
-		    Bitmap photo = BitmapFactory.decodeStream(file.getAbsolutePath());
+		    Bitmap photo = BitmapFactory.decodeFile(file.getAbsolutePath());
 		    Log.d(TAG, "Rec'd size of photo" + photo.getWidth() + " x " + photo.getHeight()); 
 
         	//byte[] byteArray = data.getByteArrayExtra("image");
