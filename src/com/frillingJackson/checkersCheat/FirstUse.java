@@ -1,7 +1,6 @@
 package com.frillingJackson.checkersCheat;
 
-//import org.opencv.android.Utils;
-//import org.opencv.core.Mat;
+import org.opencv.core.Mat;
 
 import java.io.File;
 
