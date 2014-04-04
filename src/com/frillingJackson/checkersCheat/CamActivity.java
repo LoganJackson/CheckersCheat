@@ -50,7 +50,6 @@ public class CamActivity extends Activity {
         try {
             c = Camera.open(); // attempt to get a Camera instance
             c.setDisplayOrientation(90); //As soon as the camera is opened, the display orientation is set --bpj
- 
         } catch (Exception e) {
             // Camera is not available (in use or does not exist)
 	    Log.d(TAG, "error in getCamInstance"+e.getMessage());
@@ -63,26 +62,20 @@ public class CamActivity extends Activity {
         	Bitmap photo = BitmapFactory.decodeByteArray(data, 0, data.length);
         	Log.d(TAG, "Orig. size of photo" + photo.getWidth() + " x " + photo.getHeight()); 
            
-		File pictureFile = new File(getFilesDir(), "photo.jpg");
-		
-		try {
-		    FileOutputStream fos = new FileOutputStream(pictureFile);
-		    fos.write(data);
-		    fos.close();
-		    Toast.makeText(getApplicationContext(), "New Image saved:" + pictureFile,
+        	File pictureFile = new File(getFilesDir(), "photo.jpg");
+        	try {
+        		FileOutputStream fos = new FileOutputStream(pictureFile);
+        		fos.write(data);
+        		fos.close();
+        		Toast.makeText(getApplicationContext(), "New Image saved:" + pictureFile,
 				   Toast.LENGTH_LONG).show();
-		} catch (Exception error) {
-			Toast.makeText(getApplicationContext(), "Image could not be saved.", Toast.LENGTH_LONG).show();
-		}
-
-		Intent in1 = new Intent(getApplicationContext(), FirstUse.class);
-		in1.putExtra("image", pictureFile)
-;
-		setResult(RESULT_OK, in1);  
-		
-		Log.d(TAG, "onPictureTaken about to finish.");
-		
-		finish(); 
+        	} catch (Exception error) {
+        		Toast.makeText(getApplicationContext(), "Image could not be saved.", Toast.LENGTH_LONG).show();
+        	}
+        	Intent in1 = new Intent(getApplicationContext(), FirstUse.class);
+        	in1.putExtra("image", pictureFile);
+        	setResult(RESULT_OK, in1);  
+        	finish(); 
         }
     };
  
@@ -91,15 +84,9 @@ public class CamActivity extends Activity {
         super.onPause();
         
 	if (mCamera != null) {
-		Log.d(TAG, "onPause 1:");
-	    //mCamera.setPreviewCallback(null); 
-	    Log.d(TAG, "onPause 2:");
 	    mPreview.getHolder().removeCallback(mPreview);//What does this do? --bpj
-	    Log.d(TAG, "onPause 3:");
-	    //mCamera = null;
 	    mCamera.release(); // release the camera for other applications
-        }
-	Log.d(TAG, "onPause 4:");     
+        }    
 	RelativeLayout preview = (RelativeLayout)findViewById(R.id.camera_preview);
 	preview.removeView(mPreview);
 	mPreview = null;            
