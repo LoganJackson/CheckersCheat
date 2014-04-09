@@ -36,6 +36,7 @@ public class FirstUse extends Activity {
             case LoaderCallbackInterface.SUCCESS:
             {
                 Log.i(TAG, "OpenCV loaded successfully");
+                //System.loadLibrary("libName");
             } break;
             default:
             {
@@ -58,7 +59,6 @@ public class FirstUse extends Activity {
         //OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_8, this, mLoaderCallback);
     }
 
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -68,8 +68,7 @@ public class FirstUse extends Activity {
 	
 	public void takePicture(View view) {
 		Intent intent = new Intent(this, CamActivity.class);
-		startActivityForResult(intent,100); //maybe need to change this request code later
-		
+		startActivityForResult(intent,100); //maybe need to change this request code later	
 	}
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
@@ -83,7 +82,6 @@ public class FirstUse extends Activity {
         		photo = Bitmap.createScaledBitmap(photo, 1024, 1024, false);
         		newView.setImageBitmap(photo);	
        	
-        		Log.d(TAG, "trying to make Mat");
         		Mat mat = new Mat();
         		Log.d(TAG, "trying to convert bitmap to mat");
         		Utils.bitmapToMat(photo, mat); //OpenCV_for_Tegra(26288): Tegra Version detected: 0
@@ -92,7 +90,6 @@ public class FirstUse extends Activity {
         		Size boardSize = new Size (7,7);
         		MatOfPoint2f corners = new MatOfPoint2f() ;
         		Point[] recCornersArray;
-        		
         		//Mat homographyCorners = new Mat() ;
 		    
         		boolean found = Calib3d.findChessboardCorners(mat, boardSize , corners, 0); //this mutates corners to hold list of corner locations 
@@ -111,7 +108,6 @@ public class FirstUse extends Activity {
         			//	}
         			//}
         			//MatOfPoint2f recCorners = new MatOfPoint2f(recCornersArray);
-        			
         		
         			//Mat homographyCorners = Calib3d.findHomography(corners, recCorners);
         		
@@ -146,7 +142,6 @@ public class FirstUse extends Activity {
                     //startActivity(intent2);
         		
         		}
-        	
         	}catch (Exception e) {
         		Log.d(TAG, "Exception in firstUse onActResult: "+ e.getMessage());
         	}
@@ -157,5 +152,4 @@ public class FirstUse extends Activity {
 		Intent intent1 = new Intent(this,CorrectionActivity.class);
 		startActivity(intent1);
 	}
-
 }
