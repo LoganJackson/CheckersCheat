@@ -4,13 +4,16 @@ import org.opencv.core.Mat;
 
 import java.io.File;
 
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.CameraBridgeViewBase;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.calib3d.Calib3d;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Size;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,12 +27,37 @@ import android.widget.Toast;
 
 public class FirstUse extends Activity {
 	private static final String TAG = "FirstUseAct";
+	
+	//private CameraBridgeViewBase mOpenCvCameraView;
+	private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+            case LoaderCallbackInterface.SUCCESS:
+            {
+                Log.i(TAG, "OpenCV loaded successfully");
+            } break;
+            default:
+            {
+                super.onManagerConnected(status);
+            } break;
+            }
+        }
+    };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_first_use);
+		OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_8, this, mLoaderCallback);
 	}
+	
+    @Override
+    public void onResume(){
+        super.onResume();
+        //OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_8, this, mLoaderCallback);
+    }
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -58,16 +86,17 @@ public class FirstUse extends Activity {
         		Log.d(TAG, "trying to make Mat");
         		Mat mat = new Mat();
         		Log.d(TAG, "trying to convert bitmap to mat");
-        		Utils.bitmapToMat(photo, mat);
+        		Utils.bitmapToMat(photo, mat); //OpenCV_for_Tegra(26288): Tegra Version detected: 0
+
         		Log.d(TAG, "trying to make size");
         		Size boardSize = new Size (7,7);
         		MatOfPoint2f corners = new MatOfPoint2f() ;
         		Point[] recCornersArray;
-        		MatOfPoint2f recCorners = new MatOfPoint2f() ;
         		//Mat homographyCorners = new Mat() ;
 		    
         		boolean found = Calib3d.findChessboardCorners(mat, boardSize , corners, 0); //this mutates corners to hold list of corner locations 
         		if(!found){
+        			Log.d(TAG, "Didnt find the board");
         			Toast.makeText(getApplicationContext(), "The checkerboard was NOT found, please try again.",
         					Toast.LENGTH_LONG).show();
         		}else{
@@ -80,7 +109,7 @@ public class FirstUse extends Activity {
         			//		recCornersArray.add(i+.5,j+.5);
         			//	}
         			//}
-        			//recCorners.fromArray(recCornersArray);
+        			//MatOfPoint2f recCorners = new MatOfPoint2f(recCornersArray);
         			
         		
         			//Mat homographyCorners = Calib3d.findHomography(corners, recCorners);
