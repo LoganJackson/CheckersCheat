@@ -92,6 +92,7 @@ public class FirstUse extends Activity {
         		Size boardSize = new Size (7,7);
         		MatOfPoint2f corners = new MatOfPoint2f() ;
         		Point[] recCornersArray;
+        		
         		//Mat homographyCorners = new Mat() ;
 		    
         		boolean found = Calib3d.findChessboardCorners(mat, boardSize , corners, 0); //this mutates corners to hold list of corner locations 
