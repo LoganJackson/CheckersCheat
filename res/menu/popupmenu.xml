@@ -4,14 +4,14 @@
       <item android:id="@+id/Red"
           android:title="Red" 
           android:visible="true"/>
-      <item android:id="@+id/Brown"
-          android:title="Brown" 
+      <item android:id="@+id/Black"
+          android:title="Black" 
           android:visible="true"/>
       <item android:id="@+id/Green"
           android:title="Green" 
           android:visible="true"/>
-      <item android:id="@+id/Tan"
-          android:title="Tan"/>
+      <item android:id="@+id/White"
+          android:title="White"/>
   
 </menu>
 

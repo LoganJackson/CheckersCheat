@@ -1,21 +1,16 @@
 package com.frillingJackson.checkersCheat;
 
-import android.os.Bundle;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
+import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -30,9 +25,11 @@ public class CorrectionActivity extends Activity {
 	Paint paint;
 	ImageView gameBoard;
 	GameState board = new GameState();
+	GameState newBoard;
 	Bitmap newImage;
 	int x;
 	int y;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,10 +39,10 @@ public class CorrectionActivity extends Activity {
 
 		
 		
-		//O (pink) = king for the dark pieces 
-		//o (brown)= pawn for the dark pieces 
+		//O (red) = king for the dark pieces 
+		//o (black)= pawn for the dark pieces 
 		//T (green)= king for light piece
-		//t (tan)  = pawn for light pieces
+		//t (white)  = pawn for light pieces
 		//E (empty) = empty space on board
 		//X  = unreachable space
 		
@@ -70,7 +67,7 @@ public class CorrectionActivity extends Activity {
 		board.set(7,4,'t');
 		board.set(7,6,'t');
 		
-		board.set(6,1,'G');
+		board.set(6,1,'t');
 		board.set(6,3,'t');
 		board.set(6,5,'t');
 		board.set(6,7,'t');
@@ -78,61 +75,67 @@ public class CorrectionActivity extends Activity {
 		board.set(5,4,'t');
 		
 		
+		Paint black = new Paint();
+		black.setStyle(Paint.Style.FILL);
+		black.setARGB(255, 0, 0, 0);
+		
+		Paint red = new Paint();
+		red.setStyle(Paint.Style.FILL);
+		red.setARGB(255, 252, 1, 227);
+		
+		Paint green = new Paint();
+		green.setStyle(Paint.Style.FILL);
+		green.setARGB(255, 0, 255, 0);
+		
+		Paint white = new Paint();
+		white.setStyle(Paint.Style.FILL);
+		white.setARGB(255, 255, 255, 255);
+		
+		Paint brown= new Paint();
+		red.setStyle(Paint.Style.FILL);
+		red.setARGB(255,124 ,34, 34);
+		
+		Paint tan=new Paint();
+		tan.setStyle(Paint.Style.FILL);
+		tan.setARGB(255,185 ,126, 67);
 		
 		
-		Paint paint = new Paint();
-		paint.setStyle(Paint.Style.FILL);
-		paint.setARGB(255, 0, 255, 0);
 		
-		Paint paint1 = new Paint();
-		paint1.setStyle(Paint.Style.FILL);
-		paint1.setARGB(255, 255, 0, 0);
+		
 		Bitmap newImage= Bitmap.createBitmap(256, 256,Bitmap.Config.ARGB_8888); 
 		Canvas canvas= new Canvas(newImage);
 		for(int i=0; i<newImage.getWidth();i+=64){
 			for(int j=0; j<newImage.getHeight();j+=64){
-				canvas.drawRect(i, j, i+32, j+32, paint1);
+				canvas.drawRect(i, j, i+32, j+32, brown);
 			}
 		}
 		for(int i=32; i<newImage.getWidth();i+=64){
 			for(int j=0; j<newImage.getHeight();j+=64){
-				canvas.drawRect(i, j, i+32, j+32, paint);
+				canvas.drawRect(i, j, i+32, j+32, tan);
 			}
 		}		
 		for(int i=32; i<newImage.getWidth();i+=64){
 			for(int j=32; j<newImage.getHeight();j+=64){
-				canvas.drawRect(i, j, i+32, j+32, paint1);
+				canvas.drawRect(i, j, i+32, j+32, brown);
 			}
 		}
 		for(int i=0; i<newImage.getWidth();i+=64){
 			for(int j=32; j<newImage.getHeight();j+=64){
-				canvas.drawRect(i, j, i+32, j+32, paint);
+				canvas.drawRect(i, j, i+32, j+32, tan);
 			}
 		}	
 		for(int i=0; i<8;i++){
 			for(int j=0;j<8;j++){
-				if(board.get(i,j)=='b'){
-					Paint black= new Paint();
-					black.setARGB(255, 100, 100, 100);
-					black.setStyle(Paint.Style.FILL);
+				if(board.get(i,j)=='o'){
 					canvas.drawCircle(j*32+15, i*32+15, 10, black);
 				}
-				else if(board.get(i,j)=='t'){
-					Paint blue= new Paint();
-					blue.setARGB(255, 0, 0, 255);
-					blue.setStyle(Paint.Style.FILL);
-					canvas.drawCircle(j*32+15, i*32+15, 10, blue);
+				else if(board.get(i,j)=='O'){
+					canvas.drawCircle(j*32+15, i*32+15, 10, red);
 				}
-				else if(board.get(i, j)=='P'){
-					Paint pink = new Paint();
-					pink.setARGB(255, 50, 0, 200);
-					pink.setStyle(Paint.Style.FILL);
-					canvas.drawCircle(j*32+15, i*32+15, 10,pink );
+				else if(board.get(i, j)=='t'){
+					canvas.drawCircle(j*32+15, i*32+15, 10,white );
 				}
-				else if(board.get(i, j)=='G'){
-					Paint green = new Paint();
-					green.setARGB(255, 0, 200, 0);
-					green.setStyle(Paint.Style.FILL);
+				else if(board.get(i, j)=='T'){
 					canvas.drawCircle(j*32+15, i*32+15, 10,green);
 				}
 			}
@@ -174,13 +177,20 @@ public class CorrectionActivity extends Activity {
 			  Toast.makeText(getApplicationContext(), String.valueOf(x),Toast.LENGTH_SHORT).show();
 			  Toast.makeText(getApplicationContext(),String.valueOf(y), Toast.LENGTH_SHORT).show();
 			  //GameState board1=new GameState();   
-			   correctBoard(board.board, x,y, 'b');
-
+			   newBoard=correctBoard(board.board, x,y, 'O');
 			   break;
-		   case R.id.Brown:
-			   correctBoard(board.board,x,y,'o');			   
+		   case R.id.Black:
+			   newBoard=correctBoard(board.board,x,y,'o');			   
+			   break;
+		   case R.id.Green:
+			   newBoard=correctBoard(board.board,x,y,'T');
+			   break;
+		   case R.id.White:
+			   newBoard=correctBoard(board.board,x,y,'t');
+			   break;
 			   
-			   
+		
+		
 		   }
 		    return true;
 		   }
@@ -196,23 +206,6 @@ public class CorrectionActivity extends Activity {
 	}
 	
 	
-
-	
-	public void draw(){
-		
-		Paint black= new Paint();
-		black.setARGB(255, 100, 100, 100);
-		black.setStyle(Paint.Style.FILL);
-		Bitmap newImage1= Bitmap.createBitmap(256, 256,Bitmap.Config.ARGB_8888); 
-		Canvas canvas1=new Canvas(newImage1);
-		canvas1.drawCircle(100, 100, 20, black);
-		
-		ImageView gameBoard1=(ImageView)findViewById(R.id.correctionView);
-		gameBoard1.setImageBitmap(newImage1);
-		
-		
-		
-	}
 	
 	
 	
@@ -221,78 +214,100 @@ public class CorrectionActivity extends Activity {
 	
 		GameState newBoard = new GameState(oldBoard);
 		
-		Paint paint = new Paint();
-		paint.setStyle(Paint.Style.FILL);
-		paint.setARGB(255, 0, 255, 0);
-		newBoard.set((yCooridnate-25)/73, (xCoordinate-25)/73, ch);
-		Paint paint1 = new Paint();
-		paint1.setStyle(Paint.Style.FILL);
-		paint1.setARGB(255, 255, 0, 0);
+		Paint black = new Paint();
+		black.setStyle(Paint.Style.FILL);
+		black.setARGB(255, 0, 0, 0);
+		
+		Paint red = new Paint();
+		red.setStyle(Paint.Style.FILL);
+		red.setARGB(255, 252, 1, 227);
+		
+		Paint green = new Paint();
+		green.setStyle(Paint.Style.FILL);
+		green.setARGB(255, 0, 255, 0);
+		
+		Paint white = new Paint();
+		white.setStyle(Paint.Style.FILL);
+		white.setARGB(255, 255, 255, 255);
+		
+		Paint brown= new Paint();
+		red.setStyle(Paint.Style.FILL);
+		red.setARGB(255,124 ,34, 34);
+		
+		Paint tan=new Paint();
+		tan.setStyle(Paint.Style.FILL);
+		tan.setARGB(255,185 ,126, 67);
+		
+		if(((yCooridnate)/73)>=3 && ((xCoordinate)/73)>=3){
+			newBoard.set((((yCooridnate)/73)), (((xCoordinate)/73)), ch);
+		}
+		
+			
+		
+		else{
+		newBoard.set((((yCooridnate)/73)), (((xCoordinate)/73)), ch);
+		}
+		
+		y=(((yCooridnate)/73));
+		x=(((xCoordinate)/73));
+		Toast.makeText(getApplicationContext(), String.valueOf(y), Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(), String.valueOf(x), Toast.LENGTH_SHORT).show();
 		Bitmap newImage1= Bitmap.createBitmap(256, 256,Bitmap.Config.ARGB_8888); 
 		Canvas canvas1= new Canvas(newImage1);
+		
 		for(int i=0; i<newImage1.getWidth();i+=64){
 			for(int j=0; j<newImage1.getHeight();j+=64){
-				canvas1.drawRect(i, j, i+32, j+32, paint1);
+				canvas1.drawRect(i, j, i+32, j+32, brown);
 			}
 		}
 		for(int i=32; i<newImage1.getWidth();i+=64){
 			for(int j=0; j<newImage1.getHeight();j+=64){
-				canvas1.drawRect(i, j, i+32, j+32, paint);
+				canvas1.drawRect(i, j, i+32, j+32, tan);
 			}
 		}		
 		for(int i=32; i<newImage1.getWidth();i+=64){
 			for(int j=32; j<newImage1.getHeight();j+=64){
-				canvas1.drawRect(i, j, i+32, j+32, paint1);
+				canvas1.drawRect(i, j, i+32, j+32, brown);
 			}
 		}
 		for(int i=0; i<newImage1.getWidth();i+=64){
 			for(int j=32; j<newImage1.getHeight();j+=64){
-				canvas1.drawRect(i, j, i+32, j+32, paint);
+				canvas1.drawRect(i, j, i+32, j+32, tan);
 			}
 		}	
 		for(int i=0; i<8;i++){
 			for(int j=0;j<8;j++){
-				if(newBoard.get(i,j)=='b'){
-					Paint black= new Paint();
-					black.setARGB(255, 100, 100, 100);
-					black.setStyle(Paint.Style.FILL);
+				if(newBoard.get(i,j)=='o'){
 					canvas1.drawCircle(j*32+15, i*32+15, 10, black);
 				}
-				else if(newBoard.get(i,j)=='t'){
-					Paint blue= new Paint();
-					blue.setARGB(255, 0, 0, 255);
-					blue.setStyle(Paint.Style.FILL);
-					canvas1.drawCircle(j*32+15, i*32+15, 10, blue);
+				else if(newBoard.get(i,j)=='O'){
+					canvas1.drawCircle(j*32+15, i*32+15, 10, red);
 				}
-				else if(newBoard.get(i, j)=='P'){
-					Paint pink = new Paint();
-					pink.setARGB(255, 50, 0, 200);
-					pink.setStyle(Paint.Style.FILL);
-					canvas1.drawCircle(j*32+15, i*32+15, 10,pink );
+				else if(newBoard.get(i, j)=='t'){
+					canvas1.drawCircle(j*32+15, i*32+15, 10, white);
 				}
-				else if(newBoard.get(i, j)=='G'){
-					Paint green = new Paint();
-					green.setARGB(255, 0, 200, 0);
-					green.setStyle(Paint.Style.FILL);
+				else if(newBoard.get(i, j)=='T'){
 					canvas1.drawCircle(j*32+15, i*32+15, 10,green);
 				}
 			}
 		}
 		ImageView gameBoard1= (ImageView)findViewById(R.id.correctionView);
-		Toast.makeText(getApplicationContext(), String.valueOf(gameBoard1.getHeight()), Toast.LENGTH_SHORT).show();
-		Toast.makeText(getApplicationContext(), String.valueOf(gameBoard1.getWidth()), Toast.LENGTH_SHORT).show();
+		
 		gameBoard1.setImageBitmap(newImage1);
 	return newBoard;
-	
-			
-		
-	
 	}
-
-
 	
-	
+	public void sendBoard(View view){
+		GameState newBoard1 = new GameState(newBoard.board);
+		Intent intent = new Intent(getApplicationContext(), Suggestion.class);
+		intent.putExtra("gameBoard",newBoard1.board);
+		startActivity(intent);
+	 }
+ 
 }
+
+	
+
 	
 	
 	
