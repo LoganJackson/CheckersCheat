@@ -76,12 +76,10 @@ public class FirstUse extends Activity {
         	try {
         		File file = new File(getFilesDir(), "photo.jpg");
         		ImageView newView = (ImageView) findViewById(R.id.imageView1);
-        		Log.d(TAG, "Trying to open " + file.getAbsolutePath());
-        		Bitmap photo = BitmapFactory.decodeFile(file.getAbsolutePath());
-        		Log.d(TAG, "Rec'd size of photo" + photo.getWidth() + " x " + photo.getHeight()); 
+        		Bitmap photo = BitmapFactory.decodeFile(file.getAbsolutePath()); 
         		photo = Bitmap.createScaledBitmap(photo, 1024, 1024, false);
         		newView.setImageBitmap(photo);	
-       	
+     
         		Mat mat = new Mat();
         		Log.d(TAG, "trying to convert bitmap to mat");
         		Utils.bitmapToMat(photo, mat); //OpenCV_for_Tegra(26288): Tegra Version detected: 0
@@ -89,10 +87,10 @@ public class FirstUse extends Activity {
         		Log.d(TAG, "trying to make size");
         		Size boardSize = new Size (7,7);
         		MatOfPoint2f corners = new MatOfPoint2f() ;
-        		Point[] recCornersArray;
-        		//Mat homographyCorners = new Mat() ;
+        		Point[] recCornersArray = new Point[49];
+        		Mat homographyCorners = new Mat() ;
 		    
-        		boolean found = Calib3d.findChessboardCorners(mat, boardSize , corners, 0); //this mutates corners to hold list of corner locations 
+        		boolean found = Calib3d.findChessboardCorners(mat, boardSize , corners, 0);  
         		if(!found){
         			Log.d(TAG, "Didnt find the board");
         			Toast.makeText(getApplicationContext(), "The checkerboard was NOT found, please try again.",
@@ -102,28 +100,31 @@ public class FirstUse extends Activity {
         			Toast.makeText(getApplicationContext(), "The checkerboard WAS found!",
         					Toast.LENGTH_LONG).show();
         			// find R; the set of rectified corner locations 
-        			//for(int i =0; i<7;i++){
-        			// 	for(int j = 0; j<7; j++){
-        			//		recCornersArray.add(i+.5,j+.5);
-        			//	}
-        			//}
-        			//MatOfPoint2f recCorners = new MatOfPoint2f(recCornersArray);
+        			int count = 0;
+        			for(int i =0; i<7;i++){
+        			 	for(int j = 0; j<7; j++){
+        			 		Point newPoint= new Point(i+.5,j+.5);
+        					recCornersArray[count]= newPoint;
+        					count = count + 1;
+        				}
+        			}
+        			MatOfPoint2f recCorners = new MatOfPoint2f(recCornersArray);
         		
-        			//Mat homographyCorners = Calib3d.findHomography(corners, recCorners);
+        			homographyCorners = Calib3d.findHomography(corners, recCorners);
         		
         			//compute location of each piece 
         			//Mat locMulMat = ????
-        			//int loc = 0;
-        			//double res = 0;
-        			//Mat location = new Mat();
-        			//for(int row = 0; row <=7; row++){
-        			//	for(int col = 0; col <= 7; col++){
-        			//		loc = homographyCorners.get(row,col);
-        			//      res = (loc*(.5+row))+(loc*(.5+col))+(loc); ??? 
-        			//		location(row,col) = res;
-        			//	}
-        			//}
-        			//
+        			double res = 0;
+        			Mat location = new Mat();
+        			for(int row = 0; row <=7; row++){
+        				for(int col = 0; col <= 7; col++){
+        					double[] loc = homographyCorners.get(row,col);
+        					
+        					//res = (loc*(.5+row))+(loc*(.5+col))+(loc); ??? 
+        					//location(row,col) = res;
+        				}
+        			}
+        			
         			//this stuff can go into the loops above??
         			//StringBuilder stringBuilder = new StringBuilder();
         			//for(int row = 0; row <=7; row++){
