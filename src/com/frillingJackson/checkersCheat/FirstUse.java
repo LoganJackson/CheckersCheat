@@ -100,47 +100,47 @@ public class FirstUse extends Activity {
         			Toast.makeText(getApplicationContext(), "The checkerboard WAS found!",
         					Toast.LENGTH_LONG).show();
         			// find R; the set of rectified corner locations 
-        			int count = 0;
-        			for(int i =0; i<7;i++){
-        			 	for(int j = 0; j<7; j++){
-        			 		Point newPoint= new Point(i+.5,j+.5);
-        					recCornersArray[count]= newPoint;
-        					count = count + 1;
-        				}
-        			}
-        			MatOfPoint2f recCorners = new MatOfPoint2f(recCornersArray);
-        		
-        			homographyCorners = Calib3d.findHomography(corners, recCorners);
-        		
-        			//compute location of each piece 
-        			//Mat locMulMat = ????
-        			double res = 0;
-        			Mat location = new Mat();
-        			for(int row = 0; row <=7; row++){
-        				for(int col = 0; col <= 7; col++){
-        					double[] loc = homographyCorners.get(row,col);
-        					
-        					//res = (loc*(.5+row))+(loc*(.5+col))+(loc); ??? 
-        					//location(row,col) = res;
-        				}
-        			}
-        			
-        			//this stuff can go into the loops above??
-        			//StringBuilder stringBuilder = new StringBuilder();
-        			//for(int row = 0; row <=7; row++){
-        			//	for(int col = 0; col <= 7; col++){
-        			//		check color at location(row)(col) and compair to colorcode
-        			//		then add to gamestate
-        			//		stringBuilder.append("Some text"); //
-        			//		
-        			//		
-        			//	}
-        			//}
-        			//String state = stringBuilder.toString();
-        			
-        			//Intent intent2 = new Intent(this, CorrectionActivity.class);
-                    //intent2.putExtra("boardStateString", state);
-                    //startActivity(intent2);
+//        			int count = 0;
+//        			for(int i =0; i<7;i++){
+//        			 	for(int j = 0; j<7; j++){
+//        			 		Point newPoint= new Point(i+.5,j+.5);
+//        					recCornersArray[count]= newPoint;
+//        					count = count + 1;
+//        				}
+//        			}
+//        			MatOfPoint2f recCorners = new MatOfPoint2f(recCornersArray);
+//        		
+//        			homographyCorners = Calib3d.findHomography(corners, recCorners);
+//        		
+//        			//compute location of each piece 
+//        			//Mat locMulMat = ????
+//        			double res = 0;
+//        			Mat location = new Mat();
+//        			for(int row = 0; row <=7; row++){
+//        				for(int col = 0; col <= 7; col++){
+//        					double[] loc = homographyCorners.get(row,col);
+//        					
+//        					//res = (loc*(.5+row))+(loc*(.5+col))+(loc); ??? 
+//        					//location(row,col) = res;
+//        				}
+//        			}
+//        			
+//        			//this stuff can go into the loops above??
+//        			StringBuilder stringBuilder = new StringBuilder();
+//        			for(int row = 0; row <=7; row++){
+//        				for(int col = 0; col <= 7; col++){
+//        			//		check color at location(row)(col) and compair to colorcode
+//        			//		then add to gamestate
+//        			//		stringBuilder.append("Some text"); //
+//        					
+//        					
+//        				}
+//        			}
+//        			String state = stringBuilder.toString();
+//        			
+//        			Intent intent2 = new Intent(this, CorrectionActivity.class);
+//                    intent2.putExtra("boardStateString", state);
+//                    startActivity(intent2);
         		
         		}
         	}catch (Exception e) {
