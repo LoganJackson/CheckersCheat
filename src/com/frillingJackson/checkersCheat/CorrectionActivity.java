@@ -2,11 +2,11 @@ package com.frillingJackson.checkersCheat;
 
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -29,6 +29,7 @@ public class CorrectionActivity extends Activity {
 	Bitmap newImage;
 	int x;
 	int y;
+	Bitmap newImage1;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -147,8 +148,8 @@ public class CorrectionActivity extends Activity {
 	        @Override
 	        public boolean onTouch(View v, MotionEvent event) {
 	            if (event.getAction() == MotionEvent.ACTION_DOWN){
-	                x=(int)event.getX();
-	                y=(int)event.getY();
+	                x=(int)(8 * event.getX() / v.getWidth());
+	                y=(int)(8 * event.getY() / v.getHeight());
 	                showPopupMenu(v);
 	                
 	                return true;
@@ -210,8 +211,12 @@ public class CorrectionActivity extends Activity {
 	
 	
 
-	public GameState correctBoard(char[][] oldBoard, int xCoordinate, int yCooridnate, char ch){
+	public GameState correctBoard(char[][] oldBoard, int xCoordinate, int yCoordinate, char ch){
+		
+		
 	
+		Log.d("Brian", "x, y = " + xCoordinate + " "+ yCoordinate);
+		
 		GameState newBoard = new GameState(oldBoard);
 		
 		Paint black = new Paint();
@@ -238,18 +243,11 @@ public class CorrectionActivity extends Activity {
 		tan.setStyle(Paint.Style.FILL);
 		tan.setARGB(255,185 ,126, 67);
 		
-		if(((yCooridnate)/73)>=3 && ((xCoordinate)/73)>=3){
-			newBoard.set((((yCooridnate)/73)), (((xCoordinate)/73)), ch);
-		}
 		
-			
+		newBoard.set(y, x, ch);
 		
-		else{
-		newBoard.set((((yCooridnate)/73)), (((xCoordinate)/73)), ch);
-		}
 		
-		y=(((yCooridnate)/73));
-		x=(((xCoordinate)/73));
+		
 		Toast.makeText(getApplicationContext(), String.valueOf(y), Toast.LENGTH_SHORT).show();
 		Toast.makeText(getApplicationContext(), String.valueOf(x), Toast.LENGTH_SHORT).show();
 		Bitmap newImage1= Bitmap.createBitmap(256, 256,Bitmap.Config.ARGB_8888); 
@@ -296,14 +294,14 @@ public class CorrectionActivity extends Activity {
 		gameBoard1.setImageBitmap(newImage1);
 	return newBoard;
 	}
-	
+	/*
 	public void sendBoard(View view){
-		GameState newBoard1 = new GameState(newBoard.board);
+		//GameState newBoard1 = new GameState(newBoard.board);
 		Intent intent = new Intent(getApplicationContext(), Suggestion.class);
-		intent.putExtra("gameBoard",newBoard1.board);
+		intent.put
 		startActivity(intent);
 	 }
- 
+ 	*/
 }
 
 	
