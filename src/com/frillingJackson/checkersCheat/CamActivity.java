@@ -72,6 +72,7 @@ public class CamActivity extends Activity {
         	} catch (Exception error) {
         		Toast.makeText(getApplicationContext(), "Image could not be saved.", Toast.LENGTH_LONG).show();
         	}
+        	//if home calls this camActivity we want to set up the intent to be sent back there!
         	Intent in1 = new Intent(getApplicationContext(), FirstUse.class);
         	in1.putExtra("image", pictureFile);
         	setResult(RESULT_OK, in1);  
