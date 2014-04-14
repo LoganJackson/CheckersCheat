@@ -78,6 +78,11 @@ public class FirstUse extends Activity {
         		ImageView newView = (ImageView) findViewById(R.id.imageView1);
         		Bitmap photo = BitmapFactory.decodeFile(file.getAbsolutePath()); 
         		photo = Bitmap.createScaledBitmap(photo, 1024, 1024, false);
+        		//for calibration 
+        		//find 4 pieces and get their colors 
+        		//send those colors to home using an intent 
+        		
+        		
         		newView.setImageBitmap(photo);	
      
         		Mat mat = new Mat();
