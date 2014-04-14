@@ -150,13 +150,22 @@ public class CorrectionActivity extends Activity {
 	            if (event.getAction() == MotionEvent.ACTION_DOWN){
 	                x=(int)(8 * event.getX() / v.getWidth());
 	                y=(int)(8 * event.getY() / v.getHeight());
-	                showPopupMenu(v);
-	                
+	            }
+	            
+	            for(int i=1; i<8;i+=2){
+	    			for(int j=0; j<8;j+=2){
+	    				if(x==i && y==j){
+	    					showPopupMenu(v);
+	    				}
+	    			}
+	            }
+	        
+	        
 	                return true;
 	                
 	            }
-	            return true;
-	        }
+	            
+	        
 	    });
 		
 		
@@ -174,10 +183,7 @@ public class CorrectionActivity extends Activity {
 		   public boolean onMenuItemClick(MenuItem item) {
 			
 		   switch(item.getItemId()){
-		   case R.id.Red:
-			  Toast.makeText(getApplicationContext(), String.valueOf(x),Toast.LENGTH_SHORT).show();
-			  Toast.makeText(getApplicationContext(),String.valueOf(y), Toast.LENGTH_SHORT).show();
-			  //GameState board1=new GameState();   
+		   case R.id.Red:  
 			   newBoard=correctBoard(board.board, x,y, 'O');
 			   break;
 		   case R.id.Black:
@@ -189,9 +195,7 @@ public class CorrectionActivity extends Activity {
 		   case R.id.White:
 			   newBoard=correctBoard(board.board,x,y,'t');
 			   break;
-			   
-		
-		
+	
 		   }
 		    return true;
 		   }
@@ -246,10 +250,6 @@ public class CorrectionActivity extends Activity {
 		
 		newBoard.set(y, x, ch);
 		
-		
-		
-		Toast.makeText(getApplicationContext(), String.valueOf(y), Toast.LENGTH_SHORT).show();
-		Toast.makeText(getApplicationContext(), String.valueOf(x), Toast.LENGTH_SHORT).show();
 		Bitmap newImage1= Bitmap.createBitmap(256, 256,Bitmap.Config.ARGB_8888); 
 		Canvas canvas1= new Canvas(newImage1);
 		
