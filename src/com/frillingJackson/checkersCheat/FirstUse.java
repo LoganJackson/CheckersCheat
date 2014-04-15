@@ -83,11 +83,11 @@ public class FirstUse extends Activity {
         		//send those colors to home using an intent 
         		
         		
-        		newView.setImageBitmap(photo);	
+        		newView.setImageBitmap(photo);	//this will be deleted after testing 
      
         		Mat mat = new Mat();
         		Log.d(TAG, "trying to convert bitmap to mat");
-        		Utils.bitmapToMat(photo, mat); //OpenCV_for_Tegra(26288): Tegra Version detected: 0
+        		Utils.bitmapToMat(photo, mat); 
 
         		Log.d(TAG, "trying to make size");
         		Size boardSize = new Size (7,7);
@@ -126,17 +126,20 @@ public class FirstUse extends Activity {
         			for(int row = 0; row <=7; row++){
         				for(int col = 0; col <= 7; col++){
         					double[] loc = homographyCorners.get(row,col);
+        					//x = (ax + by + c) / (gx + hy + i)
+        					//y = (dx + ey + f) / (gx + hy + i)
         					res = (loc[0]*(.5+row))+(loc[1]*(.5+col))+(loc[2]);
         					location.put(row, col, res);
 //        					//check color at location(row,col) and compair to colorcode
-        					//if(piece == p1paun){
-        					//	String name = ;
+        					//piece = location(row,col).getRGB(); // This could be rgb val
+        					//if(piece == p1paun){ //these may need to be ranges of rgb values 
+        					//	String name = "o";
         					//}else if(piece == p1king){
-        					//	String name = ;
+        					//	String name = "O";
         					//}else if(piece == p2paun){
-        					//	String name = ;
+        					//	String name = "t";
         					//}else if(piece == p2king){
-        					//	String name = ;
+        					//	String name = "T";
         					//}else if(piece == empty){
         					//	String name = "E";
         					//}else{
