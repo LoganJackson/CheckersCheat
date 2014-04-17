@@ -50,7 +50,7 @@ public class FirstUse extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_first_use);
-		//OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_8, this, mLoaderCallback);
+		OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_8, this, mLoaderCallback);
 	}
 	
     @Override
@@ -78,13 +78,26 @@ public class FirstUse extends Activity {
         		ImageView newView = (ImageView) findViewById(R.id.imageView1);
         		Bitmap photo = BitmapFactory.decodeFile(file.getAbsolutePath()); 
         		photo = Bitmap.createScaledBitmap(photo, 1024, 1024, false);
-        		//for calibration 
+        		//following section is for the calibration steps  
         		//find 4 pieces and get their colors 
-        		//send those colors to home using an intent 
+        		//RGB[] pieceArray = new RGB[4];
+        		//for(int i =0; i<4; i++){
+        		//	find rgb color and put in pieceArray
+        		//	start at the upper left (p2King) then upper right, lower left (p1King), lower right
+        		//  
+        		//	pieceArray[i] = rgb;
+        		//}
+        		//send those colors to home using an intent
+//    			Intent homeIntent = new Intent(this, Home.class);
+//              homeIntent.putExtra("p1Paun", pieceArray[3]); //these should be rgb vals 
+//              homeIntent.putExtra("p1King", pieceArray[2]);
+//              homeIntent.putExtra("p2Paun", pieceArray[1]);
+//              homeIntent.putExtra("p2King", pieceArray[0]);
+//              startActivity(homeIntent);
+        	
+        		newView.setImageBitmap(photo);	//this will be deleted after testing
         		
-        		
-        		newView.setImageBitmap(photo);	//this will be deleted after testing 
-     
+        		//from here down this code will be moved to the home activities onActResult() 
         		Mat mat = new Mat();
         		Log.d(TAG, "trying to convert bitmap to mat");
         		Utils.bitmapToMat(photo, mat); 
@@ -106,32 +119,47 @@ public class FirstUse extends Activity {
         					Toast.LENGTH_LONG).show();
         			// find R; the set of rectified corner locations 
         			int count = 0;
-        			for(int i =0; i<7;i++){
-        			 	for(int j = 0; j<7; j++){
-        			 		Point newPoint= new Point(i+.5,j+.5);
+        			for(int i =1; i<=7;i++){
+        			 	for(int j = 1; j<=7; j++){
+        			 		Point newPoint= new Point(i,j);
         					recCornersArray[count]= newPoint;
         					count = count + 1;
         				}
         			}
         			MatOfPoint2f recCorners = new MatOfPoint2f(recCornersArray);
-        			homographyCorners = Calib3d.findHomography(corners, recCorners);
+        			homographyCorners = Calib3d.findHomography(recCorners,corners);
         		
+        			double[] H = new double [9];
+        			H[0] = homographyCorners.get(0, 0)[0];
+        			H[1] = homographyCorners.get(0, 1)[0];
+        			H[2] = homographyCorners.get(0, 2)[0];
+        			H[3] = homographyCorners.get(1, 0)[0];
+        			H[4] = homographyCorners.get(1, 1)[0];
+        			H[5] = homographyCorners.get(1, 2)[0];
+        			H[6] = homographyCorners.get(2, 0)[0];
+        			H[7] = homographyCorners.get(2, 1)[0];
+        			H[8] = homographyCorners.get(2, 2)[0];
+        			for (int i = 0; i < 9; i++) Log.d("Homography", i + ": " + H[i]);
+        			
         			//compute location of each piece 
-        			Mat locMulMat = new Mat();
-        			
-        			double res = 0;
-        			Mat location = new Mat();
+        		
+        			Point[] location = new Point[64];
         			StringBuilder stringBuilder = new StringBuilder();
-        			
-        			for(int row = 0; row <=7; row++){
-        				for(int col = 0; col <= 7; col++){
-        					double[] loc = homographyCorners.get(row,col);
-        					//x = (ax + by + c) / (gx + hy + i)
-        					//y = (dx + ey + f) / (gx + hy + i)
-        					res = (loc[0]*(.5+row))+(loc[1]*(.5+col))+(loc[2]);
-        					location.put(row, col, res);
-//        					//check color at location(row,col) and compair to colorcode
+        			int locationIndex =0;
+        			for(double row = 0; row <=7; row++){
+        				for(double col = 0; col <= 7; col++){
+        					double wPrime =  ((homographyCorners.get(2, 0)[0]*row) + (homographyCorners.get(2, 1)[0]*col) + homographyCorners.get(2, 2)[0]);
+        					double xPrime = ((homographyCorners.get(0,0)[0]*row) + (homographyCorners.get(0,1)[0]*col) + homographyCorners.get(0,2)[0]) /wPrime;
+        					double yPrime = ((homographyCorners.get(1, 0)[0]*row) + (homographyCorners.get(1, 1)[0]*col) + homographyCorners.get(1, 2)[0]) /wPrime;
+        					Point res = new Point(xPrime,yPrime);
+        					
+        					location[locationIndex] = res;
+        					locationIndex = locationIndex+1;
+        					
+        					//Should this stuff be in a different loop?
+        					//check color at location(row,col) and compair to colorcode
         					//piece = location(row,col).getRGB(); // This could be rgb val
+        					//this could be a switch  
         					//if(piece == p1paun){ //these may need to be ranges of rgb values 
         					//	String name = "o";
         					//}else if(piece == p1king){
@@ -145,7 +173,7 @@ public class FirstUse extends Activity {
         					//}else{
         					//	String name = "X";
         					//}
-//                			//stringBuilder.append(name); 
+                			//stringBuilder.append(name); 
         				}
         			}
 //        			String state = stringBuilder.toString();
