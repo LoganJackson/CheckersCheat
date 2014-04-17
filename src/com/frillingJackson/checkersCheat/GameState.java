@@ -1,53 +1,60 @@
 package com.frillingJackson.checkersCheat;
 
+/*
+ * Piece encoding:
+ * O (red)   king for the dark pieces 
+ * o (black) pawn for the dark pieces 
+ * T (green) king for light piece
+ * t (tan)   pawn for light pieces
+ * E (white) empty space on board
+ * X (black) unreachable space
+ */
+
 public class GameState {
-	char[][] board = new char[8][8];
-	//O (red) = king for the dark pieces 
-	//o (black)= pawn for the dark pieces 
-	//T (green)= king for light piece
-	//t (white)  = pawn for light pieces
-	//E (empty) = empty space on board
-	//X  = unreachable space
-	GameState(char[][] state){
-		board = state;
+	private char[][] board = new char[8][8];
+
+	public GameState(char[][] state){
+		for (int r = 0; r < 8; r++)
+			for (int c = 0; c < 8; c++)
+				board[r][c] = state[r][c];
 	}
-	
-	GameState(String state){
+
+	public GameState(String state){
 		char[] charArray = state.toCharArray();
-		char[][] newState = new char[8][8];
-		int index =0;
-		for (int row= 0 ; row<= 7 ; row++){
-			for(int col =0; col<=7; col++){
-				newState[row][col]= charArray[index];
-				index++;
-			}
-		}
-		board = newState;
+		int index = 0;
+		for (int r = 0; r < 8; r++)
+			for(int c = 0; c < 8; c++)
+				set(r, c, charArray[index++]);
+	}
+
+	public GameState() {
+		this("EXEXEXEX"
+				+ "XEXEXEXE"
+				+ "EXEXEXEX"
+				+ "XEXEXEXE"
+				+ "EXEXEXEX"
+				+ "XEXEXEXE"
+				+ "EXEXEXEX"
+				+ "XEXEXEXE");
 	}
 	
-	GameState(){
-		for (int row = 0; row <= 7; row++) {
-			//for every row, mark only the "dark" spaces
-			if(row%2 == 0){ // if the row is even 
-				for (int col = 0; col <= 6; col = col+2) {
-					board[row][col] = 'E'; //setting each spot to E or empty.
-					board[row][col+1] ='X'; //setting the
-				} 
-			}else{ //row is odd
-				for (int col = 0; col <= 7; col =col+2) {
-					board[row][col] ='X'; //setting the
-					board[row][col+1] = 'E'; //setting each spot to E or empty.
-				}
-			}
-		}
+	public static GameState initialBoard() {
+		return new GameState("tXtXtXtX"
+				+ "XtXtXtXt"
+				+ "tXtXtXtX"
+				+ "XEXEXEXE"
+				+ "EXEXEXEX"
+				+ "XoXoXoXo"
+				+ "oXoXoXoX"
+				+ "XoXoXoXo");
 	}
-	
-	
-	char get(int row, int col){
-		return board[row][col];
-	}
-	
-	void set(int row, int col, char piece){
-		board[row][col] = piece;
+
+	public char get(int row, int col) {return board[row][col];}
+
+	public void set(int row, int col, char piece) {
+		if (piece == 'o' || piece == 'O' || piece == 't' || piece == 'T' || piece == 'E')
+			board[row][col] = piece;
+		else 
+			board[row][col] = 'X';
 	}
 }
