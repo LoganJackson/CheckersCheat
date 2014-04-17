@@ -16,7 +16,7 @@ public class GameState {
 	public GameState(char[][] state){
 		for (int r = 0; r < 8; r++)
 			for (int c = 0; c < 8; c++)
-				board[r][c] = state[r][c];
+				set(r, c, state[r][c]);
 	}
 
 	public GameState(String state){
@@ -47,6 +47,32 @@ public class GameState {
 				+ "XoXoXoXo"
 				+ "oXoXoXoX"
 				+ "XoXoXoXo");
+	}
+	
+	public void rotateCW() {
+		char[][] rotated = new char [8][8];
+		for (int r = 0; r < 8; r++)
+			for (int c = 0; c < 8; c++)
+				rotated[c][7 - r] = board[r][c];
+		board = rotated;
+	}
+	
+	public void rotateCCW() {
+		for (int r = 0; r < 8; r++)
+			for (int c = 0; c < 8; c++)
+				rotated[r][c] = board[c][7 - r];
+		board = rotated;
+	}
+	
+	public void flip() {
+		rotateCW();
+		rotateCW();
+		for (int r = 0; r < 8; r++)
+			for (int c = 0; c < 8; c++)
+				if (board[r][c] == 'o') board[r][c] = 't';
+				else if (board[r][c] == 'O') board[r][c] = 'T';
+				else if (board[r][c] == 't') board[r][c] = 'o';
+				else if (board[r][c] == 'T') board[r][c] = 'O';
 	}
 
 	public char get(int row, int col) {return board[row][col];}
