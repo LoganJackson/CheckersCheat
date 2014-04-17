@@ -1,4 +1,4 @@
-//package com.frillingJackson.checkersCheat;
+package com.frillingJackson.checkersCheat;
 
 /*
  * Piece encoding:
