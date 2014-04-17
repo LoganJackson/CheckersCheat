@@ -1,4 +1,4 @@
-package com.frillingJackson.checkersCheat;
+//package com.frillingJackson.checkersCheat;
 
 /*
  * Piece encoding:
@@ -23,8 +23,10 @@ public class GameState {
 		char[] charArray = state.toCharArray();
 		int index = 0;
 		for (int r = 0; r < 8; r++)
-			for(int c = 0; c < 8; c++)
+			for(int c = 0; c < 8; c++) {
+				while (Character.isWhitespace(charArray[index])) index++;
 				set(r, c, charArray[index++]);
+			}
 	}
 
 	public GameState() {
@@ -58,6 +60,7 @@ public class GameState {
 	}
 	
 	public void rotateCCW() {
+		char[][] rotated = new char [8][8];
 		for (int r = 0; r < 8; r++)
 			for (int c = 0; c < 8; c++)
 				rotated[r][c] = board[c][7 - r];
@@ -82,5 +85,15 @@ public class GameState {
 			board[row][col] = piece;
 		else 
 			board[row][col] = 'X';
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (int r = 0; r < 8; r++) {
+			for (int c = 0; c < 8; c++)
+				sb.append(board[r][c]);
+			sb.append('\n');
+		}
+		return sb.toString();
 	}
 }
