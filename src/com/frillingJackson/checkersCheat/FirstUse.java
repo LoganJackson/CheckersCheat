@@ -37,7 +37,8 @@ public class FirstUse extends Activity {
             {
                 Log.i(TAG, "OpenCV loaded successfully");
                 //System.loadLibrary("libName");
-            } break;
+            } 
+            break;
             default:
             {
                 super.onManagerConnected(status);
@@ -50,13 +51,13 @@ public class FirstUse extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_first_use);
-		//OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_8, this, mLoaderCallback);
+		OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_8, this, mLoaderCallback);
 	}
 	
     @Override
     public void onResume(){
         super.onResume();
-        //OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_8, this, mLoaderCallback);
+        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_8, this, mLoaderCallback);
     }
 
 	@Override
@@ -78,24 +79,36 @@ public class FirstUse extends Activity {
         		ImageView newView = (ImageView) findViewById(R.id.imageView1);
         		Bitmap photo = BitmapFactory.decodeFile(file.getAbsolutePath()); 
         		photo = Bitmap.createScaledBitmap(photo, 1024, 1024, false);
-        		//for calibration 
+        		//following section is for the calibration steps  
         		//find 4 pieces and get their colors 
-        		//send those colors to home using an intent 
+        		//RGB[] pieceArray = new RGB[4];
+        		//for(int i =0; i<4; i++){
+        		//	find rgb color and put in pieceArray
+        		//	start at the upper left (p2King) then upper right, lower left (p1King), lower right
+        		//  
+        		//	pieceArray[i] = rgb;
+        		//}
+        		//send those colors to home using an intent
+//    			Intent homeIntent = new Intent(this, Home.class);
+//              homeIntent.putExtra("p1Paun", pieceArray[3]); //these should be rgb vals 
+//              homeIntent.putExtra("p1King", pieceArray[2]);
+//              homeIntent.putExtra("p2Paun", pieceArray[1]);
+//              homeIntent.putExtra("p2King", pieceArray[0]);
+//              startActivity(homeIntent);
+        	
+        		newView.setImageBitmap(photo);	//this will be deleted after testing
         		
+        		//from here down this code will be moved to the home activities onActResult() 
         		
-        		newView.setImageBitmap(photo);	
-     
-        		Mat mat = new Mat();
-        		Log.d(TAG, "trying to convert bitmap to mat");
-        		Utils.bitmapToMat(photo, mat); //OpenCV_for_Tegra(26288): Tegra Version detected: 0
+        		Mat photoMat = new Mat();
+        		Utils.bitmapToMat(photo, photoMat); 
 
-        		Log.d(TAG, "trying to make size");
         		Size boardSize = new Size (7,7);
         		MatOfPoint2f corners = new MatOfPoint2f() ;
         		Point[] recCornersArray = new Point[49];
         		Mat homographyCorners = new Mat() ;
 		    
-        		boolean found = Calib3d.findChessboardCorners(mat, boardSize , corners, 0);  
+        		boolean found = Calib3d.findChessboardCorners(photoMat, boardSize , corners, 0);  
         		if(!found){
         			Log.d(TAG, "Didnt find the board");
         			Toast.makeText(getApplicationContext(), "The checkerboard was NOT found, please try again.",
@@ -106,22 +119,40 @@ public class FirstUse extends Activity {
         					Toast.LENGTH_LONG).show();
         			// find R; the set of rectified corner locations 
         			int count = 0;
-        			for(int i =0; i<7;i++){
-        			 	for(int j = 0; j<7; j++){
-        			 		Point newPoint= new Point(i+.5,j+.5);
+        			for(int i =1; i<=7;i++){
+        			 	for(int j = 1; j<=7; j++){
+        			 		Point newPoint= new Point(i,j);
         					recCornersArray[count]= newPoint;
         					count = count + 1;
         				}
         			}
         			MatOfPoint2f recCorners = new MatOfPoint2f(recCornersArray);
-        			homographyCorners = Calib3d.findHomography(corners, recCorners);
-        		
+        			homographyCorners = Calib3d.findHomography(recCorners,corners);
+//        		
+//        			double[] H = new double [9];
+//        			H[0] = homographyCorners.get(0, 0)[0];
+//        			H[1] = homographyCorners.get(0, 1)[0];
+//        			H[2] = homographyCorners.get(0, 2)[0];
+//        			H[3] = homographyCorners.get(1, 0)[0];
+//        			H[4] = homographyCorners.get(1, 1)[0];
+//        			H[5] = homographyCorners.get(1, 2)[0];
+//        			H[6] = homographyCorners.get(2, 0)[0];
+//        			H[7] = homographyCorners.get(2, 1)[0];
+//        			H[8] = homographyCorners.get(2, 2)[0];
+//        			for (int i = 0; i < 9; i++) Log.d("Homography", i + ": " + H[i]);
+//        			
+<<<<<<< HEAD
         			//compute location of each piece 
-        			Mat locMulMat = new Mat();
+=======
+        			//compute location of each piece 
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 524ad13e47273f088448d1d8bf2d8e161f9a3098
+        			//Mat locMulMat = new Mat();
         			
         			double res = 0;
         			Mat location = new Mat();
-        			StringBuilder stringBuilder = new StringBuilder();
+        			//StringBuilder stringBuilder = new StringBuilder();
         			
         			for(int row = 0; row <=7; row++){
         				for(int col = 0; col <= 7; col++){
@@ -144,19 +175,164 @@ public class FirstUse extends Activity {
         					//}
 //                			//stringBuilder.append(name); 
         				}
-        			}
-//        			String state = stringBuilder.toString();
-//        			
-//        			Intent intent2 = new Intent(this, CorrectionActivity.class);
-//                  intent2.putExtra("boardStateString", state);
-//                  startActivity(intent2);
+<<<<<<< HEAD
+
+=======
+=======
+>>>>>>> 524ad13e47273f088448d1d8bf2d8e161f9a3098
         		
+        			Point[] location = new Point[64];
+        			int locationIndex =0;
+        			for(double row = 0; row <=7; row++){
+        				for(double col = 0; col <= 7; col++){
+        					double wPrime =  ((homographyCorners.get(2, 0)[0]*row) + (homographyCorners.get(2, 1)[0]*col) + homographyCorners.get(2, 2)[0]);
+        					double xPrime = ((homographyCorners.get(0,0)[0]*row) + (homographyCorners.get(0,1)[0]*col) + homographyCorners.get(0,2)[0]) /wPrime;
+        					double yPrime = ((homographyCorners.get(1, 0)[0]*row) + (homographyCorners.get(1, 1)[0]*col) + homographyCorners.get(1, 2)[0]) /wPrime;
+        					Point res = new Point(xPrime,yPrime);
+        					
+        					location[locationIndex] = res;
+        					locationIndex = locationIndex+1;
+        				}
+        			}
+        			
+<<<<<<< HEAD
+
+=======
+=======
+>>>>>>> 524ad13e47273f088448d1d8bf2d8e161f9a3098
+        		
+        			Point[] location = new Point[64];
+        			int locationIndex =0;
+        			for(double row = 0; row <=7; row++){
+        				for(double col = 0; col <= 7; col++){
+        					double wPrime =  ((homographyCorners.get(2, 0)[0]*row) + (homographyCorners.get(2, 1)[0]*col) + homographyCorners.get(2, 2)[0]);
+        					double xPrime = ((homographyCorners.get(0,0)[0]*row) + (homographyCorners.get(0,1)[0]*col) + homographyCorners.get(0,2)[0]) /wPrime;
+        					double yPrime = ((homographyCorners.get(1, 0)[0]*row) + (homographyCorners.get(1, 1)[0]*col) + homographyCorners.get(1, 2)[0]) /wPrime;
+        					Point res = new Point(xPrime,yPrime);
+        					
+        					location[locationIndex] = res;
+        					locationIndex = locationIndex+1;
+        				}
+        			}
+        			
+<<<<<<< HEAD
+
+=======
+>>>>>>> 3aac61fa72b873f00757b4d825fcecaf0854c8ba
+>>>>>>> 524ad13e47273f088448d1d8bf2d8e161f9a3098
+        			StringBuilder stringBuilder = new StringBuilder();
+        			double[] redColor = {255, 0, 0} ;
+    				double[] greenColor = {0, 128, 0};
+    				double[] tanColor = {238, 203, 173};
+    				double[] grayColor = {128, 128, 128};
+    				double[] whiteColor = {255, 255, 255} ;
+<<<<<<< HEAD
+=======
+    				double[] blackColor = {0,0,0};
+>>>>>>> 524ad13e47273f088448d1d8bf2d8e161f9a3098
+    				
+        			for(int index = 0; index <64; index++){
+        					//check color at location[index] and compair to colorcode
+        				int intx  = (int) location[index].x;
+        				int inty = (int) location[index].y;
+        				double[] pieceColor = photoMat.get(inty, intx);
+<<<<<<< HEAD
+=======
+        				Log.d("piece", "red " + pieceColor[0] + " green " + pieceColor[1] + " blue " + pieceColor[2]);
+        				
+>>>>>>> 524ad13e47273f088448d1d8bf2d8e161f9a3098
+        				//pieceColor[0] =red
+        				//pieceColor[1] =green
+        				//pieceColor[2] =blue
+        				
+<<<<<<< HEAD
+        				double[] dists = new double[5];
+=======
+        				double[] dists = new double[6];
+>>>>>>> 524ad13e47273f088448d1d8bf2d8e161f9a3098
+        				double distToRed = dist(pieceColor, redColor);
+        				dists[0] = distToRed;
+        				double distToGreen = dist(pieceColor, greenColor);
+        				dists[1] = distToGreen;
+        				double distToTan = dist(pieceColor, tanColor);
+        				dists[2] = distToTan;
+        				double distToGray = dist(pieceColor, grayColor);
+        				dists[3] = distToGray;
+        				double distToWhite = dist(pieceColor, whiteColor);
+        				dists[4] = distToWhite;
+<<<<<<< HEAD
+=======
+        				double distToBlack = dist(pieceColor, blackColor);
+        				dists[5] = distToBlack;
+>>>>>>> 524ad13e47273f088448d1d8bf2d8e161f9a3098
+        				
+        				int minIndex = getMinIndex(dists);
+        				
+        				String name = "";
+        				if(minIndex == 0){ //these may need to be ranges of rgb values 
+        					name = "o";
+        				}else if(minIndex == 1){
+       						name = "O";
+        				}else if(minIndex == 2){
+       						name = "t";
+        				}else if(minIndex == 3){
+       						name = "T";
+        				}else if(minIndex == 4){  //pieceColor = white
+       						name = "E";
+        				}else{    //pieceColor = black
+       						name = "X";
+       					}
+                		stringBuilder.append(name); 
+<<<<<<< HEAD
+
+        			}
+        			String state = stringBuilder.toString();
+=======
+<<<<<<< HEAD
+>>>>>>> 3aac61fa72b873f00757b4d825fcecaf0854c8ba
+=======
+>>>>>>> 3aac61fa72b873f00757b4d825fcecaf0854c8ba
+        			}
+        			String state = stringBuilder.toString();
+        			//GameState boardState = new GameState(state);
+>>>>>>> 524ad13e47273f088448d1d8bf2d8e161f9a3098
+        			Log.d("State:", state);
+        			
+        			Intent intent2 = new Intent(this, CorrectionActivity.class);
+        			intent2.putExtra("boardStateString", state);
+<<<<<<< HEAD
+=======
+//        			intent2.putExtra("boardStateString", boardState);
+>>>>>>> 524ad13e47273f088448d1d8bf2d8e161f9a3098
+        			startActivity(intent2);
         		}
         	}catch (Exception e) {
         		Log.d(TAG, "Exception in firstUse onActResult: "+ e.getMessage());
         	}
         }
     } 
+	
+	public double dist(double[] fromImage, double[] idealColor){
+<<<<<<< HEAD
+		double dist = Math.sqrt( Math.pow((idealColor[0]-fromImage[0]),2) + Math.pow((idealColor[1]-fromImage[1]),2)+ Math.pow((idealColor[2]-fromImage[2]),2));
+=======
+		double dist = Math.sqrt( Math.pow((idealColor[0]-fromImage[0]),2) 
+				+ Math.pow((idealColor[1]-fromImage[1]),2)+ Math.pow((idealColor[2]-fromImage[2]),2));
+>>>>>>> 524ad13e47273f088448d1d8bf2d8e161f9a3098
+		return dist;
+	}
+	
+	public int getMinIndex(double[] array){  
+	     double minValue = array[0]; 
+	     int minIndex = 0;
+	     for(int i=1;i<array.length;i++){  
+	    	 if(array[i] < minValue){  
+	    		 minValue = array[i];
+	    		 minIndex = i;
+	        }  
+	     }  
+	    return minIndex;  
+	}  
 	
 	public void correct(View view){
 		Intent intent1 = new Intent(this,CorrectionActivity.class);
