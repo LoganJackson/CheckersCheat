@@ -98,17 +98,16 @@ public class FirstUse extends Activity {
         		newView.setImageBitmap(photo);	//this will be deleted after testing
         		
         		//from here down this code will be moved to the home activities onActResult() 
-        		Mat mat = new Mat();
-        		Log.d(TAG, "trying to convert bitmap to mat");
-        		Utils.bitmapToMat(photo, mat); 
+        		
+        		Mat photoMat = new Mat();
+        		Utils.bitmapToMat(photo, photoMat); 
 
-        		Log.d(TAG, "trying to make size");
         		Size boardSize = new Size (7,7);
         		MatOfPoint2f corners = new MatOfPoint2f() ;
         		Point[] recCornersArray = new Point[49];
         		Mat homographyCorners = new Mat() ;
 		    
-        		boolean found = Calib3d.findChessboardCorners(mat, boardSize , corners, 0);  
+        		boolean found = Calib3d.findChessboardCorners(photoMat, boardSize , corners, 0);  
         		if(!found){
         			Log.d(TAG, "Didnt find the board");
         			Toast.makeText(getApplicationContext(), "The checkerboard was NOT found, please try again.",
@@ -128,23 +127,22 @@ public class FirstUse extends Activity {
         			}
         			MatOfPoint2f recCorners = new MatOfPoint2f(recCornersArray);
         			homographyCorners = Calib3d.findHomography(recCorners,corners);
-        		
-        			double[] H = new double [9];
-        			H[0] = homographyCorners.get(0, 0)[0];
-        			H[1] = homographyCorners.get(0, 1)[0];
-        			H[2] = homographyCorners.get(0, 2)[0];
-        			H[3] = homographyCorners.get(1, 0)[0];
-        			H[4] = homographyCorners.get(1, 1)[0];
-        			H[5] = homographyCorners.get(1, 2)[0];
-        			H[6] = homographyCorners.get(2, 0)[0];
-        			H[7] = homographyCorners.get(2, 1)[0];
-        			H[8] = homographyCorners.get(2, 2)[0];
-        			for (int i = 0; i < 9; i++) Log.d("Homography", i + ": " + H[i]);
-        			
+//        		
+//        			double[] H = new double [9];
+//        			H[0] = homographyCorners.get(0, 0)[0];
+//        			H[1] = homographyCorners.get(0, 1)[0];
+//        			H[2] = homographyCorners.get(0, 2)[0];
+//        			H[3] = homographyCorners.get(1, 0)[0];
+//        			H[4] = homographyCorners.get(1, 1)[0];
+//        			H[5] = homographyCorners.get(1, 2)[0];
+//        			H[6] = homographyCorners.get(2, 0)[0];
+//        			H[7] = homographyCorners.get(2, 1)[0];
+//        			H[8] = homographyCorners.get(2, 2)[0];
+//        			for (int i = 0; i < 9; i++) Log.d("Homography", i + ": " + H[i]);
+//        			
         			//compute location of each piece 
         		
         			Point[] location = new Point[64];
-        			StringBuilder stringBuilder = new StringBuilder();
         			int locationIndex =0;
         			for(double row = 0; row <=7; row++){
         				for(double col = 0; col <= 7; col++){
@@ -155,39 +153,84 @@ public class FirstUse extends Activity {
         					
         					location[locationIndex] = res;
         					locationIndex = locationIndex+1;
-        					
-        					//Should this stuff be in a different loop?
-        					//check color at location(row,col) and compair to colorcode
-        					//piece = location(row,col).getRGB(); // This could be rgb val
-        					//this could be a switch  
-        					//if(piece == p1paun){ //these may need to be ranges of rgb values 
-        					//	String name = "o";
-        					//}else if(piece == p1king){
-        					//	String name = "O";
-        					//}else if(piece == p2paun){
-        					//	String name = "t";
-        					//}else if(piece == p2king){
-        					//	String name = "T";
-        					//}else if(piece == empty){
-        					//	String name = "E";
-        					//}else{
-        					//	String name = "X";
-        					//}
-                			//stringBuilder.append(name); 
         				}
         			}
-//        			String state = stringBuilder.toString();
-//        			
-//        			Intent intent2 = new Intent(this, CorrectionActivity.class);
-//                  intent2.putExtra("boardStateString", state);
-//                  startActivity(intent2);
-        		
+        			
+        			StringBuilder stringBuilder = new StringBuilder();
+        			double[] redColor = {255, 0, 0} ;
+    				double[] greenColor = {0, 128, 0};
+    				double[] tanColor = {238, 203, 173};
+    				double[] grayColor = {128, 128, 128};
+    				double[] whiteColor = {255, 255, 255} ;
+    				
+        			for(int index = 0; index <64; index++){
+        					//check color at location[index] and compair to colorcode
+        				int intx  = (int) location[index].x;
+        				int inty = (int) location[index].y;
+        				double[] pieceColor = photoMat.get(inty, intx);
+        				//pieceColor[0] =red
+        				//pieceColor[1] =green
+        				//pieceColor[2] =blue
+        				
+        				double[] dists = new double[5];
+        				double distToRed = dist(pieceColor, redColor);
+        				dists[0] = distToRed;
+        				double distToGreen = dist(pieceColor, greenColor);
+        				dists[1] = distToGreen;
+        				double distToTan = dist(pieceColor, tanColor);
+        				dists[2] = distToTan;
+        				double distToGray = dist(pieceColor, grayColor);
+        				dists[3] = distToGray;
+        				double distToWhite = dist(pieceColor, whiteColor);
+        				dists[4] = distToWhite;
+        				
+        				int minIndex = getMinIndex(dists);
+        				
+        				String name = "";
+        				if(minIndex == 0){ //these may need to be ranges of rgb values 
+        					name = "o";
+        				}else if(minIndex == 1){
+       						name = "O";
+        				}else if(minIndex == 2){
+       						name = "t";
+        				}else if(minIndex == 3){
+       						name = "T";
+        				}else if(minIndex == 4){  //pieceColor = white
+       						name = "E";
+        				}else{    //pieceColor = black
+       						name = "X";
+       					}
+                		stringBuilder.append(name); 
+        			}
+        			String state = stringBuilder.toString();
+        			Log.d("State:", state);
+        			
+        			Intent intent2 = new Intent(this, CorrectionActivity.class);
+        			intent2.putExtra("boardStateString", state);
+        			startActivity(intent2);
         		}
         	}catch (Exception e) {
         		Log.d(TAG, "Exception in firstUse onActResult: "+ e.getMessage());
         	}
         }
     } 
+	
+	public double dist(double[] fromImage, double[] idealColor){
+		double dist = Math.sqrt( Math.pow((idealColor[0]-fromImage[0]),2) + Math.pow((idealColor[1]-fromImage[1]),2)+ Math.pow((idealColor[2]-fromImage[2]),2));
+		return dist;
+	}
+	
+	public int getMinIndex(double[] array){  
+	     double minValue = array[0]; 
+	     int minIndex = 0;
+	     for(int i=1;i<array.length;i++){  
+	    	 if(array[i] < minValue){  
+	    		 minValue = array[i];
+	    		 minIndex = i;
+	        }  
+	     }  
+	    return minIndex;  
+	}  
 	
 	public void correct(View view){
 		Intent intent1 = new Intent(this,CorrectionActivity.class);
