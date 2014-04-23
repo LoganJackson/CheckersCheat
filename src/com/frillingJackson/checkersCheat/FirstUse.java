@@ -143,6 +143,7 @@ public class FirstUse extends Activity {
 //        			
         			//compute location of each piece 
 <<<<<<< HEAD
+<<<<<<< HEAD
         			//Mat locMulMat = new Mat();
         			
         			double res = 0;
@@ -186,6 +187,23 @@ public class FirstUse extends Activity {
         				}
         			}
         			
+=======
+        		
+        			Point[] location = new Point[64];
+        			int locationIndex =0;
+        			for(double row = 0; row <=7; row++){
+        				for(double col = 0; col <= 7; col++){
+        					double wPrime =  ((homographyCorners.get(2, 0)[0]*row) + (homographyCorners.get(2, 1)[0]*col) + homographyCorners.get(2, 2)[0]);
+        					double xPrime = ((homographyCorners.get(0,0)[0]*row) + (homographyCorners.get(0,1)[0]*col) + homographyCorners.get(0,2)[0]) /wPrime;
+        					double yPrime = ((homographyCorners.get(1, 0)[0]*row) + (homographyCorners.get(1, 1)[0]*col) + homographyCorners.get(1, 2)[0]) /wPrime;
+        					Point res = new Point(xPrime,yPrime);
+        					
+        					location[locationIndex] = res;
+        					locationIndex = locationIndex+1;
+        				}
+        			}
+        			
+>>>>>>> 3aac61fa72b873f00757b4d825fcecaf0854c8ba
         			StringBuilder stringBuilder = new StringBuilder();
         			double[] redColor = {255, 0, 0} ;
     				double[] greenColor = {0, 128, 0};
@@ -231,6 +249,9 @@ public class FirstUse extends Activity {
        						name = "X";
        					}
                 		stringBuilder.append(name); 
+<<<<<<< HEAD
+>>>>>>> 3aac61fa72b873f00757b4d825fcecaf0854c8ba
+=======
 >>>>>>> 3aac61fa72b873f00757b4d825fcecaf0854c8ba
         			}
         			String state = stringBuilder.toString();
