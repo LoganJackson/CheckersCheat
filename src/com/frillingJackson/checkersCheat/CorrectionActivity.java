@@ -6,14 +6,12 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 public class CorrectionActivity extends Activity {
 	
@@ -182,21 +180,16 @@ public class CorrectionActivity extends Activity {
 		   @Override
 		   public boolean onMenuItemClick(MenuItem item) {
 			
-		   switch(item.getItemId()){
-		   case R.id.Red:  
-			   newBoard=correctBoard(board.board, x,y, 'O');
-			   break;
-		   case R.id.Black:
-			   newBoard=correctBoard(board.board,x,y,'o');			   
-			   break;
-		   case R.id.Green:
-			   newBoard=correctBoard(board.board,x,y,'T');
-			   break;
-		   case R.id.White:
-			   newBoard=correctBoard(board.board,x,y,'t');
-			   break;
-	
-		   }
+		   int itemId = item.getItemId();
+		if (itemId == R.id.Red) {
+			newBoard=correctBoard(board.board, x,y, 'O');
+		} else if (itemId == R.id.Black) {
+			newBoard=correctBoard(board.board,x,y,'o');
+		} else if (itemId == R.id.Green) {
+			newBoard=correctBoard(board.board,x,y,'T');
+		} else if (itemId == R.id.White) {
+			newBoard=correctBoard(board.board,x,y,'t');
+		}
 		    return true;
 		   }
 		  });
@@ -218,11 +211,7 @@ public class CorrectionActivity extends Activity {
 	public GameState correctBoard(char[][] oldBoard, int xCoordinate, int yCoordinate, char ch){
 		
 		
-	
-		Log.d("Brian", "x, y = " + xCoordinate + " "+ yCoordinate);
-		
 		GameState newBoard = new GameState(oldBoard);
-		
 		Paint black = new Paint();
 		black.setStyle(Paint.Style.FILL);
 		black.setARGB(255, 0, 0, 0);

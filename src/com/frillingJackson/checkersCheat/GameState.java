@@ -1,95 +1,99 @@
 package com.frillingJackson.checkersCheat;
 
+/*
+ * Piece encoding:
+ * O (red)   king for the dark pieces 
+ * o (black) pawn for the dark pieces 
+ * T (green) king for light piece
+ * t (tan)   pawn for light pieces
+ * E (white) empty space on board
+ * X (black) unreachable space
+ */
+
 public class GameState {
-	char[][] board = new char[8][8];
-	//P (pink) = king for the dark pieces 
-	//b (brown)= pawn for the dark pieces 
-	//G (green)= king for light piece
-	//t (tan)  = pawn for light pieces
-	//E (empty) = empty space on board
-	//X  = unreachable space
-	
-	//for (int row = 0; row <=7; row++) {
-		//for every row, mark only the "dark" spaces
-	//	if(row%2 == 0){ // if the row is even 
-	//		for (int col = 0; col <= 6; col = col+2) {
-	//			board[row][col] = 'E'; //setting each spot to E or empty.
-	//          board[row][col+1] ='X'; //setting the 
-	//		} 
-	//	}else{ //row is odd
-	//		for (int col = 0; col <= 7; col =col+2) {
-	//          board[row][col] ='X'; //setting the
-	//			board[row][col+1] = 'E'; //setting each spot to E or empty.
-	//		}
-	//	}
-	//}
-	
-	//dummy gamestate
-	
-	//board[0][1] = 'b';
-	//board[0][3] = 'b';
-	//board[0][5] = 'b';
-	//board[0][7] = 'b';
-	
-	//board[1][0] = 'b';
-	//board[1][2] = 'b';
-	//board[1][4] = 'b';
-	//board[1][6] = 'b';
-	
-	//board[2][3] = 'b';
-	
-	//board[7][0] = 't';
-	//board[7][2] = 't';
-	//board[7][4] = 't';
-	//board[7][6] = 't';
-	
-	//board[6][1] = 't';
-	//board[6][3] = 't';
-	//board[6][5] = 't';
-	//board[6][7] = 't';
-	
-	//board[5][4] = 't';
-	
-	GameState(char[][] state){
-		board = state;
+	private char[][] board = new char[8][8];
+
+	public GameState(char[][] state){
+		for (int r = 0; r < 8; r++)
+			for (int c = 0; c < 8; c++)
+				set(r, c, state[r][c]);
 	}
-	
-	GameState(String state){
+
+	public GameState(String state){
 		char[] charArray = state.toCharArray();
-		char[][] newState = new char[8][8];
-		int index =0;
-		for (int row= 0 ; row<= 7 ; row++){
-			for(int col =0; col<=7; col++){
-				newState[row][col]= charArray[index];
-				index++;
+		int index = 0;
+		for (int r = 0; r < 8; r++)
+			for(int c = 0; c < 8; c++) {
+				while (Character.isWhitespace(charArray[index])) index++;
+				set(r, c, charArray[index++]);
 			}
+	}
+
+	public GameState() {
+		this("EXEXEXEX"
+				+ "XEXEXEXE"
+				+ "EXEXEXEX"
+				+ "XEXEXEXE"
+				+ "EXEXEXEX"
+				+ "XEXEXEXE"
+				+ "EXEXEXEX"
+				+ "XEXEXEXE");
+	}
+	
+	public static GameState initialBoard() {
+		return new GameState("tXtXtXtX"
+				+ "XtXtXtXt"
+				+ "tXtXtXtX"
+				+ "XEXEXEXE"
+				+ "EXEXEXEX"
+				+ "XoXoXoXo"
+				+ "oXoXoXoX"
+				+ "XoXoXoXo");
+	}
+	
+	public void rotateCW() {
+		char[][] rotated = new char [8][8];
+		for (int r = 0; r < 8; r++)
+			for (int c = 0; c < 8; c++)
+				rotated[c][7 - r] = board[r][c];
+		board = rotated;
+	}
+	
+	public void rotateCCW() {
+		char[][] rotated = new char [8][8];
+		for (int r = 0; r < 8; r++)
+			for (int c = 0; c < 8; c++)
+				rotated[r][c] = board[c][7 - r];
+		board = rotated;
+	}
+	
+	public void flip() {
+		rotateCW();
+		rotateCW();
+		for (int r = 0; r < 8; r++)
+			for (int c = 0; c < 8; c++)
+				if (board[r][c] == 'o') board[r][c] = 't';
+				else if (board[r][c] == 'O') board[r][c] = 'T';
+				else if (board[r][c] == 't') board[r][c] = 'o';
+				else if (board[r][c] == 'T') board[r][c] = 'O';
+	}
+
+	public char get(int row, int col) {return board[row][col];}
+
+	public void set(int row, int col, char piece) {
+		if (piece == 'o' || piece == 'O' || piece == 't' || piece == 'T' || piece == 'E')
+			board[row][col] = piece;
+		else 
+			board[row][col] = 'X';
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (int r = 0; r < 8; r++) {
+			for (int c = 0; c < 8; c++)
+				sb.append(board[r][c]);
+			sb.append('\n');
 		}
-		board = newState;
-	}
-	
-	GameState(){
-		for (int row = 0; row <= 7; row++) {
-			//for every row, mark only the "dark" spaces
-			if(row%2 == 0){ // if the row is even 
-				for (int col = 0; col <= 6; col = col+2) {
-					board[row][col] = 'E'; //setting each spot to E or empty.
-					board[row][col+1] ='X'; //setting the
-				} 
-			}else{ //row is odd
-				for (int col = 0; col <= 7; col =col+2) {
-					board[row][col] ='X'; //setting the
-					board[row][col+1] = 'E'; //setting each spot to E or empty.
-				}
-			}
-		}
-	}
-	
-	
-	char get(int row, int col){
-		return board[row][col];
-	}
-	
-	void set(int row, int col, char piece){
-		board[row][col] = piece;
+		return sb.toString();
 	}
 }
