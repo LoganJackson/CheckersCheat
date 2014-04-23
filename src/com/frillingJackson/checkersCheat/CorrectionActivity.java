@@ -21,9 +21,9 @@ public class CorrectionActivity extends Activity {
 	ImageView mImage;
 	Canvas canvas;
 	Paint paint;
-	ImageView gameBoard;
-	GameState board = new GameState();
-	GameState newBoard;
+	ImageView gameboard1;
+	GameState board1 = new GameState();
+	GameState newboard1;
 	Bitmap newImage;
 	int x;
 	int y;
@@ -33,8 +33,8 @@ public class CorrectionActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_correction);
-		ImageView gameBoard = (ImageView)findViewById(R.id.correctionView);
-		registerForContextMenu(gameBoard);  
+		ImageView gameboard1 = (ImageView)findViewById(R.id.correctionView);
+		registerForContextMenu(gameboard1);  
 
 		
 		
@@ -42,36 +42,36 @@ public class CorrectionActivity extends Activity {
 		//o (black)= pawn for the dark pieces 
 		//T (green)= king for light piece
 		//t (white)  = pawn for light pieces
-		//E (empty) = empty space on board
+		//E (empty) = empty space on board1
 		//X  = unreachable space
 		
-		//GameState board = new GameState();
+		//GameState board1 = new GameState();
 		
 		//dummy gamestate
 		
-		board.set(0,1,'o');
-		board.set(0,3,'o');
-		board.set(0,5,'o');
-		board.set(0,7,'o');
+		board1.set(0,1,'o');
+		board1.set(0,3,'o');
+		board1.set(0,5,'o');
+		board1.set(0,7,'o');
 		
-		board.set(1,0,'o');
-		board.set(1,2,'o');
-		board.set(1,4,'o');
-		board.set(1,6,'o');
+		board1.set(1,0,'o');
+		board1.set(1,2,'o');
+		board1.set(1,4,'o');
+		board1.set(1,6,'o');
 		
-		board.set(2,3,'o');
+		board1.set(2,3,'o');
 		
-		board.set(7,0,'t');
-		board.set(7,2,'t');
-		board.set(7,4,'t');
-		board.set(7,6,'t');
+		board1.set(7,0,'t');
+		board1.set(7,2,'t');
+		board1.set(7,4,'t');
+		board1.set(7,6,'t');
 		
-		board.set(6,1,'t');
-		board.set(6,3,'t');
-		board.set(6,5,'t');
-		board.set(6,7,'t');
+		board1.set(6,1,'t');
+		board1.set(6,3,'t');
+		board1.set(6,5,'t');
+		board1.set(6,7,'t');
 		
-		board.set(5,4,'t');
+		board1.set(5,4,'t');
 		
 		
 		Paint black = new Paint();
@@ -125,23 +125,23 @@ public class CorrectionActivity extends Activity {
 		}	
 		for(int i=0; i<8;i++){
 			for(int j=0;j<8;j++){
-				if(board.get(i,j)=='o'){
+				if(board1.get(i,j)=='o'){
 					canvas.drawCircle(j*32+15, i*32+15, 10, black);
 				}
-				else if(board.get(i,j)=='O'){
+				else if(board1.get(i,j)=='O'){
 					canvas.drawCircle(j*32+15, i*32+15, 10, red);
 				}
-				else if(board.get(i, j)=='t'){
+				else if(board1.get(i, j)=='t'){
 					canvas.drawCircle(j*32+15, i*32+15, 10,white );
 				}
-				else if(board.get(i, j)=='T'){
+				else if(board1.get(i, j)=='T'){
 					canvas.drawCircle(j*32+15, i*32+15, 10,green);
 				}
 			}
 		}
 		
 					
-		gameBoard.setOnTouchListener(new ImageView.OnTouchListener() {
+		gameboard1.setOnTouchListener(new ImageView.OnTouchListener() {
 			
 	        @Override
 	        public boolean onTouch(View v, MotionEvent event) {
@@ -167,7 +167,7 @@ public class CorrectionActivity extends Activity {
 	    });
 		
 		
-		gameBoard.setImageBitmap(newImage);
+		gameboard1.setImageBitmap(newImage);
 
 	}
 	
@@ -181,29 +181,16 @@ public class CorrectionActivity extends Activity {
 		   
 		   @Override
 		   public boolean onMenuItemClick(MenuItem item) {
-<<<<<<< HEAD
-			  
+			GameState board1 = new GameState();
 		   int itemId = item.getItemId();
 		if (itemId == R.id.Red) {
-			newBoard=correctBoard(board.getCharArray(), x,y, 'O');
+			newboard1=correctboard1(board1.getCharArray(), x,y, 'O');
 		} else if (itemId == R.id.Black) {
-			newBoard=correctBoard(board.getCharArray(),x,y,'o');
+			newboard1=correctboard1(board1.getCharArray(),x,y,'o');
 		} else if (itemId == R.id.Green) {
-			newBoard=correctBoard(board.getCharArray(),x,y,'T');
+			newboard1=correctboard1(board1.getCharArray(),x,y,'T');
 		} else if (itemId == R.id.White) {
-			newBoard=correctBoard(board.getCharArray(),x,y,'t');
-=======
-			
-		   int itemId = item.getItemId();
-		if (itemId == R.id.Red) {
-			newBoard=correctBoard(board.board, x,y, 'O');
-		} else if (itemId == R.id.Black) {
-			newBoard=correctBoard(board.board,x,y,'o');
-		} else if (itemId == R.id.Green) {
-			newBoard=correctBoard(board.board,x,y,'T');
-		} else if (itemId == R.id.White) {
-			newBoard=correctBoard(board.board,x,y,'t');
->>>>>>> 524ad13e47273f088448d1d8bf2d8e161f9a3098
+			newboard1=correctboard1(board1.getCharArray(),x,y,'t');
 		}
 		    return true;
 		   }
@@ -223,10 +210,10 @@ public class CorrectionActivity extends Activity {
 	
 	
 
-	GameState correctBoard(char[][] oldBoard, int xCoordinate, int yCoordinate, char ch){
+	GameState correctboard1(char[][] oldboard1, int xCoordinate, int yCoordinate, char ch){
 		
 		
-		GameState newBoard = new GameState(oldBoard);
+		GameState newboard1 = new GameState(oldboard1);
 		Paint black = new Paint();
 		black.setStyle(Paint.Style.FILL);
 		black.setARGB(255, 0, 0, 0);
@@ -252,7 +239,7 @@ public class CorrectionActivity extends Activity {
 		tan.setARGB(255,185 ,126, 67);
 		
 		
-		newBoard.set(y, x, ch);
+		newboard1.set(y, x, ch);
 		
 		Bitmap newImage1= Bitmap.createBitmap(256, 256,Bitmap.Config.ARGB_8888); 
 		Canvas canvas1= new Canvas(newImage1);
@@ -279,28 +266,28 @@ public class CorrectionActivity extends Activity {
 		}	
 		for(int i=0; i<8;i++){
 			for(int j=0;j<8;j++){
-				if(newBoard.get(i,j)=='o'){
+				if(newboard1.get(i,j)=='o'){
 					canvas1.drawCircle(j*32+15, i*32+15, 10, black);
 				}
-				else if(newBoard.get(i,j)=='O'){
+				else if(newboard1.get(i,j)=='O'){
 					canvas1.drawCircle(j*32+15, i*32+15, 10, red);
 				}
-				else if(newBoard.get(i, j)=='t'){
+				else if(newboard1.get(i, j)=='t'){
 					canvas1.drawCircle(j*32+15, i*32+15, 10, white);
 				}
-				else if(newBoard.get(i, j)=='T'){
+				else if(newboard1.get(i, j)=='T'){
 					canvas1.drawCircle(j*32+15, i*32+15, 10,green);
 				}
 			}
 		}
-		ImageView gameBoard1= (ImageView)findViewById(R.id.correctionView);
+		ImageView gameboard11= (ImageView)findViewById(R.id.correctionView);
 		
-		gameBoard1.setImageBitmap(newImage1);
-	return newBoard;
+		gameboard11.setImageBitmap(newImage1);
+	return newboard1;
 	}
 	/*
-	public void sendBoard(View view){
-		//GameState newBoard1 = new GameState(newBoard.board);
+	public void sendboard1(View view){
+		//GameState newboard11 = new GameState(newboard1.board1);
 		Intent intent = new Intent(getApplicationContext(), Suggestion.class);
 		intent.put
 		startActivity(intent);

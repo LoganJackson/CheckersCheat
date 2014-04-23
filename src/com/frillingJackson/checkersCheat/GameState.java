@@ -11,11 +11,11 @@ package com.frillingJackson.checkersCheat;
  */
 
 public class GameState {
-<<<<<<< HEAD
-	public char[][] board = new char[8][8];
-=======
+
+	
+
 	private char[][] board = new char[8][8];
->>>>>>> 524ad13e47273f088448d1d8bf2d8e161f9a3098
+
 
 	public GameState(char[][] state){
 		for (int r = 0; r < 8; r++)
@@ -53,7 +53,7 @@ public class GameState {
 				+ "XoXoXoXo"
 				+ "oXoXoXoX"
 				+ "XoXoXoXo");
-<<<<<<< HEAD
+
 	}
 	
 	public void rotateCW() {
@@ -64,18 +64,12 @@ public class GameState {
 		board = rotated;
 	}
 	
-=======
-	}
+
 	
-	public void rotateCW() {
-		char[][] rotated = new char [8][8];
-		for (int r = 0; r < 8; r++)
-			for (int c = 0; c < 8; c++)
-				rotated[c][7 - r] = board[r][c];
-		board = rotated;
-	}
 	
->>>>>>> 524ad13e47273f088448d1d8bf2d8e161f9a3098
+	
+	
+
 	public void rotateCCW() {
 		char[][] rotated = new char [8][8];
 		for (int r = 0; r < 8; r++)
@@ -93,8 +87,7 @@ public class GameState {
 				else if (board[r][c] == 'O') board[r][c] = 'T';
 				else if (board[r][c] == 't') board[r][c] = 'o';
 				else if (board[r][c] == 'T') board[r][c] = 'O';
-<<<<<<< HEAD
-=======
+
 	}
 
 	public char get(int row, int col) {return board[row][col];}
@@ -104,17 +97,11 @@ public class GameState {
 			board[row][col] = piece;
 		else 
 			board[row][col] = 'X';
->>>>>>> 524ad13e47273f088448d1d8bf2d8e161f9a3098
+
 	}
 
-	public char get(int row, int col) {return board[row][col];}
+	
 
-	public void set(int row, int col, char piece) {
-		if (piece == 'o' || piece == 'O' || piece == 't' || piece == 'T' || piece == 'E')
-			board[row][col] = piece;
-		else 
-			board[row][col] = 'X';
-	}
 
 	public char[][] getCharArray(){
 		return this.board;
