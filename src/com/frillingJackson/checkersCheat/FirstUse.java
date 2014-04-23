@@ -210,17 +210,20 @@ public class FirstUse extends Activity {
     				double[] tanColor = {238, 203, 173};
     				double[] grayColor = {128, 128, 128};
     				double[] whiteColor = {255, 255, 255} ;
+    				double[] blackColor = {0,0,0};
     				
         			for(int index = 0; index <64; index++){
         					//check color at location[index] and compair to colorcode
         				int intx  = (int) location[index].x;
         				int inty = (int) location[index].y;
         				double[] pieceColor = photoMat.get(inty, intx);
+        				Log.d("piece", "red " + pieceColor[0] + " green " + pieceColor[1] + " blue " + pieceColor[2]);
+        				
         				//pieceColor[0] =red
         				//pieceColor[1] =green
         				//pieceColor[2] =blue
         				
-        				double[] dists = new double[5];
+        				double[] dists = new double[6];
         				double distToRed = dist(pieceColor, redColor);
         				dists[0] = distToRed;
         				double distToGreen = dist(pieceColor, greenColor);
@@ -231,6 +234,8 @@ public class FirstUse extends Activity {
         				dists[3] = distToGray;
         				double distToWhite = dist(pieceColor, whiteColor);
         				dists[4] = distToWhite;
+        				double distToBlack = dist(pieceColor, blackColor);
+        				dists[5] = distToBlack;
         				
         				int minIndex = getMinIndex(dists);
         				
@@ -255,10 +260,12 @@ public class FirstUse extends Activity {
 >>>>>>> 3aac61fa72b873f00757b4d825fcecaf0854c8ba
         			}
         			String state = stringBuilder.toString();
+        			//GameState boardState = new GameState(state);
         			Log.d("State:", state);
         			
         			Intent intent2 = new Intent(this, CorrectionActivity.class);
         			intent2.putExtra("boardStateString", state);
+//        			intent2.putExtra("boardStateString", boardState);
         			startActivity(intent2);
         		}
         	}catch (Exception e) {
@@ -268,7 +275,8 @@ public class FirstUse extends Activity {
     } 
 	
 	public double dist(double[] fromImage, double[] idealColor){
-		double dist = Math.sqrt( Math.pow((idealColor[0]-fromImage[0]),2) + Math.pow((idealColor[1]-fromImage[1]),2)+ Math.pow((idealColor[2]-fromImage[2]),2));
+		double dist = Math.sqrt( Math.pow((idealColor[0]-fromImage[0]),2) 
+				+ Math.pow((idealColor[1]-fromImage[1]),2)+ Math.pow((idealColor[2]-fromImage[2]),2));
 		return dist;
 	}
 	
