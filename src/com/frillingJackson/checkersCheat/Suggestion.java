@@ -51,22 +51,22 @@ public class Suggestion extends Activity {
 			Canvas canvas= new Canvas(newImage);
 			for(int i=0; i<newImage.getWidth();i+=64){
 				for(int j=0; j<newImage.getHeight();j+=64){
-					canvas.drawRect(i, j, i+32, j+32, brown);
+					canvas.drawRect(i, j, i+32, j+32, tan);
 				}
 			}
 			for(int i=32; i<newImage.getWidth();i+=64){
 				for(int j=0; j<newImage.getHeight();j+=64){
-					canvas.drawRect(i, j, i+32, j+32, tan);
+					canvas.drawRect(i, j, i+32, j+32, brown);
 				}
 			}		
 			for(int i=32; i<newImage.getWidth();i+=64){
 				for(int j=32; j<newImage.getHeight();j+=64){
-					canvas.drawRect(i, j, i+32, j+32, brown);
+					canvas.drawRect(i, j, i+32, j+32, tan);
 				}
 			}
 			for(int i=0; i<newImage.getWidth();i+=64){
 				for(int j=32; j<newImage.getHeight();j+=64){
-					canvas.drawRect(i, j, i+32, j+32, tan);
+					canvas.drawRect(i, j, i+32, j+32, brown);
 				}
 			}	
 			for(int i=0; i<8;i++){

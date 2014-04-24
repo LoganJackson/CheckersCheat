@@ -24,7 +24,7 @@ public class CorrectionActivity extends Activity {
 	Canvas canvas;
 	Paint paint;
 	ImageView gameboard1;
-	GameState board1 = new GameState();
+	GameState board1;
 	GameState newboard1;
 	Bitmap newImage;
 	int x;
@@ -48,20 +48,21 @@ public class CorrectionActivity extends Activity {
 		//X  = unreachable space
 		
 		
-		//String boardString=getIntent().getStringExtra();
-		//GameState board1 = new GameState(boardString);
+		String boardString=getIntent().getStringExtra("BoardStatestring");
+		board1 = new GameState(boardString);
 		
 		//dummy gamestate
 		
-		board1.set(0,1,'o');
-		board1.set(0,3,'o');
-		board1.set(0,5,'o');
-		board1.set(0,7,'o');
+		/*
+		board1.set(1,1,'o');
+		board1.set(1,3,'o');
+		board1.set(1,5,'o');
+		board1.set(1,7,'o');
 		
-		board1.set(1,0,'o');
-		board1.set(1,2,'o');
-		board1.set(1,4,'o');
-		board1.set(1,6,'o');
+		board1.set(2,0,'o');
+		board1.set(2,2,'o');
+		board1.set(2,4,'o');
+		board1.set(,6,'o');
 		
 		board1.set(2,3,'o');
 		
@@ -76,7 +77,7 @@ public class CorrectionActivity extends Activity {
 		board1.set(6,7,'t');
 		
 		board1.set(5,4,'t');
-		
+		*/
 	
 		Paint black = new Paint();
 		black.setStyle(Paint.Style.FILL);
@@ -128,13 +129,13 @@ public class CorrectionActivity extends Activity {
 		for(int i=0; i<8;i++){
 			for(int j=0;j<8;j++){
 				if(board1.get(i,j)=='o'){
-					canvas.drawCircle(j*32+15, i*32+15, 10, black);
+					canvas.drawCircle(j*32+15, i*32+15, 10, tan);
 				}
 				else if(board1.get(i,j)=='O'){
 					canvas.drawCircle(j*32+15, i*32+15, 10, red);
 				}
 				else if(board1.get(i, j)=='t'){
-					canvas.drawCircle(j*32+15, i*32+15, 10,white );
+					canvas.drawCircle(j*32+15, i*32+15, 10,white);
 				}
 				else if(board1.get(i, j)=='T'){
 					canvas.drawCircle(j*32+15, i*32+15, 10,green);
@@ -183,16 +184,16 @@ public class CorrectionActivity extends Activity {
 			GameState board1 = new GameState();
 		   int itemId = item.getItemId();
 		if (itemId == R.id.Red) {
-			board1=correctboard1(board1.getCharArray(), x,y, 'O');
+			board1=correctboard1(x,y, 'O');
 		} else if (itemId == R.id.Black) {
-			board1=correctboard1(board1.getCharArray(),x,y,'o');
+			board1=correctboard1(x,y,'o');
 		} else if (itemId == R.id.Green) {
-			board1=correctboard1(board1.getCharArray(),x,y,'T');
+			board1=correctboard1(x,y,'T');
 		} else if (itemId == R.id.White) {
-			board1=correctboard1(board1.getCharArray(),x,y,'t');
+			board1=correctboard1(x,y,'t');
 		}
 		else if (itemId == R.id.Remove){
-			board1=correctboard1(board1.getCharArray(),x,y,'X');
+			board1=correctboard1(x,y,'X');
 		}
 		    return true;
 		   }
@@ -227,7 +228,7 @@ public class CorrectionActivity extends Activity {
 	
 
 
-	GameState correctboard1(char[][] oldboard1, int xCoordinate, int yCoordinate, char ch){
+	GameState correctboard1( int xCoordinate, int yCoordinate, char ch){
 		
 		
 		
@@ -295,9 +296,8 @@ public class CorrectionActivity extends Activity {
 				else if(board1.get(i, j)=='T'){
 					canvas1.drawCircle(j*32+15, i*32+15, 10,green);
 				}
-				else if(board1.get(i, j)=='X'){
-					canvas1.drawCircle(j*32+15,i*32+15,10,tan);
-				}
+				
+				
 			}
 		}
 		
