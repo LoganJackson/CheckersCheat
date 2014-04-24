@@ -1,5 +1,8 @@
 package com.frillingJackson.checkersCheat;
 
+import com.frillingJackson.checkersCheat.CheckersAI.NoMovesLeftException;
+import com.frillingJackson.checkersCheat.GameState.Move;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -12,6 +15,8 @@ import android.widget.ImageView;
 
 public class Suggestion extends Activity {
 	String boardString;
+	GameState board1;
+	Move bestMove;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -19,8 +24,8 @@ public class Suggestion extends Activity {
 		
 		
 		boardString=getIntent().getStringExtra("corrected");
-		  GameState board1= new GameState(boardString);
-		  Log.d("getHere",boardString);
+		  board1= new GameState(boardString);
+		  
 		  
 		  Paint black = new Paint();
 			black.setStyle(Paint.Style.FILL);
@@ -45,6 +50,12 @@ public class Suggestion extends Activity {
 			Paint tan=new Paint();
 			tan.setStyle(Paint.Style.FILL);
 			tan.setARGB(255,185 ,126, 67);
+			
+			Paint yellow=new Paint();
+			yellow.setStyle(Paint.Style.STROKE);
+			yellow.setARGB(255, 233, 247, 7);
+			
+			
 			
 			
 		Bitmap newImage= Bitmap.createBitmap(256, 256,Bitmap.Config.ARGB_8888); 
@@ -88,7 +99,18 @@ public class Suggestion extends Activity {
 			ImageView gameboard1=  (ImageView)findViewById(R.id.SuggestImage);
 			gameboard1.setImageBitmap(newImage);
 			
-	  }
+			
+			
+			bestMove=findBestMove();
+			canvas.drawRect(bestMove.from().col*32, bestMove.from().row*32, bestMove.from().col*32+32, bestMove.from().row*32+32,yellow );
+			canvas.drawRect(bestMove.to().col*32, bestMove.to().row*32,bestMove.to().col *32+32,bestMove.to().row*32+32,yellow);
+			Log.d("bestMove", bestMove.toString());
+			
+			
+	}
+	
+		
+		
 	
 @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -97,6 +119,22 @@ public class Suggestion extends Activity {
 		return true;
 	}
 
+	public Move findBestMove(){
+		
 	
+	CheckersAI checkersAI=CheckersAI.getInstance();
+	
+	Move bestMove = null;
+	try {
+		bestMove = checkersAI.getBestMove(board1,4);
+		Log.d("bestMove", bestMove.toString());
+		return bestMove;
+		
+	} catch (NoMovesLeftException e) {
+		
+		e.printStackTrace();
+	}
+	return bestMove;
+	}
 
 }
