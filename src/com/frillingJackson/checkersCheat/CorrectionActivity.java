@@ -47,7 +47,9 @@ public class CorrectionActivity extends Activity {
 		//E (empty) = empty space on board1
 		//X  = unreachable space
 		
-		//GameState board1 = new GameState();
+		
+		//String boardString=getIntent().getStringExtra();
+		//GameState board1 = new GameState(boardString);
 		
 		//dummy gamestate
 		
@@ -155,19 +157,12 @@ public class CorrectionActivity extends Activity {
 	            if (event.getAction() == MotionEvent.ACTION_DOWN){
 	                x=(int)(8 * event.getX() / v.getWidth());
 	                y=(int)(8 * event.getY() / v.getHeight());
+	            		if(board1.get(x, y)!='E'){
+	            			showPopupMenu(v);
+	            		}
+	            	}
+	                return true;       
 	            }
-	            
-	            
-	    					showPopupMenu(v);
-	    				
-	            
-	        
-	        
-	                return true;
-	                
-	            }
-	            
-	        
 	    });
 		
 		
@@ -196,6 +191,9 @@ public class CorrectionActivity extends Activity {
 		} else if (itemId == R.id.White) {
 			board1=correctboard1(board1.getCharArray(),x,y,'t');
 		}
+		else if (itemId == R.id.Remove){
+			board1=correctboard1(board1.getCharArray(),x,y,'X');
+		}
 		    return true;
 		   }
 		  });
@@ -209,16 +207,7 @@ public class CorrectionActivity extends Activity {
 		getMenuInflater().inflate(R.menu.correction, menu);
 		return true;
 	}
-	/*
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		  if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-		    if (data.hasExtra("returnKey1")) {
-		      Toast.makeText(this, data.getExtras().getString("returnKey1"),
-		        Toast.LENGTH_SHORT).show();
-		    }
-		  }
-		} 
-	*/
+	
 	
 	
 	public void sendBoard1(View view){
@@ -239,9 +228,6 @@ public class CorrectionActivity extends Activity {
 
 
 	GameState correctboard1(char[][] oldboard1, int xCoordinate, int yCoordinate, char ch){
-		
-		
-		
 		
 		
 		
@@ -308,6 +294,9 @@ public class CorrectionActivity extends Activity {
 				}
 				else if(board1.get(i, j)=='T'){
 					canvas1.drawCircle(j*32+15, i*32+15, 10,green);
+				}
+				else if(board1.get(i, j)=='X'){
+					canvas1.drawCircle(j*32+15,i*32+15,10,tan);
 				}
 			}
 		}
