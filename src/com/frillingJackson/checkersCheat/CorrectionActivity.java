@@ -2,10 +2,12 @@ package com.frillingJackson.checkersCheat;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -73,7 +75,7 @@ public class CorrectionActivity extends Activity {
 		
 		board1.set(5,4,'t');
 		
-		
+	
 		Paint black = new Paint();
 		black.setStyle(Paint.Style.FILL);
 		black.setARGB(255, 0, 0, 0);
@@ -99,9 +101,7 @@ public class CorrectionActivity extends Activity {
 		tan.setARGB(255,185 ,126, 67);
 		
 		
-		
-		
-		Bitmap newImage= Bitmap.createBitmap(256, 256,Bitmap.Config.ARGB_8888); 
+	Bitmap newImage= Bitmap.createBitmap(256, 256,Bitmap.Config.ARGB_8888); 
 		Canvas canvas= new Canvas(newImage);
 		for(int i=0; i<newImage.getWidth();i+=64){
 			for(int j=0; j<newImage.getHeight();j+=64){
@@ -140,7 +140,14 @@ public class CorrectionActivity extends Activity {
 			}
 		}
 		
-					
+		
+		String stringBoard="";
+		for (int i=0; i<=7;i++){
+			for(int j=0;j<=7;j++){
+				stringBoard=stringBoard+board1.get(i,j);
+			}
+		}
+		Log.d("board", stringBoard);			
 		gameboard1.setOnTouchListener(new ImageView.OnTouchListener() {
 			
 	        @Override
@@ -150,13 +157,10 @@ public class CorrectionActivity extends Activity {
 	                y=(int)(8 * event.getY() / v.getHeight());
 	            }
 	            
-	            for(int i=1; i<8;i+=2){
-	    			for(int j=0; j<8;j+=2){
-	    				if(x==i && y==j){
+	            
 	    					showPopupMenu(v);
-	    				}
-	    			}
-	            }
+	    				
+	            
 	        
 	        
 	                return true;
@@ -180,21 +184,22 @@ public class CorrectionActivity extends Activity {
 		      popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 		   
 		   @Override
-		   public boolean onMenuItemClick(MenuItem item) {
+		  public boolean onMenuItemClick(MenuItem item) {
 			GameState board1 = new GameState();
 		   int itemId = item.getItemId();
 		if (itemId == R.id.Red) {
-			newboard1=correctboard1(board1.getCharArray(), x,y, 'O');
+			board1=correctboard1(board1.getCharArray(), x,y, 'O');
 		} else if (itemId == R.id.Black) {
-			newboard1=correctboard1(board1.getCharArray(),x,y,'o');
+			board1=correctboard1(board1.getCharArray(),x,y,'o');
 		} else if (itemId == R.id.Green) {
-			newboard1=correctboard1(board1.getCharArray(),x,y,'T');
+			board1=correctboard1(board1.getCharArray(),x,y,'T');
 		} else if (itemId == R.id.White) {
-			newboard1=correctboard1(board1.getCharArray(),x,y,'t');
+			board1=correctboard1(board1.getCharArray(),x,y,'t');
 		}
 		    return true;
 		   }
 		  });
+		      
 		      popupMenu.show();
 	 }
 
@@ -204,16 +209,42 @@ public class CorrectionActivity extends Activity {
 		getMenuInflater().inflate(R.menu.correction, menu);
 		return true;
 	}
+	/*
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		  if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+		    if (data.hasExtra("returnKey1")) {
+		      Toast.makeText(this, data.getExtras().getString("returnKey1"),
+		        Toast.LENGTH_SHORT).show();
+		    }
+		  }
+		} 
+	*/
 	
 	
+	public void sendBoard1(View view){
+		String stringBoard="";
+		
+		for (int i=0; i<=7;i++){
+			for(int j=0;j<=7;j++){
+				stringBoard=stringBoard+board1.get(i,j);
+			}
+		}
+		
+		//GameState newboard11 = new GameState(newboard1.board1);
+		Intent intent = new Intent(this, Suggestion.class);
+		intent.putExtra("corrected",stringBoard);
+		startActivity(intent);
+	}
 	
-	
-	
+
 
 	GameState correctboard1(char[][] oldboard1, int xCoordinate, int yCoordinate, char ch){
 		
 		
-		GameState newboard1 = new GameState(oldboard1);
+		
+		
+		
+		
 		Paint black = new Paint();
 		black.setStyle(Paint.Style.FILL);
 		black.setARGB(255, 0, 0, 0);
@@ -239,8 +270,8 @@ public class CorrectionActivity extends Activity {
 		tan.setARGB(255,185 ,126, 67);
 		
 		
-		newboard1.set(y, x, ch);
 		
+		board1.set(yCoordinate, xCoordinate, ch);
 		Bitmap newImage1= Bitmap.createBitmap(256, 256,Bitmap.Config.ARGB_8888); 
 		Canvas canvas1= new Canvas(newImage1);
 		
@@ -266,33 +297,28 @@ public class CorrectionActivity extends Activity {
 		}	
 		for(int i=0; i<8;i++){
 			for(int j=0;j<8;j++){
-				if(newboard1.get(i,j)=='o'){
+				if(board1.get(i,j)=='o'){
 					canvas1.drawCircle(j*32+15, i*32+15, 10, black);
 				}
-				else if(newboard1.get(i,j)=='O'){
+				else if(board1.get(i,j)=='O'){
 					canvas1.drawCircle(j*32+15, i*32+15, 10, red);
 				}
-				else if(newboard1.get(i, j)=='t'){
+				else if(board1.get(i, j)=='t'){
 					canvas1.drawCircle(j*32+15, i*32+15, 10, white);
 				}
-				else if(newboard1.get(i, j)=='T'){
+				else if(board1.get(i, j)=='T'){
 					canvas1.drawCircle(j*32+15, i*32+15, 10,green);
 				}
 			}
 		}
-		ImageView gameboard11= (ImageView)findViewById(R.id.correctionView);
 		
+		ImageView gameboard11 = (ImageView)findViewById(R.id.correctionView);
 		gameboard11.setImageBitmap(newImage1);
-	return newboard1;
+	return board1;
 	}
-	/*
-	public void sendboard1(View view){
-		//GameState newboard11 = new GameState(newboard1.board1);
-		Intent intent = new Intent(getApplicationContext(), Suggestion.class);
-		intent.put
-		startActivity(intent);
-	 }
- 	*/
+	
+	
+ 	
 }
 
 	

@@ -33,13 +33,13 @@
         android:text="@string/SuggestionTxt"/>
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/SuggestImage"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_below="@+id/textView1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:contentDescription="@null"
-        android:src="@drawable/clear_board" />
+         />
 
 </RelativeLayout>

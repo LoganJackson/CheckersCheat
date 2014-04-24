@@ -29,6 +29,7 @@ public class FirstUse extends Activity {
 	private static final String TAG = "FirstUseAct";
 	
 	//private CameraBridgeViewBase mOpenCvCameraView;
+	/*
 	private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
@@ -46,18 +47,18 @@ public class FirstUse extends Activity {
             }
         }
     };
-
+*/
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_first_use);
-		OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_8, this, mLoaderCallback);
+		//OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_8, this, mLoaderCallback);
 	}
 	
     @Override
     public void onResume(){
         super.onResume();
-        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_8, this, mLoaderCallback);
+       // OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_8, this, mLoaderCallback);
     }
 
 	@Override
