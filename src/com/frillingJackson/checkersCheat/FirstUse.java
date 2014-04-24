@@ -74,6 +74,20 @@ public class FirstUse extends Activity {
 		startActivityForResult(intent,100); //maybe need to change this request code later	
 	}
 	
+	private String colorToString(double[] rgb) {
+		return rgb[0] + ", " + rgb[1] + ", " + rgb[2];
+	}
+	
+	private String distancesToString(double[] rgb) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		sb.append(Double.toString(rgb[0]).substring(0, 5));
+		for (int i = 1; i < rgb.length; i++)
+			sb.append(", " + Double.toString(rgb[i]).substring(0, 5));
+		sb.append("]");
+		return sb.toString();
+	}
+	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
         if (requestCode == 100 && resultCode == RESULT_OK) {  
         	try {
@@ -137,11 +151,11 @@ public class FirstUse extends Activity {
 
         		Point[] location = new Point[64];
         		int locationIndex =0;
-        		for(double row = 0; row <=7; row++){
-        			for(double col = 0; col <= 7; col++){
-        				double wPrime =  ((homographyCorners.get(2, 0)[0]*row) + (homographyCorners.get(2, 1)[0]*col) + homographyCorners.get(2, 2)[0]);
-        				double xPrime = ((homographyCorners.get(0,0)[0]*row) + (homographyCorners.get(0,1)[0]*col) + homographyCorners.get(0,2)[0]) /wPrime;
-        				double yPrime = ((homographyCorners.get(1, 0)[0]*row) + (homographyCorners.get(1, 1)[0]*col) + homographyCorners.get(1, 2)[0]) /wPrime;
+    			for(double y = 0.5; y < 8; y++){
+    				for(double x = 0.5; x < 8; x++){
+        				double wPrime =  ((homographyCorners.get(2, 0)[0]*x) + (homographyCorners.get(2, 1)[0]*y) + homographyCorners.get(2, 2)[0]);
+        				double xPrime = ((homographyCorners.get(0,0)[0]*x) + (homographyCorners.get(0,1)[0]*y) + homographyCorners.get(0,2)[0]) /wPrime;
+        				double yPrime = ((homographyCorners.get(1, 0)[0]*x) + (homographyCorners.get(1, 1)[0]*y) + homographyCorners.get(1, 2)[0]) /wPrime;
         				Point res = new Point(xPrime,yPrime);
         					
         				location[locationIndex] = res;
@@ -151,7 +165,7 @@ public class FirstUse extends Activity {
         		
         		StringBuilder stringBuilder = new StringBuilder();
         		double[] redColor = {255, 0, 0} ;
-        		double[] greenColor = {0, 128, 0};
+        		double[] greenColor = {0, 255, 0};
         		double[] tanColor = {238, 203, 173};
         		double[] grayColor = {128, 128, 128};
         		double[] whiteColor = {255, 255, 255} ;
@@ -159,16 +173,27 @@ public class FirstUse extends Activity {
         		
         		Mat gausPhotoMat = new Mat();
         		Size size = new Size(0,0);
-        		Imgproc.GaussianBlur(photoMat, gausPhotoMat, size, 4);
+        		Imgproc.GaussianBlur(photoMat, gausPhotoMat, size, 1.5);
         		
+        		double[] pieceColor = new double[3];
         		for(int index = 0; index <64; index++){
         			//check color at location[index] and compair to colorcode
         			int intx  = (int) location[index].x;
         			int inty = (int) location[index].y;
-        			double[] pieceColor = gausPhotoMat.get(inty, intx);
-        				
-        			Log.d("piece", "red " + pieceColor[0] + " green " + pieceColor[1] + " blue " + pieceColor[2]);
-        				
+        			double[] photoColor = gausPhotoMat.get(inty, intx);
+        			for (int i = 0; i < 3; i++) pieceColor[i] = photoColor[i];
+        			
+        			
+        			Log.d("piece", "Piece " + index + ": " + colorToString(pieceColor));
+        			
+        			//Log.d("piece", "red " + pieceColor[0] + " green " + pieceColor[1] + " blue " + pieceColor[2]);
+        			/*
+        			for (int i = 0; i < 3; i++) {
+        				pieceColor[i] = pieceColor[i] * 2;
+        				if (pieceColor[i] > 255) pieceColor[i] = 255;
+        			}
+        			*/
+        			
         			//pieceColor[0] =red
         			//pieceColor[1] =green
         			//pieceColor[2] =blue	
@@ -187,23 +212,34 @@ public class FirstUse extends Activity {
         			dists[4] = distToWhite;      			
         			double distToBlack = dist(pieceColor, blackColor);
         			dists[5] = distToBlack;
-
+        			Log.d("piece", "Distances: " + distancesToString(dists));
+        			
         			int minIndex = getMinIndex(dists);
         			
         			String name = "";
-        			if(minIndex == 0){ //these may need to be ranges of rgb values 
-        				name = "o";
-        			}else if(minIndex == 1){
-        				name = "O";
-        			}else if(minIndex == 2){
-        				name = "t";
-        			}else if(minIndex == 3){
-        				name = "T";
-        			}else if(minIndex == 4){  //pieceColor = white
-       					name = "E";
-        			}else{    //pieceColor = black
-        				name = "X";
+        			switch (minIndex) {
+        			case 0: name = "o"; Log.d("piece", "Assigned color red"); break;
+        			case 1: name = "t"; Log.d("piece", "Assigned color green"); break;
+        			case 2: name = "T"; Log.d("piece", "Assigned color tan"); break;
+        			case 3: name = "O"; Log.d("piece", "Assigned color gray"); break;
+        			case 4: name = "E"; Log.d("piece", "Assigned color white"); break;
+        			default: name = "X"; Log.d("piece", "Assigned color black"); break;
+        			
         			}
+        			
+//        			if(minIndex == 0){ //these may need to be ranges of rgb values 
+//        				name = "o";
+//        			}else if(minIndex == 1){
+//        				name = "O";
+//        			}else if(minIndex == 2){
+//        				name = "t";
+//        			}else if(minIndex == 3){
+//        				name = "T";
+//        			}else if(minIndex == 4){  //pieceColor = white
+//       					name = "E";
+//        			}else{    //pieceColor = black
+//        				name = "X";
+//        			}
         			stringBuilder.append(name); 	
         		}
         		String state = stringBuilder.toString();
@@ -220,9 +256,12 @@ public class FirstUse extends Activity {
 	}
 
 	public double dist(double[] fromImage, double[] idealColor){
-		double dist = Math.sqrt( Math.pow((idealColor[0]-fromImage[0]),2) 
-				+ Math.pow((idealColor[1]-fromImage[1]),2)+ Math.pow((idealColor[2]-fromImage[2]),2));
-		return dist;
+		double r = (idealColor[0] - fromImage[0]) / 255.0;
+		double g = (idealColor[1] - fromImage[1]) / 255.0;
+		double b = (idealColor[2] - fromImage[2]) / 255.0;
+		final double s3 = Math.sqrt(3);
+		
+		return Math.sqrt(r * r + g * g + b * b) / s3;
 	}
 	
 	public int getMinIndex(double[] array){  
