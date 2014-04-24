@@ -11,6 +11,7 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.calib3d.Calib3d;
 import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Size;
@@ -154,14 +155,17 @@ public class FirstUse extends Activity {
         		double[] tanColor = {238, 203, 173};
         		double[] grayColor = {128, 128, 128};
         		double[] whiteColor = {255, 255, 255} ;
-
         		double[] blackColor = {0,0,0};
+        		
+        		Mat gausPhotoMat = new Mat();
+        		Size size = new Size(0,0);
+        		Imgproc.GaussianBlur(photoMat, gausPhotoMat, size, 4);
         		
         		for(int index = 0; index <64; index++){
         			//check color at location[index] and compair to colorcode
         			int intx  = (int) location[index].x;
         			int inty = (int) location[index].y;
-        			double[] pieceColor = photoMat.get(inty, intx);
+        			double[] pieceColor = gausPhotoMat.get(inty, intx);
         				
         			Log.d("piece", "red " + pieceColor[0] + " green " + pieceColor[1] + " blue " + pieceColor[2]);
         				
