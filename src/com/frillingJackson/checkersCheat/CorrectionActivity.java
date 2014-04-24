@@ -47,15 +47,15 @@ public class CorrectionActivity extends Activity {
 		//E (empty) = empty space on board1
 		//X  = unreachable space
 		
-		String boardString="tXtXtXtX"
-				+ "XtXtXtXt"
-				+ "tXtXtXtX"
-				+ "XEXEXEXE"
-				+ "EXEXEXEX"
-				+ "XoXoXoXo"
-				+ "oXoXoXoX"
-				+ "XoXoXoXo";
-		//String boardString=getIntent().getStringExtra("BoardStatestring");
+//		String boardString="tXtXtXtX"
+//				+ "XtXtXtXt"
+//				+ "tXtXtXtX"
+//				+ "XEXEXEXE"
+//				+ "EXEXEXEX"
+//				+ "XoXoXoXo"
+//				+ "oXoXoXoX"
+//				+ "XoXoXoXo";
+		String boardString=getIntent().getStringExtra("boardStateString");
 		board1 = new GameState(boardString);
 		
 		//dummy gamestate
