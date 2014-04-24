@@ -47,8 +47,15 @@ public class CorrectionActivity extends Activity {
 		//E (empty) = empty space on board1
 		//X  = unreachable space
 		
-		
-		String boardString=getIntent().getStringExtra("BoardStatestring");
+		String boardString="tXtXtXtX"
+				+ "XtXtXtXt"
+				+ "tXtXtXtX"
+				+ "XEXEXEXE"
+				+ "EXEXEXEX"
+				+ "XoXoXoXo"
+				+ "oXoXoXoX"
+				+ "XoXoXoXo";
+		//String boardString=getIntent().getStringExtra("BoardStatestring");
 		board1 = new GameState(boardString);
 		
 		//dummy gamestate
@@ -129,7 +136,7 @@ public class CorrectionActivity extends Activity {
 		for(int i=0; i<8;i++){
 			for(int j=0;j<8;j++){
 				if(board1.get(i,j)=='o'){
-					canvas.drawCircle(j*32+15, i*32+15, 10, tan);
+					canvas.drawCircle(j*32+15, i*32+15, 10, black);
 				}
 				else if(board1.get(i,j)=='O'){
 					canvas.drawCircle(j*32+15, i*32+15, 10, red);
@@ -158,11 +165,11 @@ public class CorrectionActivity extends Activity {
 	            if (event.getAction() == MotionEvent.ACTION_DOWN){
 	                x=(int)(8 * event.getX() / v.getWidth());
 	                y=(int)(8 * event.getY() / v.getHeight());
-	            		if(board1.get(x, y)!='E'){
+	            		if(board1.get(x, y)!='X'){
 	            			showPopupMenu(v);
 	            		}
 	            	}
-	                return true;       
+	                return true;      
 	            }
 	    });
 		
