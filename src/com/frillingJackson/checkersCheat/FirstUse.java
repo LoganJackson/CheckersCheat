@@ -98,14 +98,76 @@ public class FirstUse extends Activity {
         		
         		
         		//following section is for the calibration steps  
-        		//find 4 pieces and get their colors 
+        		
+        		//find 4 pieces at bottom corner of board and get their colors 
         		//RGB[] pieceArray = new RGB[4];
         		//for(int i =0; i<4; i++){
         		//	find rgb color and put in pieceArray
+        		
+        		
+//        		Mat photoMat = new Mat();
+//        		Utils.bitmapToMat(photo, photoMat); 
+//
+//        		Size boardSize = new Size (7,7);
+//        		MatOfPoint2f corners = new MatOfPoint2f() ;
+//        		Point[] recCornersArray = new Point[49];
+//        		Mat homographyCorners = new Mat() ;
+//		    
+//        		boolean found = Calib3d.findChessboardCorners(photoMat, boardSize , corners, 0);  
+//        		if(!found){
+//        			Log.d(TAG, "Didnt find the board");
+//        			Toast.makeText(getApplicationContext(), "The checkerboard was NOT found, please try again.",
+//        					Toast.LENGTH_LONG).show();
+//        		}else{
+//        			Log.d(TAG, "Found the board !!");
+//        			Toast.makeText(getApplicationContext(), "The checkerboard WAS found!",
+//        					Toast.LENGTH_LONG).show();
+//        			// find R; the set of rectified corner locations 
+//        			int count = 0;
+//        			for(int i =1; i<=7;i++){
+//        			 	for(int j = 1; j<=7; j++){
+//        			 		Point newPoint= new Point(i,j);
+//        					recCornersArray[count]= newPoint;
+//        					count = count + 1;
+//        			 	}
+//        			}
+//        		}
+//        		MatOfPoint2f recCorners = new MatOfPoint2f(recCornersArray);
+//        		homographyCorners = Calib3d.findHomography(recCorners,corners);
+//
+//        		Point[] location = new Point[64];
+//        		int locationIndex =0;
+//    			for(double y = 0.5; y < 8; y++){
+//    				for(double x = 0.5; x < 8; x++){
+//        				double wPrime =  ((homographyCorners.get(2, 0)[0]*x) + (homographyCorners.get(2, 1)[0]*y) + homographyCorners.get(2, 2)[0]);
+//        				double xPrime = ((homographyCorners.get(0,0)[0]*x) + (homographyCorners.get(0,1)[0]*y) + homographyCorners.get(0,2)[0]) /wPrime;
+//        				double yPrime = ((homographyCorners.get(1, 0)[0]*x) + (homographyCorners.get(1, 1)[0]*y) + homographyCorners.get(1, 2)[0]) /wPrime;
+//        				Point res = new Point(xPrime,yPrime);
+//        					
+//        				location[locationIndex] = res;
+//        				locationIndex = locationIndex+1;
+//        				}
+//        			}
+//        		Mat gausPhotoMat = new Mat();
+//        		Size size = new Size(0,0);
+//        		Imgproc.GaussianBlur(photoMat, gausPhotoMat, size, 1.5);
+//        		
+//        		double[] pieceColor = new double[3];
+//        		for(int index = 0; index <64; index++){
+//        		
+//        			int intx  = (int) location[index].x;
+//        			int inty = (int) location[index].y;
+//        			double[] photoColor = gausPhotoMat.get(inty, intx);
+//        			for (int i = 0; i < 3; i++) pieceColor[i] = photoColor[i];
+//        		}
+        		
+        		//  
         		//	start at the upper left (p2King) then upper right, lower left (p1King), lower right
         		//  
         		//	pieceArray[i] = rgb;
         		//}
+        		
+        		
         		//send those colors to home using an intent
 //    			Intent homeIntent = new Intent(this, Home.class);
 //              homeIntent.putExtra("p1Paun", pieceArray[3]); //these should be rgb vals 
@@ -164,12 +226,14 @@ public class FirstUse extends Activity {
         			}
         		
         		StringBuilder stringBuilder = new StringBuilder();
-        		double[] redColor = {255, 0, 0} ;
-        		double[] greenColor = {0, 255, 0};
-        		double[] tanColor = {238, 203, 173};
-        		double[] grayColor = {128, 128, 128};
+        		double[] redColor = {160, 30, 50} ;
+        		double[] greenColor = {15, 120, 56};
+        		//double[] tanColor = {238, 203, 173};
+        		//double[] grayColor = {128, 128, 128};
         		double[] whiteColor = {255, 255, 255} ;
         		double[] blackColor = {0,0,0};
+        		double[] blueColor = {10,50,105};
+        		double[] orangeColor = {200,30,30};
         		
         		Mat gausPhotoMat = new Mat();
         		Size size = new Size(0,0);
@@ -182,7 +246,6 @@ public class FirstUse extends Activity {
         			int inty = (int) location[index].y;
         			double[] photoColor = gausPhotoMat.get(inty, intx);
         			for (int i = 0; i < 3; i++) pieceColor[i] = photoColor[i];
-        			
         			
         			Log.d("piece", "Piece " + index + ": " + colorToString(pieceColor));
         			
@@ -204,10 +267,10 @@ public class FirstUse extends Activity {
         			dists[0] = distToRed;
         			double distToGreen = dist(pieceColor, greenColor);
         			dists[1] = distToGreen;
-        			double distToTan = dist(pieceColor, tanColor);
-        			dists[2] = distToTan;
-        			double distToGray = dist(pieceColor, grayColor);
-        			dists[3] = distToGray;
+        			double distToBlue = dist(pieceColor, blueColor);
+        			dists[2] = distToBlue;
+        			double distToOrange = dist(pieceColor, orangeColor);
+        			dists[3] = distToOrange;
         			double distToWhite = dist(pieceColor, whiteColor);
         			dists[4] = distToWhite;      			
         			double distToBlack = dist(pieceColor, blackColor);
@@ -218,28 +281,13 @@ public class FirstUse extends Activity {
         			
         			String name = "";
         			switch (minIndex) {
-        			case 0: name = "o"; Log.d("piece", "Assigned color red"); break;
-        			case 1: name = "t"; Log.d("piece", "Assigned color green"); break;
-        			case 2: name = "T"; Log.d("piece", "Assigned color tan"); break;
-        			case 3: name = "O"; Log.d("piece", "Assigned color gray"); break;
+        			case 0: name = "O"; Log.d("piece", "Assigned color red"); break;
+        			case 1: name = "T"; Log.d("piece", "Assigned color green"); break;
+        			case 2: name = "o"; Log.d("piece", "Assigned color blue"); break;
+        			case 3: name = "t"; Log.d("piece", "Assigned color orange"); break;
         			case 4: name = "E"; Log.d("piece", "Assigned color white"); break;
         			default: name = "X"; Log.d("piece", "Assigned color black"); break;
-        			
         			}
-        			
-//        			if(minIndex == 0){ //these may need to be ranges of rgb values 
-//        				name = "o";
-//        			}else if(minIndex == 1){
-//        				name = "O";
-//        			}else if(minIndex == 2){
-//        				name = "t";
-//        			}else if(minIndex == 3){
-//        				name = "T";
-//        			}else if(minIndex == 4){  //pieceColor = white
-//       					name = "E";
-//        			}else{    //pieceColor = black
-//        				name = "X";
-//        			}
         			stringBuilder.append(name); 	
         		}
         		String state = stringBuilder.toString();
@@ -260,7 +308,6 @@ public class FirstUse extends Activity {
 		double g = (idealColor[1] - fromImage[1]) / 255.0;
 		double b = (idealColor[2] - fromImage[2]) / 255.0;
 		final double s3 = Math.sqrt(3);
-		
 		return Math.sqrt(r * r + g * g + b * b) / s3;
 	}
 	
