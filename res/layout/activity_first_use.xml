@@ -41,14 +41,4 @@
         android:textColor="#FFFFFF"
         android:textSize="30sp" />
 
-    <Button
-        android:id="@+id/Correction"
-        android:layout_width="wrap_content"
-        android:onClick="correct"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/Calibrate"
-        android:layout_alignBottom="@+id/Calibrate"
-        android:layout_alignParentRight="true"
-        android:text="@string/Correction" />
-
 </RelativeLayout>
