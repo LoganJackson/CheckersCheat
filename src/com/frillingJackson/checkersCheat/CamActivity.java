@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.app.Activity;
@@ -31,7 +30,6 @@ public class CamActivity extends Activity {
     private CameraPreview mPreview; //This activity's preview view (...?)
  
     private ImageButton mSnapButton;
-    private ImageView mOutline;
  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,9 +106,6 @@ public class CamActivity extends Activity {
             
 	mSnapButton = (ImageButton) findViewById(R.id.button_capture);
 	mSnapButton.bringToFront();
-             
-	mOutline = (ImageView) findViewById(R.id.imageView1);
-	mOutline.bringToFront();
       
 	mSnapButton.setOnClickListener(new OnClickListener() {
 		@Override
