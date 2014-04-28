@@ -220,4 +220,14 @@ public class GameState {
 		}
 		return sb.toString();
 	}
+	
+	public void mirror(){
+		char t;
+		for (int r = 0; r < 4; r++)
+			for (int c = 0; c < 8; c++) {
+				t = board[r][c];
+				board[r][c] = board[7-r][c];
+				board[7-r][c] = t;
+			}
+	}	
 }
