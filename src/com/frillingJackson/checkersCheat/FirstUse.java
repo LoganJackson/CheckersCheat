@@ -1,16 +1,12 @@
 package com.frillingJackson.checkersCheat;
 
 import org.opencv.core.Mat;
-
 import java.io.File;
-
 import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.calib3d.Calib3d;
-import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
@@ -28,8 +24,7 @@ import android.widget.Toast;
 
 public class FirstUse extends Activity {
 	private static final String TAG = "FirstUseAct";
-	
-	private CameraBridgeViewBase mOpenCvCameraView;
+	//private CameraBridgeViewBase mOpenCvCameraView;
 	
 	private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -72,20 +67,6 @@ public class FirstUse extends Activity {
 	public void takePicture(View view) {
 		Intent intent = new Intent(this, CamActivity.class);
 		startActivityForResult(intent,100); //maybe need to change this request code later	
-	}
-	
-	private String colorToString(double[] rgb) {
-		return rgb[0] + ", " + rgb[1] + ", " + rgb[2];
-	}
-	
-	private String distancesToString(double[] rgb) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("[");
-		sb.append(Double.toString(rgb[0]).substring(0, 5));
-		for (int i = 1; i < rgb.length; i++)
-			sb.append(", " + Double.toString(rgb[i]).substring(0, 5));
-		sb.append("]");
-		return sb.toString();
 	}
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
@@ -191,12 +172,9 @@ public class FirstUse extends Activity {
         		boolean found = Calib3d.findChessboardCorners(photoMat, boardSize , corners, 0);  
         		if(!found){
         			Log.d(TAG, "Didnt find the board");
-        			Toast.makeText(getApplicationContext(), "The checkerboard was NOT found, please try again.",
+        			Toast.makeText(getApplicationContext(), "The checkerboard was NOT found, make sure all the pieces are off the corners of the board and try again.",
         					Toast.LENGTH_LONG).show();
         		}else{
-        			Log.d(TAG, "Found the board !!");
-        			Toast.makeText(getApplicationContext(), "The checkerboard WAS found!",
-        					Toast.LENGTH_LONG).show();
         			// find R; the set of rectified corner locations 
         			int count = 0;
         			for(int i =1; i<=7;i++){
@@ -228,8 +206,6 @@ public class FirstUse extends Activity {
         		StringBuilder stringBuilder = new StringBuilder();
         		double[] redColor = {160, 30, 50} ;
         		double[] greenColor = {15, 120, 56};
-        		//double[] tanColor = {238, 203, 173};
-        		//double[] grayColor = {128, 128, 128};
         		double[] whiteColor = {255, 255, 255} ;
         		double[] blackColor = {0,0,0};
         		double[] blueColor = {10,50,105};
@@ -246,16 +222,6 @@ public class FirstUse extends Activity {
         			int inty = (int) location[index].y;
         			double[] photoColor = gausPhotoMat.get(inty, intx);
         			for (int i = 0; i < 3; i++) pieceColor[i] = photoColor[i];
-        			
-        			Log.d("piece", "Piece " + index + ": " + colorToString(pieceColor));
-        			
-        			//Log.d("piece", "red " + pieceColor[0] + " green " + pieceColor[1] + " blue " + pieceColor[2]);
-        			/*
-        			for (int i = 0; i < 3; i++) {
-        				pieceColor[i] = pieceColor[i] * 2;
-        				if (pieceColor[i] > 255) pieceColor[i] = 255;
-        			}
-        			*/
         			
         			//pieceColor[0] =red
         			//pieceColor[1] =green
@@ -275,25 +241,22 @@ public class FirstUse extends Activity {
         			dists[4] = distToWhite;      			
         			double distToBlack = dist(pieceColor, blackColor);
         			dists[5] = distToBlack;
-        			Log.d("piece", "Distances: " + distancesToString(dists));
         			
         			int minIndex = getMinIndex(dists);
         			
         			String name = "";
         			switch (minIndex) {
-        			case 0: name = "O"; Log.d("piece", "Assigned color red"); break;
-        			case 1: name = "T"; Log.d("piece", "Assigned color green"); break;
-        			case 2: name = "o"; Log.d("piece", "Assigned color blue"); break;
-        			case 3: name = "t"; Log.d("piece", "Assigned color orange"); break;
-        			case 4: name = "E"; Log.d("piece", "Assigned color white"); break;
-        			default: name = "X"; Log.d("piece", "Assigned color black"); break;
+        			case 0: name = "O"; break;
+        			case 1: name = "T"; break;
+        			case 2: name = "o"; break;
+        			case 3: name = "t"; break;
+        			case 4: name = "E"; break;
+        			default: name = "X";break;
         			}
         			stringBuilder.append(name); 	
         		}
         		String state = stringBuilder.toString();
-   
-        		Log.d("State:", state);
-        		
+ 
         		Intent intent2 = new Intent(this, CorrectionActivity.class);
         		intent2.putExtra("boardStateString", state);     		
         		startActivity(intent2);
@@ -322,9 +285,5 @@ public class FirstUse extends Activity {
 	     }  
 	    return minIndex;  
 	}
-	
-	public void correct(View view){
-		Intent intent1 = new Intent(this,CorrectionActivity.class);
-		startActivity(intent1);
-	}
+
 }
