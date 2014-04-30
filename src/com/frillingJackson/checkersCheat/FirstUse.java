@@ -79,6 +79,106 @@ public class FirstUse extends Activity {
         		
         		//find 4 pieces at bottom corner of board and get their colors 
         				
+        		Mat photoMat = new Mat();
+        		Utils.bitmapToMat(photo, photoMat); 
+
+        		Size boardSize = new Size (3,3);//(7,7);
+        		MatOfPoint2f corners = new MatOfPoint2f() ;
+        		Point[] recCornersArray = new Point[9];//[49];
+        		Mat homographyCorners = new Mat() ;
+        		
+        		Log.d(TAG, "Trying to find small board");
+        		
+        		boolean found = Calib3d.findChessboardCorners(photoMat, boardSize , corners, 0);  
+        		if(!found){
+        			Log.d(TAG, "Didnt find the board");
+        			Toast.makeText(getApplicationContext(), "The checkerboard was NOT found, please try again.",
+        					Toast.LENGTH_LONG).show();
+        		}else{
+        			Log.d(TAG, "Found the board !!");
+        			Toast.makeText(getApplicationContext(), "The checkerboard WAS found!",
+        					Toast.LENGTH_LONG).show();
+        			// find R; the set of rectified corner locations 
+        			int count = 0;
+        			for(int i =1; i<=3;i++){ //7
+        			 	for(int j = 1; j<=3; j++){
+        			 		Point newPoint= new Point(i,j);
+        					recCornersArray[count]= newPoint;
+        					count = count + 1;
+        			 	}
+        			}
+        			Log.d(TAG, "rec corners made");
+        		}
+        		MatOfPoint2f recCorners = new MatOfPoint2f(recCornersArray);
+        		homographyCorners = Calib3d.findHomography(recCorners,corners);
+        		
+        		Log.d(TAG, "homography made");
+        		
+        		Point[] location = new Point[16]; //64
+        		int locationIndex =0;
+    			for(double y = 0.5; y < 4; y++){ //8
+    				for(double x = 0.5; x < 4; x++){
+        				double wPrime =  ((homographyCorners.get(2, 0)[0]*x) + (homographyCorners.get(2, 1)[0]*y) + homographyCorners.get(2, 2)[0]);
+        				double xPrime = ((homographyCorners.get(0,0)[0]*x) + (homographyCorners.get(0,1)[0]*y) + homographyCorners.get(0,2)[0]) /wPrime;
+        				double yPrime = ((homographyCorners.get(1, 0)[0]*x) + (homographyCorners.get(1, 1)[0]*y) + homographyCorners.get(1, 2)[0]) /wPrime;
+        				Point res = new Point(xPrime,yPrime);
+        					
+        				location[locationIndex] = res;
+        				locationIndex = locationIndex+1;
+        			}
+        		}
+    			
+    			Log.d(TAG, "location[] made");
+        		Mat gausPhotoMat = new Mat();
+        		Size size = new Size(0,0);
+        		Imgproc.GaussianBlur(photoMat, gausPhotoMat, size, 1);
+        		
+        		double[][] colorCalibration = new double[4][3];
+        		double[] pieceColor = new double[3];
+        		Log.d(TAG, "starting color finder");
+        		for(int index = 0; index <16; index++){ //64
+        		
+        			int intx  = (int) location[index].x;
+        			Log.d(TAG, "check1");
+        			int inty = (int) location[index].y;
+        			Log.d(TAG, "check2");
+        			double[] photoColor = gausPhotoMat.get(inty, intx);
+        			Log.d(TAG, "check3");
+        			for (int i = 0; i < 3; i++) pieceColor[i] = photoColor[i];
+        			Log.d(TAG, "check4");
+        			if(index == 9){
+        				colorCalibration[0] = pieceColor;	//player2King
+        			}else if(index == 12){
+        				colorCalibration[1] = pieceColor;	//player2Pawn
+        			}else if(index == 1){					
+        				colorCalibration[2] = pieceColor;	//player1King
+        			}else if(index == 4){					
+        				colorCalibration[3] = pieceColor;	//player1Pawn
+        			}
+        			Log.d(TAG, "check5");
+        		}
+        		Log.d(TAG, "end color finder ");
+        		
+        		//send those colors to home using an intent
+    			Intent homeIntent = new Intent(this, Home.class);
+    			homeIntent.putExtra("p2KingR", (int) colorCalibration[0][0]); //these should be rgb vals 
+    			homeIntent.putExtra("p2KingB", (int) colorCalibration[0][1]);
+    			homeIntent.putExtra("p2KingG", (int) colorCalibration[0][2]);
+    			homeIntent.putExtra("p2PawnR", (int) colorCalibration[1][0]);
+    			homeIntent.putExtra("p2PawnB", (int) colorCalibration[1][1]);
+    			homeIntent.putExtra("p2PawnG", (int) colorCalibration[1][2]);
+    			homeIntent.putExtra("p1KingR", (int) colorCalibration[2][0]);
+    			homeIntent.putExtra("p1KingB", (int) colorCalibration[2][1]);
+    			homeIntent.putExtra("p1KingG", (int) colorCalibration[2][2]);
+    			homeIntent.putExtra("p1PawnR", (int) colorCalibration[3][0]);
+    			homeIntent.putExtra("p1PawnB", (int) colorCalibration[3][1]);
+    			homeIntent.putExtra("p1PawnG", (int) colorCalibration[3][2]);
+    			Log.d(TAG, "intents set ");
+    			startActivity(homeIntent);
+        		
+        		
+        		//from here down this code will be moved to the home activities onActResult() 
+//        		
 //        		Mat photoMat = new Mat();
 //        		Utils.bitmapToMat(photo, photoMat); 
 //
@@ -90,12 +190,9 @@ public class FirstUse extends Activity {
 //        		boolean found = Calib3d.findChessboardCorners(photoMat, boardSize , corners, 0);  
 //        		if(!found){
 //        			Log.d(TAG, "Didnt find the board");
-//        			Toast.makeText(getApplicationContext(), "The checkerboard was NOT found, please try again.",
+//        			Toast.makeText(getApplicationContext(), "The checkerboard was NOT found, make sure all the pieces are off the corners of the board and try again.",
 //        					Toast.LENGTH_LONG).show();
 //        		}else{
-//        			Log.d(TAG, "Found the board !!");
-//        			Toast.makeText(getApplicationContext(), "The checkerboard WAS found!",
-//        					Toast.LENGTH_LONG).show();
 //        			// find R; the set of rectified corner locations 
 //        			int count = 0;
 //        			for(int i =1; i<=7;i++){
@@ -106,6 +203,7 @@ public class FirstUse extends Activity {
 //        			 	}
 //        			}
 //        		}
+//        	
 //        		MatOfPoint2f recCorners = new MatOfPoint2f(recCornersArray);
 //        		homographyCorners = Calib3d.findHomography(recCorners,corners);
 //
@@ -122,140 +220,65 @@ public class FirstUse extends Activity {
 //        				locationIndex = locationIndex+1;
 //        				}
 //        			}
+//        		
+//        		StringBuilder stringBuilder = new StringBuilder();
+//        		double[] redColor = {160, 30, 50} ;
+//        		double[] greenColor = {15, 120, 56};
+//        		double[] whiteColor = {255, 255, 255} ;
+//        		double[] blackColor = {0,0,0};
+//        		double[] blueColor = {15,55,110};
+//        		double[] orangeColor = {200,30,30};
+//        		
 //        		Mat gausPhotoMat = new Mat();
 //        		Size size = new Size(0,0);
 //        		Imgproc.GaussianBlur(photoMat, gausPhotoMat, size, 1.5);
-        		
-//        		//double[] colorCalibration = new double[4];
+//        		
 //        		double[] pieceColor = new double[3];
 //        		for(int index = 0; index <64; index++){
-//        		
+//        			//check color at location[index] and compair to colorcode
 //        			int intx  = (int) location[index].x;
 //        			int inty = (int) location[index].y;
 //        			double[] photoColor = gausPhotoMat.get(inty, intx);
 //        			for (int i = 0; i < 3; i++) pieceColor[i] = photoColor[i];
-//					if(index == 54){
-        			//	colorCalibration[0] = pieceColor[index];	//player1King
-        		//	}else if(index == 55){
-        			//	colorCalibration[1] = pieceColor[index];	//player1Pawn
-        		//	}else if(index == 62){					
-        			//	colorCalibration[2] = pieceColor[index];	//player2King
-        		//	}else if(index == 63){					
-        			//	colorCalibration[3] = pieceColor[index];	//player2Pawn
-        		//	}
+//        			
+//        			//pieceColor[0] =red
+//        			//pieceColor[1] =green
+//        			//pieceColor[2] =blue	
+//        			
+//        			double[] dists = new double[6];
+//        			
+//        			double distToRed = dist(pieceColor, redColor);
+//        			dists[0] = distToRed;
+//        			double distToGreen = dist(pieceColor, greenColor);
+//        			dists[1] = distToGreen;
+//        			double distToBlue = dist(pieceColor, blueColor);
+//        			dists[2] = distToBlue;
+//        			double distToOrange = dist(pieceColor, orangeColor);
+//        			dists[3] = distToOrange;
+//        			double distToWhite = dist(pieceColor, whiteColor);
+//        			dists[4] = distToWhite;      			
+//        			double distToBlack = dist(pieceColor, blackColor);
+//        			dists[5] = distToBlack;
+//        			
+//        			int minIndex = getMinIndex(dists);
+//        			
+//        			String name = "";
+//        			switch (minIndex) {
+//        			case 0: name = "O"; break;
+//        			case 1: name = "T"; break;
+//        			case 2: name = "o"; break;
+//        			case 3: name = "t"; break;
+//        			case 4: name = "E"; break;
+//        			default: name = "X";break;
+//        			}
+//        			stringBuilder.append(name); 	
 //        		}
-        
-        		//send those colors to home using an intent
-//    			Intent homeIntent = new Intent(this, Home.class);
-//              homeIntent.putExtra("p1King", colorCalibration[0]); //these should be rgb vals 
-//              homeIntent.putExtra("p1Pawn", colorCalibration[1]);
-//              homeIntent.putExtra("p2King", colorCalibration[2]);
-//              homeIntent.putExtra("p2Pawn", colorCalibration[3]);
-//              startActivity(homeIntent);
-        		
-        		
-        		//from here down this code will be moved to the home activities onActResult() 
-        		
-        		Mat photoMat = new Mat();
-        		Utils.bitmapToMat(photo, photoMat); 
-
-        		Size boardSize = new Size (7,7);
-        		MatOfPoint2f corners = new MatOfPoint2f() ;
-        		Point[] recCornersArray = new Point[49];
-        		Mat homographyCorners = new Mat() ;
-		    
-        		boolean found = Calib3d.findChessboardCorners(photoMat, boardSize , corners, 0);  
-        		if(!found){
-        			Log.d(TAG, "Didnt find the board");
-        			Toast.makeText(getApplicationContext(), "The checkerboard was NOT found, make sure all the pieces are off the corners of the board and try again.",
-        					Toast.LENGTH_LONG).show();
-        		}else{
-        			// find R; the set of rectified corner locations 
-        			int count = 0;
-        			for(int i =1; i<=7;i++){
-        			 	for(int j = 1; j<=7; j++){
-        			 		Point newPoint= new Point(i,j);
-        					recCornersArray[count]= newPoint;
-        					count = count + 1;
-        			 	}
-        			}
-        		}
-        	
-        		MatOfPoint2f recCorners = new MatOfPoint2f(recCornersArray);
-        		homographyCorners = Calib3d.findHomography(recCorners,corners);
-
-        		Point[] location = new Point[64];
-        		int locationIndex =0;
-    			for(double y = 0.5; y < 8; y++){
-    				for(double x = 0.5; x < 8; x++){
-        				double wPrime =  ((homographyCorners.get(2, 0)[0]*x) + (homographyCorners.get(2, 1)[0]*y) + homographyCorners.get(2, 2)[0]);
-        				double xPrime = ((homographyCorners.get(0,0)[0]*x) + (homographyCorners.get(0,1)[0]*y) + homographyCorners.get(0,2)[0]) /wPrime;
-        				double yPrime = ((homographyCorners.get(1, 0)[0]*x) + (homographyCorners.get(1, 1)[0]*y) + homographyCorners.get(1, 2)[0]) /wPrime;
-        				Point res = new Point(xPrime,yPrime);
-        					
-        				location[locationIndex] = res;
-        				locationIndex = locationIndex+1;
-        				}
-        			}
-        		
-        		StringBuilder stringBuilder = new StringBuilder();
-        		double[] redColor = {160, 30, 50} ;
-        		double[] greenColor = {15, 120, 56};
-        		double[] whiteColor = {255, 255, 255} ;
-        		double[] blackColor = {0,0,0};
-        		double[] blueColor = {15,55,110};
-        		double[] orangeColor = {200,30,30};
-        		
-        		Mat gausPhotoMat = new Mat();
-        		Size size = new Size(0,0);
-        		Imgproc.GaussianBlur(photoMat, gausPhotoMat, size, 1.5);
-        		
-        		double[] pieceColor = new double[3];
-        		for(int index = 0; index <64; index++){
-        			//check color at location[index] and compair to colorcode
-        			int intx  = (int) location[index].x;
-        			int inty = (int) location[index].y;
-        			double[] photoColor = gausPhotoMat.get(inty, intx);
-        			for (int i = 0; i < 3; i++) pieceColor[i] = photoColor[i];
-        			
-        			//pieceColor[0] =red
-        			//pieceColor[1] =green
-        			//pieceColor[2] =blue	
-        			
-        			double[] dists = new double[6];
-        			
-        			double distToRed = dist(pieceColor, redColor);
-        			dists[0] = distToRed;
-        			double distToGreen = dist(pieceColor, greenColor);
-        			dists[1] = distToGreen;
-        			double distToBlue = dist(pieceColor, blueColor);
-        			dists[2] = distToBlue;
-        			double distToOrange = dist(pieceColor, orangeColor);
-        			dists[3] = distToOrange;
-        			double distToWhite = dist(pieceColor, whiteColor);
-        			dists[4] = distToWhite;      			
-        			double distToBlack = dist(pieceColor, blackColor);
-        			dists[5] = distToBlack;
-        			
-        			int minIndex = getMinIndex(dists);
-        			
-        			String name = "";
-        			switch (minIndex) {
-        			case 0: name = "O"; break;
-        			case 1: name = "T"; break;
-        			case 2: name = "o"; break;
-        			case 3: name = "t"; break;
-        			case 4: name = "E"; break;
-        			default: name = "X";break;
-        			}
-        			stringBuilder.append(name); 	
-        		}
-        		String state = stringBuilder.toString();
-        		Log.d("State", state);
- 
-        		Intent intent2 = new Intent(this, CorrectionActivity.class);
-        		intent2.putExtra("boardStateString", state);     		
-        		startActivity(intent2);
+//        		String state = stringBuilder.toString();
+//        		Log.d("State", state);
+// 
+//        		Intent intent2 = new Intent(this, CorrectionActivity.class);
+//        		intent2.putExtra("boardStateString", state);     		
+//        		startActivity(intent2);
         	}catch (Exception e) {
         		Log.d(TAG, "Exception in firstUse onActResult: "+ e.getMessage());
         	}	
