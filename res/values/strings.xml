@@ -16,8 +16,9 @@
     <string name="firstUseTxt">Welcome to Checkers Cheat!
         This app can be used to help you decide on your best move during a tough game of checkers. 
         Before we look at the checkerboard we will need you to calibrate the camera. 
-        To do this, take a photo of the board with the bottom right 2x2 section filled with the four different pieces. 
-        Your pieces should be in the squares closest to you and the Kings should be placed in the leftmost squares.
+        To do this, take a photo of the bottom right 4x4 section of the board. The white spaces of this section should 
+        be filled with the four different colors of pieces. 
+        Your pieces should be in the squares closest to you and the kings should be placed above the pawns.
         Here is an example of what your photo should look like.</string>
     <string name="calibration">Calibrate</string>
     <string name="title_activity_suggestion">Suggestion</string>
