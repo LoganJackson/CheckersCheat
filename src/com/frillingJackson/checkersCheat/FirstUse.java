@@ -126,7 +126,7 @@ public class FirstUse extends Activity {
 //        		Size size = new Size(0,0);
 //        		Imgproc.GaussianBlur(photoMat, gausPhotoMat, size, 1.5);
         		
-//        		//double[] colorCalibration = new Double[4];
+//        		//double[] colorCalibration = new double[4];
 //        		double[] pieceColor = new double[3];
 //        		for(int index = 0; index <64; index++){
 //        		

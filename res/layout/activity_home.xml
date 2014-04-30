@@ -30,6 +30,6 @@
         android:text="@string/colorSelect"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#FFFFFF"
-        android:textSize="19sp" />
+        android:textSize="21sp" />
 
 </RelativeLayout>

@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:text="@string/firstUseTxt"
         android:textColor="#FFFFFF"
-        android:textSize="16sp"
+        android:textSize="19sp"
         ></TextView>
 
     <ImageView
@@ -27,7 +27,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
         android:contentDescription="@null"
-        android:src="@drawable/preview_calibration" />
+        android:src="@drawable/cal3" />
 
     <Button
         android:id="@+id/Calibrate"
