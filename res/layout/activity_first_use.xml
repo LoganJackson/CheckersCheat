@@ -27,7 +27,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
         android:contentDescription="@null"
-        android:src="@drawable/cal3" />
+        android:src="@drawable/cal4" />
 
     <Button
         android:id="@+id/Calibrate"
