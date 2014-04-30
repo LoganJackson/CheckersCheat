@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 public class FirstUse extends Activity {
@@ -73,19 +72,13 @@ public class FirstUse extends Activity {
         if (requestCode == 100 && resultCode == RESULT_OK) {  
         	try {
         		File file = new File(getFilesDir(), "photo.jpg");
-        		ImageView newView = (ImageView) findViewById(R.id.imageView1);
         		Bitmap photo = BitmapFactory.decodeFile(file.getAbsolutePath()); 
         		photo = Bitmap.createScaledBitmap(photo, 1024, 1024, false);
-        		
         		
         		//following section is for the calibration steps  
         		
         		//find 4 pieces at bottom corner of board and get their colors 
-        		//RGB[] pieceArray = new RGB[4];
-        		//for(int i =0; i<4; i++){
-        		//	find rgb color and put in pieceArray
-        		
-        		
+        				
 //        		Mat photoMat = new Mat();
 //        		Utils.bitmapToMat(photo, photoMat); 
 //
@@ -132,7 +125,8 @@ public class FirstUse extends Activity {
 //        		Mat gausPhotoMat = new Mat();
 //        		Size size = new Size(0,0);
 //        		Imgproc.GaussianBlur(photoMat, gausPhotoMat, size, 1.5);
-//        		
+        		
+//        		//double[] colorCalibration = new Double[4];
 //        		double[] pieceColor = new double[3];
 //        		for(int index = 0; index <64; index++){
 //        		
@@ -140,24 +134,25 @@ public class FirstUse extends Activity {
 //        			int inty = (int) location[index].y;
 //        			double[] photoColor = gausPhotoMat.get(inty, intx);
 //        			for (int i = 0; i < 3; i++) pieceColor[i] = photoColor[i];
+//					if(index == 54){
+        			//	colorCalibration[0] = pieceColor[index];	//player1King
+        		//	}else if(index == 55){
+        			//	colorCalibration[1] = pieceColor[index];	//player1Pawn
+        		//	}else if(index == 62){					
+        			//	colorCalibration[2] = pieceColor[index];	//player2King
+        		//	}else if(index == 63){					
+        			//	colorCalibration[3] = pieceColor[index];	//player2Pawn
+        		//	}
 //        		}
-        		
-        		//  
-        		//	start at the upper left (p2King) then upper right, lower left (p1King), lower right
-        		//  
-        		//	pieceArray[i] = rgb;
-        		//}
-        		
-        		
+        
         		//send those colors to home using an intent
 //    			Intent homeIntent = new Intent(this, Home.class);
-//              homeIntent.putExtra("p1Paun", pieceArray[3]); //these should be rgb vals 
-//              homeIntent.putExtra("p1King", pieceArray[2]);
-//              homeIntent.putExtra("p2Paun", pieceArray[1]);
-//              homeIntent.putExtra("p2King", pieceArray[0]);
+//              homeIntent.putExtra("p1King", colorCalibration[0]); //these should be rgb vals 
+//              homeIntent.putExtra("p1Pawn", colorCalibration[1]);
+//              homeIntent.putExtra("p2King", colorCalibration[2]);
+//              homeIntent.putExtra("p2Pawn", colorCalibration[3]);
 //              startActivity(homeIntent);
-        	
-        		newView.setImageBitmap(photo);	//this will be deleted after testing
+        		
         		
         		//from here down this code will be moved to the home activities onActResult() 
         		
@@ -208,7 +203,7 @@ public class FirstUse extends Activity {
         		double[] greenColor = {15, 120, 56};
         		double[] whiteColor = {255, 255, 255} ;
         		double[] blackColor = {0,0,0};
-        		double[] blueColor = {10,50,105};
+        		double[] blueColor = {15,55,110};
         		double[] orangeColor = {200,30,30};
         		
         		Mat gausPhotoMat = new Mat();
@@ -256,6 +251,7 @@ public class FirstUse extends Activity {
         			stringBuilder.append(name); 	
         		}
         		String state = stringBuilder.toString();
+        		Log.d("State", state);
  
         		Intent intent2 = new Intent(this, CorrectionActivity.class);
         		intent2.putExtra("boardStateString", state);     		

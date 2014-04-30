@@ -50,6 +50,10 @@ public class Home extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_8, this, mLoaderCallback);
+		//double[] p1King = getIntent().getStringExtra("p1King");
+		//double[] p1Pawn = getIntent().getStringExtra("p1Pawn");
+		//double[] p2King = getIntent().getStringExtra("p2King");
+		//double[] p2Pawn = getIntent().getStringExtra("p2Pawn");
 	}
 
 	@Override
@@ -117,12 +121,12 @@ public class Home extends Activity {
         			}
         		
         		StringBuilder stringBuilder = new StringBuilder();
-        		double[] redColor = {160, 30, 50} ;
-        		double[] greenColor = {15, 120, 56};
-        		double[] whiteColor = {255, 255, 255} ;
+        		double[] redColor = {160, 30, 50} ;  //p1King
+        		double[] greenColor = {15, 120, 56}; //p2King
+        		double[] whiteColor = {255, 255, 255} ; 
         		double[] blackColor = {0,0,0};
-        		double[] blueColor = {10,50,105};
-        		double[] orangeColor = {200,30,30};
+        		double[] blueColor = {10,50,105};	//p1Pawn
+        		double[] orangeColor = {200,30,30};	//p2Pawn
         		
         		Mat gausPhotoMat = new Mat();
         		Size size = new Size(0,0);
