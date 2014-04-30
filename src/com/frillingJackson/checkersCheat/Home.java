@@ -44,16 +44,30 @@ public class Home extends Activity {
             }
         }
     };
+	
+	private double[] p1King = new double[3];
+	private double[] p1Pawn = new double[3];
+	private double[] p2King = new double[3];
+	private double[] p2Pawn = new double[3];
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_8, this, mLoaderCallback);
-		//double[] p1King = getIntent().getStringExtra("p1King");
-		//double[] p1Pawn = getIntent().getStringExtra("p1Pawn");
-		//double[] p2King = getIntent().getStringExtra("p2King");
-		//double[] p2Pawn = getIntent().getStringExtra("p2Pawn");
+		
+		p1King[0] = getIntent().getIntExtra("p1KingR",160);
+		p1King[1] = getIntent().getIntExtra("p1KingB",30);
+		p1King[2] = getIntent().getIntExtra("p1KingG",50);
+		p1Pawn[0] = getIntent().getIntExtra("p1PawnR",15);
+		p1Pawn[1] = getIntent().getIntExtra("p1PawnB",55);
+		p1Pawn[2] = getIntent().getIntExtra("p1PawnG",110);
+		p2King[0] = getIntent().getIntExtra("p2KingR",15);
+		p2King[1] = getIntent().getIntExtra("p2KingB",120);
+		p2King[2] = getIntent().getIntExtra("p2KingG",56);
+		p2Pawn[0] = getIntent().getIntExtra("p2PawnR",200);
+		p2Pawn[1] = getIntent().getIntExtra("p2PawnB",30);
+		p2Pawn[2] = getIntent().getIntExtra("p2PawnG",30);
 	}
 
 	@Override
@@ -86,12 +100,9 @@ public class Home extends Activity {
         		boolean found = Calib3d.findChessboardCorners(photoMat, boardSize , corners, 0);  
         		if(!found){
         			Log.d(TAG, "Didnt find the board");
-        			Toast.makeText(getApplicationContext(), "The checkerboard was NOT found, please try again.",
+        			Toast.makeText(getApplicationContext(), "The checkerboard was NOT found, make sure all the pieces are off the corners of the board and try again.",
         					Toast.LENGTH_LONG).show();
         		}else{
-        			Log.d(TAG, "Found the board !!");
-        			Toast.makeText(getApplicationContext(), "The checkerboard WAS found!",
-        					Toast.LENGTH_LONG).show();
         			// find R; the set of rectified corner locations 
         			int count = 0;
         			for(int i =1; i<=7;i++){
@@ -121,12 +132,12 @@ public class Home extends Activity {
         			}
         		
         		StringBuilder stringBuilder = new StringBuilder();
-        		double[] redColor = {160, 30, 50} ;  //p1King
-        		double[] greenColor = {15, 120, 56}; //p2King
-        		double[] whiteColor = {255, 255, 255} ; 
+        		double[] redColor = {160, 30, 50} ;//p1King;//
+        		double[] greenColor = {15, 120, 56};//p2King;//
+        		double[] whiteColor = {255, 255, 255} ;
         		double[] blackColor = {0,0,0};
-        		double[] blueColor = {10,50,105};	//p1Pawn
-        		double[] orangeColor = {200,30,30};	//p2Pawn
+        		double[] blueColor = {15,55,110};//p1Pawn;//
+        		double[] orangeColor = {200,30,30};//p2Pawn;//
         		
         		Mat gausPhotoMat = new Mat();
         		Size size = new Size(0,0);
@@ -139,6 +150,10 @@ public class Home extends Activity {
         			int inty = (int) location[index].y;
         			double[] photoColor = gausPhotoMat.get(inty, intx);
         			for (int i = 0; i < 3; i++) pieceColor[i] = photoColor[i];
+        			
+        			//pieceColor[0] =red
+        			//pieceColor[1] =green
+        			//pieceColor[2] =blue	
         			
         			double[] dists = new double[6];
         			
@@ -159,16 +174,17 @@ public class Home extends Activity {
         			
         			String name = "";
         			switch (minIndex) {
-        			case 0: name = "O"; Log.d("piece", "Assigned color red"); break;
-        			case 1: name = "T"; Log.d("piece", "Assigned color green"); break;
-        			case 2: name = "o"; Log.d("piece", "Assigned color blue"); break;
-        			case 3: name = "t"; Log.d("piece", "Assigned color orange"); break;
-        			case 4: name = "E"; Log.d("piece", "Assigned color white"); break;
-        			default: name = "X"; Log.d("piece", "Assigned color black"); break;
+        			case 0: name = "O"; break;
+        			case 1: name = "T"; break;
+        			case 2: name = "o"; break;
+        			case 3: name = "t"; break;
+        			case 4: name = "E"; break;
+        			default: name = "X";break;
         			}
         			stringBuilder.append(name); 	
         		}
         		String state = stringBuilder.toString();
+//        		Log.d("State", state);
 
         		Intent intent2 = new Intent(this, CorrectionActivity.class);
         		intent2.putExtra("boardStateString", state);     		
