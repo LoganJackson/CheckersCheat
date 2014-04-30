@@ -65,8 +65,8 @@ public class CamActivity extends Activity {
         		FileOutputStream fos = new FileOutputStream(pictureFile);
         		fos.write(data);
         		fos.close();
-        		Toast.makeText(getApplicationContext(), "New Image saved:" + pictureFile,
-				   Toast.LENGTH_LONG).show();
+        		//Toast.makeText(getApplicationContext(), "New Image saved:" + pictureFile,
+				  // Toast.LENGTH_LONG).show();
         	} catch (Exception error) {
         		Toast.makeText(getApplicationContext(), "Image could not be saved.", Toast.LENGTH_LONG).show();
         	}
