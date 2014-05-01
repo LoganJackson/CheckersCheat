@@ -30,6 +30,18 @@ public class CorrectionActivity extends Activity {
 	int x;
 	int y;
 	Bitmap newImage1;
+	int P1KingR;
+	int P1KingB;
+	int P1KingG;
+	int P1PawnR;
+	int P1PawnG;
+	int P1PawnB;
+	int P2PawnR;
+	int P2PawnG;
+	int P2PawnB;
+	int P2KingR;
+	int P2KingB;
+	int P2KingG;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +56,18 @@ public class CorrectionActivity extends Activity {
 		//t (orange)  = pawn for light pieces
 		//E (empty) = empty space on board1
 		//X  = unreachable space
+		int P1KingR=getIntent().getIntExtra("p1KingR", 0);
+		int P1KingB=getIntent().getIntExtra("p1KingB", 0);
+		int P1KingG=getIntent().getIntExtra("p1KingG", 0);
+		int P1PawnR=getIntent().getIntExtra("p1PawnR", 0);
+		int P1PawnB=getIntent().getIntExtra("p1PawnB", 0);
+		int P1PawnG=getIntent().getIntExtra("p1PawnG", 0);
+		int P2KingR=getIntent().getIntExtra("p2KingR", 0);
+		int P2KingB=getIntent().getIntExtra("p2KingB", 0);
+		int P2KingG=getIntent().getIntExtra("p2KingG", 0);
+		int P2PawnR=getIntent().getIntExtra("p1PawnR", 0);
+		int P2PawnB=getIntent().getIntExtra("p1PawnB", 0);
+		int P2PawnG=getIntent().getIntExtra("p1PawnG", 0);
 		
 //		String boardString="tXtXtXtX"
 //				+ "XtXtXtXt"
@@ -63,25 +87,25 @@ public class CorrectionActivity extends Activity {
 		black.setStyle(Paint.Style.FILL);
 		black.setARGB(255, 0, 0, 0);
 		
-		Paint red = new Paint();
-		red.setStyle(Paint.Style.FILL);
-		red.setARGB(255, 160, 30, 5);
+		Paint P1King = new Paint();
+		P1King.setStyle(Paint.Style.FILL);
+		P1King.setARGB(255, P1KingR, P1KingG, P1KingB);
 		
-		Paint green = new Paint();
-		green.setStyle(Paint.Style.FILL);
-		green.setARGB(255, 15, 120, 56);
+		Paint P2King = new Paint();
+		P2King.setStyle(Paint.Style.FILL);
+		P2King.setARGB(255, P2KingR, P2KingG, P2KingB);
 		
 		Paint white = new Paint();
 		white.setStyle(Paint.Style.FILL);
-		white.setARGB(255, 255, 255, 255);
+		white.setARGB(255, 255,255,255);
 		
-		Paint blue = new Paint();
-		blue.setStyle(Paint.Style.FILL);
-		blue.setARGB(255, 10, 50, 105);
+		Paint P1Pawn = new Paint();
+		P1Pawn.setStyle(Paint.Style.FILL);
+		P1Pawn.setARGB(255, P1PawnR, P1PawnG, P1PawnB);
 		
-		Paint orange = new Paint();
-		orange.setStyle(Paint.Style.FILL);
-		orange.setARGB(255, 255, 150, 20);
+		Paint P2Pawn = new Paint();
+		P2Pawn.setStyle(Paint.Style.FILL);
+		P2Pawn.setARGB(255, P2PawnR, P2PawnG, P2PawnB);
 		
 		Bitmap newImage= Bitmap.createBitmap(256, 256,Bitmap.Config.ARGB_8888); 
 		Canvas canvas= new Canvas(newImage);
@@ -108,16 +132,16 @@ public class CorrectionActivity extends Activity {
 		for(int i=0; i<8;i++){
 			for(int j=0;j<8;j++){
 				if(board1.get(i,j)=='o'){
-					canvas.drawCircle(j*32+15, i*32+15, 10, blue);
+					canvas.drawCircle(j*32+15, i*32+15, 10, P1Pawn);
 				}
 				else if(board1.get(i,j)=='O'){
-					canvas.drawCircle(j*32+15, i*32+15, 10, red);
+					canvas.drawCircle(j*32+15, i*32+15, 10, P1King);
 				}
 				else if(board1.get(i, j)=='t'){
-					canvas.drawCircle(j*32+15, i*32+15, 10,orange);
+					canvas.drawCircle(j*32+15, i*32+15, 10,P2Pawn);
 				}
 				else if(board1.get(i, j)=='T'){
-					canvas.drawCircle(j*32+15, i*32+15, 10,green);
+					canvas.drawCircle(j*32+15, i*32+15, 10,P2King);
 				}
 			}
 		}
@@ -199,25 +223,25 @@ public class CorrectionActivity extends Activity {
 		black.setStyle(Paint.Style.FILL);
 		black.setARGB(255, 0, 0, 0);
 		
-		Paint red = new Paint();
-		red.setStyle(Paint.Style.FILL);
-		red.setARGB(255, 160, 30, 5);
+		Paint P1King = new Paint();
+		P1King.setStyle(Paint.Style.FILL);
+		P1King.setARGB(255, P1KingR, P1KingG, P1KingB);
 		
-		Paint green = new Paint();
-		green.setStyle(Paint.Style.FILL);
-		green.setARGB(255, 15, 120, 56);
+		Paint P2King = new Paint();
+		P2King.setStyle(Paint.Style.FILL);
+		P2King.setARGB(255, P2KingR, P2KingG, P2KingB);
 		
 		Paint white = new Paint();
 		white.setStyle(Paint.Style.FILL);
-		white.setARGB(255, 255, 255, 255);
+		white.setARGB(255, 255,255,255);
 		
-		Paint blue = new Paint();
-		blue.setStyle(Paint.Style.FILL);
-		blue.setARGB(255, 10, 50, 105);
+		Paint P1Pawn = new Paint();
+		P1Pawn.setStyle(Paint.Style.FILL);
+		P1Pawn.setARGB(255, P1PawnR, P1PawnG, P1PawnB);
 		
-		Paint orange = new Paint();
-		orange.setStyle(Paint.Style.FILL);
-		orange.setARGB(255, 255, 150, 20);
+		Paint P2Pawn = new Paint();
+		P2Pawn.setStyle(Paint.Style.FILL);
+		P2Pawn.setARGB(255, P2PawnR, P2PawnG, P2PawnB);
 		
 		board1.set(yCoordinate, xCoordinate, ch);
 		Bitmap newImage1= Bitmap.createBitmap(256, 256,Bitmap.Config.ARGB_8888); 
@@ -246,16 +270,16 @@ public class CorrectionActivity extends Activity {
 		for(int i=0; i<8;i++){
 			for(int j=0;j<8;j++){
 				if(board1.get(i,j)=='o'){
-					canvas1.drawCircle(j*32+15, i*32+15, 10, blue);
+					canvas1.drawCircle(j*32+15, i*32+15, 10, P1Pawn);
 				}
 				else if(board1.get(i,j)=='O'){
-					canvas1.drawCircle(j*32+15, i*32+15, 10, red);
+					canvas1.drawCircle(j*32+15, i*32+15, 10, P1King);
 				}
 				else if(board1.get(i, j)=='t'){
-					canvas1.drawCircle(j*32+15, i*32+15, 10, orange);
+					canvas1.drawCircle(j*32+15, i*32+15, 10, P2Pawn);
 				}
 				else if(board1.get(i, j)=='T'){
-					canvas1.drawCircle(j*32+15, i*32+15, 10,green);
+					canvas1.drawCircle(j*32+15, i*32+15, 10,P2King);
 				}
 			}
 		}
