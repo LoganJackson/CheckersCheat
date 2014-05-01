@@ -68,6 +68,15 @@ public class FirstUse extends Activity {
 		startActivityForResult(intent,100); //maybe need to change this request code later	
 	}
 	
+	private String ColorToString(double[] color){
+		StringBuilder sb = new StringBuilder();
+		for(int i =0; i < 3; i++){
+			sb.append(String.valueOf(color[i]));
+		}
+		String strColor = sb.toString();
+		return strColor;
+	}
+	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
         if (requestCode == 100 && resultCode == RESULT_OK) {  
         	try {
@@ -82,9 +91,9 @@ public class FirstUse extends Activity {
         		Mat photoMat = new Mat();
         		Utils.bitmapToMat(photo, photoMat); 
 
-        		Size boardSize = new Size (3,3);//(7,7);
+        		Size boardSize = new Size (7,7);
         		MatOfPoint2f corners = new MatOfPoint2f() ;
-        		Point[] recCornersArray = new Point[9];//[49];
+        		Point[] recCornersArray = new Point[49];
         		Mat homographyCorners = new Mat() ;
         		
         		Log.d(TAG, "Trying to find small board");
@@ -100,8 +109,8 @@ public class FirstUse extends Activity {
         					Toast.LENGTH_LONG).show();
         			// find R; the set of rectified corner locations 
         			int count = 0;
-        			for(int i =1; i<=3;i++){ //7
-        			 	for(int j = 1; j<=3; j++){
+        			for(int i =1; i<=7;i++){ //7
+        			 	for(int j = 1; j<=7; j++){
         			 		Point newPoint= new Point(i,j);
         					recCornersArray[count]= newPoint;
         					count = count + 1;
@@ -114,10 +123,10 @@ public class FirstUse extends Activity {
         		
         		Log.d(TAG, "homography made");
         		
-        		Point[] location = new Point[16]; //64
+        		Point[] location = new Point[64]; //64
         		int locationIndex =0;
-    			for(double y = 0.5; y < 4; y++){ //8
-    				for(double x = 0.5; x < 4; x++){
+    			for(double y = 0.5; y < 8; y++){ //8
+    				for(double x = 0.5; x < 8; x++){
         				double wPrime =  ((homographyCorners.get(2, 0)[0]*x) + (homographyCorners.get(2, 1)[0]*y) + homographyCorners.get(2, 2)[0]);
         				double xPrime = ((homographyCorners.get(0,0)[0]*x) + (homographyCorners.get(0,1)[0]*y) + homographyCorners.get(0,2)[0]) /wPrime;
         				double yPrime = ((homographyCorners.get(1, 0)[0]*x) + (homographyCorners.get(1, 1)[0]*y) + homographyCorners.get(1, 2)[0]) /wPrime;
@@ -136,7 +145,7 @@ public class FirstUse extends Activity {
         		double[][] colorCalibration = new double[4][3];
         		double[] pieceColor = new double[3];
         		Log.d(TAG, "starting color finder");
-        		for(int index = 0; index <16; index++){ //64
+        		for(int index = 0; index <64; index++){ //64
         		
         			int intx  = (int) location[index].x;
         			Log.d(TAG, "check1");
@@ -146,14 +155,26 @@ public class FirstUse extends Activity {
         			Log.d(TAG, "check3");
         			for (int i = 0; i < 3; i++) pieceColor[i] = photoColor[i];
         			Log.d(TAG, "check4");
-        			if(index == 9){
-        				colorCalibration[0] = pieceColor;	//player2King
-        			}else if(index == 12){
-        				colorCalibration[1] = pieceColor;	//player2Pawn
-        			}else if(index == 1){					
-        				colorCalibration[2] = pieceColor;	//player1King
-        			}else if(index == 4){					
-        				colorCalibration[3] = pieceColor;	//player1Pawn
+        			if(index == 1){
+        				colorCalibration[0][0] = pieceColor[0];	//player2King
+        				colorCalibration[0][1] = pieceColor[1];
+        				colorCalibration[0][2] = pieceColor[2];
+        				Log.d("Color player2King ", ColorToString(pieceColor));
+        			}else if(index == 8){
+        				colorCalibration[1][0] = pieceColor[0];	
+        				colorCalibration[1][1] = pieceColor[1];
+        				colorCalibration[1][2] = pieceColor[2];	//player2Pawn
+        				Log.d("Color player2King ", ColorToString(pieceColor));
+        			}else if(index == 17){					
+        				colorCalibration[2][0] = pieceColor[0];	
+        				colorCalibration[2][1] = pieceColor[1];
+        				colorCalibration[2][2] = pieceColor[2];	//player1King
+        				Log.d("Color player2King ", ColorToString(pieceColor));
+        			}else if(index == 10){					
+        				colorCalibration[3][0] = pieceColor[0];	
+        				colorCalibration[3][1] = pieceColor[1];
+        				colorCalibration[3][2] = pieceColor[2];	//player1Pawn
+        				Log.d("Color player2King ", ColorToString(pieceColor));
         			}
         			Log.d(TAG, "check5");
         		}
@@ -178,7 +199,7 @@ public class FirstUse extends Activity {
         		
         		
         		//from here down this code will be moved to the home activities onActResult() 
-//        		
+        		
 //        		Mat photoMat = new Mat();
 //        		Utils.bitmapToMat(photo, photoMat); 
 //
@@ -281,6 +302,8 @@ public class FirstUse extends Activity {
 //        		startActivity(intent2);
         	}catch (Exception e) {
         		Log.d(TAG, "Exception in firstUse onActResult: "+ e.getMessage());
+        		Toast.makeText(getApplicationContext(), "We were not able to calibrate from that picture, please try again.",
+   					Toast.LENGTH_LONG).show();
         	}	
         }
 	}

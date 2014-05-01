@@ -132,12 +132,12 @@ public class Home extends Activity {
         			}
         		
         		StringBuilder stringBuilder = new StringBuilder();
-        		double[] redColor = {160, 30, 50} ;//p1King;//
-        		double[] greenColor = {15, 120, 56};//p2King;//
+        		double[] redColor = p1King;//{160, 30, 50} ;//
+        		double[] greenColor = p2King;//{15, 120, 56};//
         		double[] whiteColor = {255, 255, 255} ;
         		double[] blackColor = {0,0,0};
-        		double[] blueColor = {15,55,110};//p1Pawn;//
-        		double[] orangeColor = {200,30,30};//p2Pawn;//
+        		double[] blueColor = p1Pawn;//{15,55,110};//
+        		double[] orangeColor = p2Pawn;//{200,30,30};//
         		
         		Mat gausPhotoMat = new Mat();
         		Size size = new Size(0,0);
