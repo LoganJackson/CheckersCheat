@@ -2,16 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     
       <item android:id="@+id/Blue"
-          android:title="Blue" 
+          android:title="p1King" 
           android:visible="true"/>
       <item android:id="@+id/Orange"
-          android:title="Orange" 
+          android:title="p2Pawn" 
           android:visible="true"/>
       <item android:id="@+id/Green"
-          android:title="Green" 
+          android:title="p2King" 
           android:visible="true"/>
       <item android:id="@+id/Red"
-          android:title="Red"/>
+          android:title="p1Pawn"/>
       <item android:id="@+id/Remove"
           	android:title="Remove"
           	android:visible="true"/>
