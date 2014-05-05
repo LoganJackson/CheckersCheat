@@ -4,18 +4,17 @@
     <string name="app_name">CheckerCheat</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="colorSelect">Now that we know what the board and the pieces look like 
-        we can help you decide on a good move!
+    <string name="colorSelect">
         Whenever you find yourself without a move in mind just take a photo of the gameboard 
-        (with the side of the board your defending closest to you).
-        After you snap your photo we will show you how we understand the board state.
+        (with the side of the board you are defending closest to you).\n
+        After you snap your photo we will show you how we understand the board state.\n
         If you notice anything out of place or the wrong color just tap that location
          and change it to the correct color</string>
     <string name="takePic">Take Picture</string>
     <string name="title_activity_first_use">FirstUse</string>
     <string name="firstUseTxt">Welcome to Checkers Cheat!
         This app can be used to help you decide on your best move during a tough game of checkers. 
-        Before we look at the checkerboard we will need you to calibrate the camera. 
+        Before we look at the checkerboard we will need you to calibrate the camera.\n 
         To do this, take a photo of the board so it looks like the example photo shown below.
         Your pawn should be at the top, and your king on the left.
         Your opponents pawn should be on the bottom and their king on the right.
