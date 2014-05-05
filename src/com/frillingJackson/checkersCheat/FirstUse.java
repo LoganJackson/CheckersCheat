@@ -33,7 +33,7 @@ public class FirstUse extends Activity {
             {
                 Log.i(TAG, "OpenCV loaded successfully");
                 //System.loadLibrary("libName");
-            } 
+            }  
             break;
             default:
             {
@@ -68,43 +68,24 @@ public class FirstUse extends Activity {
 		startActivityForResult(intent,100); //maybe need to change this request code later	
 	}
 	
-	private String ColorToString(double[] color){
-		StringBuilder sb = new StringBuilder();
-		for(int i =0; i < 3; i++){
-			sb.append(String.valueOf(color[i]));
-		}
-		String strColor = sb.toString();
-		return strColor;
-	}
-	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
         if (requestCode == 100 && resultCode == RESULT_OK) {  
         	try {
         		File file = new File(getFilesDir(), "photo.jpg");
         		Bitmap photo = BitmapFactory.decodeFile(file.getAbsolutePath()); 
         		photo = Bitmap.createScaledBitmap(photo, 1024, 1024, false);
-        		
-        		//following section is for the calibration steps  
-        		
-        		//find 4 pieces at bottom corner of board and get their colors 
-        				
         		Mat photoMat = new Mat();
         		Utils.bitmapToMat(photo, photoMat); 
-
         		Size boardSize = new Size (7,7);
         		MatOfPoint2f corners = new MatOfPoint2f() ;
         		Point[] recCornersArray = new Point[49];
         		Mat homographyCorners = new Mat() ;
         		
-        		Log.d(TAG, "Trying to find small board");
-        		
         		boolean found = Calib3d.findChessboardCorners(photoMat, boardSize , corners, 0);  
         		if(!found){
-        			Log.d(TAG, "Didnt find the board");
         			Toast.makeText(getApplicationContext(), "The checkerboard was NOT found, please try again.",
         					Toast.LENGTH_LONG).show();
         		}else{
-        			Log.d(TAG, "Found the board !!");
         			Toast.makeText(getApplicationContext(), "The checkerboard WAS found!",
         					Toast.LENGTH_LONG).show();
         			// find R; the set of rectified corner locations 
@@ -116,16 +97,13 @@ public class FirstUse extends Activity {
         					count = count + 1;
         			 	}
         			}
-        			Log.d(TAG, "rec corners made");
         		}
         		MatOfPoint2f recCorners = new MatOfPoint2f(recCornersArray);
         		homographyCorners = Calib3d.findHomography(recCorners,corners);
         		
-        		Log.d(TAG, "homography made");
-        		
-        		Point[] location = new Point[64]; //64
+        		Point[] location = new Point[64]; 
         		int locationIndex =0;
-    			for(double y = 0.5; y < 8; y++){ //8
+    			for(double y = 0.5; y < 8; y++){ 
     				for(double x = 0.5; x < 8; x++){
         				double wPrime =  ((homographyCorners.get(2, 0)[0]*x) + (homographyCorners.get(2, 1)[0]*y) + homographyCorners.get(2, 2)[0]);
         				double xPrime = ((homographyCorners.get(0,0)[0]*x) + (homographyCorners.get(0,1)[0]*y) + homographyCorners.get(0,2)[0]) /wPrime;
@@ -136,50 +114,35 @@ public class FirstUse extends Activity {
         				locationIndex = locationIndex+1;
         			}
         		}
-    			
-    			Log.d(TAG, "location[] made");
         		Mat gausPhotoMat = new Mat();
         		Size size = new Size(0,0);
         		Imgproc.GaussianBlur(photoMat, gausPhotoMat, size, 1);
         		
         		double[][] colorCalibration = new double[4][3];
         		double[] pieceColor = new double[3];
-        		Log.d(TAG, "starting color finder");
-        		for(int index = 0; index <64; index++){ //64
-        		
+        		for(int index = 0; index <64; index++){ 
         			int intx  = (int) location[index].x;
-        			Log.d(TAG, "check1");
         			int inty = (int) location[index].y;
-        			Log.d(TAG, "check2");
         			double[] photoColor = gausPhotoMat.get(inty, intx);
-        			Log.d(TAG, "check3");
         			for (int i = 0; i < 3; i++) pieceColor[i] = photoColor[i];
-        			Log.d(TAG, "check4");
         			if(index == 1){
         				colorCalibration[0][0] = pieceColor[0];	//player2King
         				colorCalibration[0][1] = pieceColor[1];
         				colorCalibration[0][2] = pieceColor[2];
-        				Log.d("Color player2King ", ColorToString(pieceColor));
         			}else if(index == 8){
         				colorCalibration[1][0] = pieceColor[0];	
         				colorCalibration[1][1] = pieceColor[1];
         				colorCalibration[1][2] = pieceColor[2];	//player2Pawn
-        				Log.d("Color player2King ", ColorToString(pieceColor));
         			}else if(index == 17){					
         				colorCalibration[2][0] = pieceColor[0];	
         				colorCalibration[2][1] = pieceColor[1];
         				colorCalibration[2][2] = pieceColor[2];	//player1King
-        				Log.d("Color player2King ", ColorToString(pieceColor));
         			}else if(index == 10){					
         				colorCalibration[3][0] = pieceColor[0];	
         				colorCalibration[3][1] = pieceColor[1];
         				colorCalibration[3][2] = pieceColor[2];	//player1Pawn
-        				Log.d("Color player2King ", ColorToString(pieceColor));
         			}
-        			Log.d(TAG, "check5");
-        		}
-        		Log.d(TAG, "end color finder ");
-        		
+        		}        		
         		//send those colors to home using an intent
     			Intent homeIntent = new Intent(this, Home.class);
     			homeIntent.putExtra("p2KingR", (int) colorCalibration[0][0]); //these should be rgb vals 
@@ -194,11 +157,8 @@ public class FirstUse extends Activity {
     			homeIntent.putExtra("p1PawnR", (int) colorCalibration[3][0]);
     			homeIntent.putExtra("p1PawnB", (int) colorCalibration[3][1]);
     			homeIntent.putExtra("p1PawnG", (int) colorCalibration[3][2]);
-    			Log.d(TAG, "intents set ");
     			startActivity(homeIntent);
-        		
-        		
-        		//from here down this code will be moved to the home activities onActResult() 
+    			//from here down this code will be moved to the home activities onActResult() 
         		
 //        		Mat photoMat = new Mat();
 //        		Utils.bitmapToMat(photo, photoMat); 
@@ -327,5 +287,14 @@ public class FirstUse extends Activity {
 	     }  
 	    return minIndex;  
 	}
-
+	
+//	private String ColorToString(double[] color){
+//	StringBuilder sb = new StringBuilder();
+//	for(int i =0; i < 3; i++){
+//		sb.append(String.valueOf(color[i]));
+//	}
+//	String strColor = sb.toString();
+//	return strColor;
+//}
+//
 }

@@ -1,13 +1,11 @@
 package com.frillingJackson.checkersCheat;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -19,7 +17,6 @@ public class CorrectionActivity extends Activity {
 	
 	public int lastKnownX; // Might be float types - can't remember
 	public int lastKnownY;
-	
 	ImageView mImage;
 	Canvas canvas;
 	Paint paint;
@@ -30,18 +27,7 @@ public class CorrectionActivity extends Activity {
 	int x;
 	int y;
 	Bitmap newImage1;
-	int P1KingR;
-	int P1KingB;
-	int P1KingG;
-	int P1PawnR;
-	int P1PawnG;
-	int P1PawnB;
-	int P2PawnR;
-	int P2PawnG;
-	int P2PawnB;
-	int P2KingR;
-	int P2KingB;
-	int P2KingG;
+	int P1KingR,P1KingB,P1KingG,P1PawnR,P1PawnG,P1PawnB,P2PawnR,P2PawnG,P2PawnB,P2KingR,P2KingB,P2KingG;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,18 +42,18 @@ public class CorrectionActivity extends Activity {
 		//t (orange)  = pawn for light pieces
 		//E (empty) = empty space on board1
 		//X  = unreachable space
-		int P1KingR=getIntent().getIntExtra("p1KingR", 0);
-		int P1KingB=getIntent().getIntExtra("p1KingB", 0);
-		int P1KingG=getIntent().getIntExtra("p1KingG", 0);
-		int P1PawnR=getIntent().getIntExtra("p1PawnR", 0);
-		int P1PawnB=getIntent().getIntExtra("p1PawnB", 0);
-		int P1PawnG=getIntent().getIntExtra("p1PawnG", 0);
-		int P2KingR=getIntent().getIntExtra("p2KingR", 0);
-		int P2KingB=getIntent().getIntExtra("p2KingB", 0);
-		int P2KingG=getIntent().getIntExtra("p2KingG", 0);
-		int P2PawnR=getIntent().getIntExtra("p1PawnR", 0);
-		int P2PawnB=getIntent().getIntExtra("p1PawnB", 0);
-		int P2PawnG=getIntent().getIntExtra("p1PawnG", 0);
+		int P1KingR=getIntent().getIntExtra("p1KingR", 160);
+		int P1KingB=getIntent().getIntExtra("p1KingB", 30);
+		int P1KingG=getIntent().getIntExtra("p1KingG", 50);
+		int P1PawnR=getIntent().getIntExtra("p1PawnR", 15);
+		int P1PawnB=getIntent().getIntExtra("p1PawnB", 55);
+		int P1PawnG=getIntent().getIntExtra("p1PawnG", 110);
+		int P2KingR=getIntent().getIntExtra("p2KingR", 15);
+		int P2KingB=getIntent().getIntExtra("p2KingB", 120);
+		int P2KingG=getIntent().getIntExtra("p2KingG", 56);
+		int P2PawnR=getIntent().getIntExtra("p1PawnR", 200);
+		int P2PawnB=getIntent().getIntExtra("p1PawnB", 30);
+		int P2PawnG=getIntent().getIntExtra("p1PawnG", 30);
 		
 //		String boardString="tXtXtXtX"
 //				+ "XtXtXtXt"
@@ -81,7 +67,6 @@ public class CorrectionActivity extends Activity {
 		board1 = new GameState(boardString);
 		board1.rotateCW();
 		board1.mirror();
-		
 		
 		Paint black = new Paint();
 		black.setStyle(Paint.Style.FILL);
@@ -145,16 +130,13 @@ public class CorrectionActivity extends Activity {
 				}
 			}
 		}
-		
 		String stringBoard="";
 		for (int i=0; i<=7;i++){
 			for(int j=0;j<=7;j++){
 				stringBoard=stringBoard+board1.get(i,j);
 			}
-		}
-		Log.d("board", stringBoard);			
+		}			
 		gameboard1.setOnTouchListener(new ImageView.OnTouchListener() {
-			
 	        @Override
 	        public boolean onTouch(View v, MotionEvent event) {
 	            if (event.getAction() == MotionEvent.ACTION_DOWN){
@@ -173,9 +155,7 @@ public class CorrectionActivity extends Activity {
 	 private void showPopupMenu(View v){ 
 		 PopupMenu popupMenu = new PopupMenu(CorrectionActivity.this, v);
 		 popupMenu.getMenuInflater().inflate(R.menu.popupmenu, popupMenu.getMenu());
-		 
-		 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-			 
+		 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {		 
 		   @Override
 		   public boolean onMenuItemClick(MenuItem item) {
 			//GameState board1 = new GameState();
@@ -218,7 +198,6 @@ public class CorrectionActivity extends Activity {
 	}
 
 	GameState correctboard1( int xCoordinate, int yCoordinate, char ch){
-		
 		Paint black = new Paint();
 		black.setStyle(Paint.Style.FILL);
 		black.setARGB(255, 0, 0, 0);
@@ -283,7 +262,6 @@ public class CorrectionActivity extends Activity {
 				}
 			}
 		}
-		
 		ImageView gameboard11 = (ImageView)findViewById(R.id.correctionView);
 		gameboard11.setImageBitmap(newImage1);
 	return board1;

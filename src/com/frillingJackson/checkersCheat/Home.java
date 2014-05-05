@@ -1,6 +1,5 @@
 package com.frillingJackson.checkersCheat;
 
-
 import java.io.File;
 
 import org.opencv.android.BaseLoaderCallback;
