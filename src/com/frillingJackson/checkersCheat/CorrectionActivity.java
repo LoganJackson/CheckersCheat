@@ -28,16 +28,16 @@ public class CorrectionActivity extends Activity {
 	int y;
 	Bitmap newImage1;
 	//int P1KingR,P1KingB,P1KingG,P1PawnR,P1PawnG,P1PawnB,P2PawnR,P2PawnG,P2PawnB,P2KingR,P2KingB,P2KingG;
-	int P1KingR=160;//getIntent().getIntExtra("p1KingR", 160);
+	int P1KingR=160;//getIntent().getIntExtra("p1KingR", 160);//{160, 30, 50} ;//
 	int P1KingB=30;//getIntent().getIntExtra("p1KingB", 30);
 	int P1KingG=50;//getIntent().getIntExtra("p1KingG", 50);
-	int P1PawnR=15;//getIntent().getIntExtra("p1PawnR", 15);
+	int P1PawnR=15;//getIntent().getIntExtra("p1PawnR", 15);//{15,55,110};//
 	int P1PawnB=55;//getIntent().getIntExtra("p1PawnB", 55);
 	int P1PawnG=110;//getIntent().getIntExtra("p1PawnG", 110);
-	int P2KingR=15;//getIntent().getIntExtra("p2KingR", 15);
+	int P2KingR=15;//getIntent().getIntExtra("p2KingR", 15);//{15, 120, 56};//
 	int P2KingB=120;//getIntent().getIntExtra("p2KingB", 120);
 	int P2KingG=56;//getIntent().getIntExtra("p2KingG", 56);
-	int P2PawnR=200;//getIntent().getIntExtra("p1PawnR", 200);
+	int P2PawnR=200;//getIntent().getIntExtra("p1PawnR", 200);//{200,30,30};//
 	int P2PawnB=30;//getIntent().getIntExtra("p1PawnB", 30);
 	int P2PawnG=30;//getIntent().getIntExtra("p1PawnG", 30);
 	
