@@ -146,17 +146,17 @@ public class FirstUse extends Activity {
         		//send those colors to home using an intent
     			Intent homeIntent = new Intent(this, Home.class);
     			homeIntent.putExtra("p2KingR", (int) colorCalibration[0][0]); //these should be rgb vals 
-    			homeIntent.putExtra("p2KingB", (int) colorCalibration[0][1]);
-    			homeIntent.putExtra("p2KingG", (int) colorCalibration[0][2]);
+    			homeIntent.putExtra("p2KingG", (int) colorCalibration[0][1]);
+    			homeIntent.putExtra("p2KingB", (int) colorCalibration[0][2]);
     			homeIntent.putExtra("p2PawnR", (int) colorCalibration[1][0]);
-    			homeIntent.putExtra("p2PawnB", (int) colorCalibration[1][1]);
-    			homeIntent.putExtra("p2PawnG", (int) colorCalibration[1][2]);
+    			homeIntent.putExtra("p2PawnG", (int) colorCalibration[1][1]);
+    			homeIntent.putExtra("p2PawnB", (int) colorCalibration[1][2]);
     			homeIntent.putExtra("p1KingR", (int) colorCalibration[2][0]);
-    			homeIntent.putExtra("p1KingB", (int) colorCalibration[2][1]);
-    			homeIntent.putExtra("p1KingG", (int) colorCalibration[2][2]);
+    			homeIntent.putExtra("p1KingG", (int) colorCalibration[2][1]);
+    			homeIntent.putExtra("p1KingB", (int) colorCalibration[2][2]);
     			homeIntent.putExtra("p1PawnR", (int) colorCalibration[3][0]);
-    			homeIntent.putExtra("p1PawnB", (int) colorCalibration[3][1]);
-    			homeIntent.putExtra("p1PawnG", (int) colorCalibration[3][2]);
+    			homeIntent.putExtra("p1PawnG", (int) colorCalibration[3][1]);
+    			homeIntent.putExtra("p1PawnB", (int) colorCalibration[3][2]);
     			startActivity(homeIntent);
     			//from here down this code will be moved to the home activities onActResult() 
         		

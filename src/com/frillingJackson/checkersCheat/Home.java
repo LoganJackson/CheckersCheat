@@ -56,17 +56,17 @@ public class Home extends Activity {
 		OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_8, this, mLoaderCallback);
 		
 		p1King[0] = getIntent().getIntExtra("p1KingR",160);
-		p1King[1] = getIntent().getIntExtra("p1KingB",30);
-		p1King[2] = getIntent().getIntExtra("p1KingG",50);
+		p1King[1] = getIntent().getIntExtra("p1KingG",30);
+		p1King[2] = getIntent().getIntExtra("p1KingB",50);
 		p1Pawn[0] = getIntent().getIntExtra("p1PawnR",15);
-		p1Pawn[1] = getIntent().getIntExtra("p1PawnB",55);
-		p1Pawn[2] = getIntent().getIntExtra("p1PawnG",110);
+		p1Pawn[1] = getIntent().getIntExtra("p1PawnG",55);
+		p1Pawn[2] = getIntent().getIntExtra("p1PawnB",110);
 		p2King[0] = getIntent().getIntExtra("p2KingR",15);
-		p2King[1] = getIntent().getIntExtra("p2KingB",120);
-		p2King[2] = getIntent().getIntExtra("p2KingG",56);
+		p2King[1] = getIntent().getIntExtra("p2KingG",120);
+		p2King[2] = getIntent().getIntExtra("p2KingB",56);
 		p2Pawn[0] = getIntent().getIntExtra("p2PawnR",200);
-		p2Pawn[1] = getIntent().getIntExtra("p2PawnB",30);
-		p2Pawn[2] = getIntent().getIntExtra("p2PawnG",30);
+		p2Pawn[1] = getIntent().getIntExtra("p2PawnG",30);
+		p2Pawn[2] = getIntent().getIntExtra("p2PawnB",30);
 	}
 
 	@Override
