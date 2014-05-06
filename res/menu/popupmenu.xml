@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     
       <item android:id="@+id/Blue"
-          android:title="p1King" 
+          android:title="@string/p1king" 
           android:visible="true"/>
       <item android:id="@+id/Orange"
-          android:title="p2Pawn" 
+          android:title="@string/p2pawn" 
           android:visible="true"/>
       <item android:id="@+id/Green"
-          android:title="p2King" 
+          android:title="@string/p2king" 
           android:visible="true"/>
       <item android:id="@+id/Red"
-          android:title="p1Pawn"/>
+          android:title="@string/p1pawn"/>
       <item android:id="@+id/Remove"
-          	android:title="Remove"
+          	android:title="@string/remove"
           	android:visible="true"/>
   
 </menu>

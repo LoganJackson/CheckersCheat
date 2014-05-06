@@ -28,5 +28,9 @@
     <string name="title_activity_cam">CamActivity</string>
     <string name="title_activity_correction">CorrectionActivity</string>
     <string name="Correction">Correction</string>
-
+	<string name="p1king">p1King</string>	
+	<string name="p1pawn">p1Pawn</string>
+	<string name="p2king">p2King</string>
+	<string name="p2pawn">p2Pawn</string>
+    <string name="remove">remove</string>
 </resources>
