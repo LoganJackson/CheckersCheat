@@ -58,7 +58,6 @@ public class FirstUse extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.first_use, menu);
 		return true;
 	}
@@ -143,9 +142,9 @@ public class FirstUse extends Activity {
         				colorCalibration[3][2] = pieceColor[2];	//player1Pawn
         			}
         		}        		
-        		//send those colors to home using an intent
+        		
     			Intent homeIntent = new Intent(this, Home.class);
-    			homeIntent.putExtra("p2KingR", (int) colorCalibration[0][0]); //these should be rgb vals 
+    			homeIntent.putExtra("p2KingR", (int) colorCalibration[0][0]);  
     			homeIntent.putExtra("p2KingG", (int) colorCalibration[0][1]);
     			homeIntent.putExtra("p2KingB", (int) colorCalibration[0][2]);
     			homeIntent.putExtra("p2PawnR", (int) colorCalibration[1][0]);
@@ -158,108 +157,7 @@ public class FirstUse extends Activity {
     			homeIntent.putExtra("p1PawnG", (int) colorCalibration[3][1]);
     			homeIntent.putExtra("p1PawnB", (int) colorCalibration[3][2]);
     			startActivity(homeIntent);
-    			//from here down this code will be moved to the home activities onActResult() 
-        		
-//        		Mat photoMat = new Mat();
-//        		Utils.bitmapToMat(photo, photoMat); 
-//
-//        		Size boardSize = new Size (7,7);
-//        		MatOfPoint2f corners = new MatOfPoint2f() ;
-//        		Point[] recCornersArray = new Point[49];
-//        		Mat homographyCorners = new Mat() ;
-//		    
-//        		boolean found = Calib3d.findChessboardCorners(photoMat, boardSize , corners, 0);  
-//        		if(!found){
-//        			Log.d(TAG, "Didnt find the board");
-//        			Toast.makeText(getApplicationContext(), "The checkerboard was NOT found, make sure all the pieces are off the corners of the board and try again.",
-//        					Toast.LENGTH_LONG).show();
-//        		}else{
-//        			// find R; the set of rectified corner locations 
-//        			int count = 0;
-//        			for(int i =1; i<=7;i++){
-//        			 	for(int j = 1; j<=7; j++){
-//        			 		Point newPoint= new Point(i,j);
-//        					recCornersArray[count]= newPoint;
-//        					count = count + 1;
-//        			 	}
-//        			}
-//        		}
-//        	
-//        		MatOfPoint2f recCorners = new MatOfPoint2f(recCornersArray);
-//        		homographyCorners = Calib3d.findHomography(recCorners,corners);
-//
-//        		Point[] location = new Point[64];
-//        		int locationIndex =0;
-//    			for(double y = 0.5; y < 8; y++){
-//    				for(double x = 0.5; x < 8; x++){
-//        				double wPrime =  ((homographyCorners.get(2, 0)[0]*x) + (homographyCorners.get(2, 1)[0]*y) + homographyCorners.get(2, 2)[0]);
-//        				double xPrime = ((homographyCorners.get(0,0)[0]*x) + (homographyCorners.get(0,1)[0]*y) + homographyCorners.get(0,2)[0]) /wPrime;
-//        				double yPrime = ((homographyCorners.get(1, 0)[0]*x) + (homographyCorners.get(1, 1)[0]*y) + homographyCorners.get(1, 2)[0]) /wPrime;
-//        				Point res = new Point(xPrime,yPrime);
-//        					
-//        				location[locationIndex] = res;
-//        				locationIndex = locationIndex+1;
-//        				}
-//        			}
-//        		
-//        		StringBuilder stringBuilder = new StringBuilder();
-//        		double[] redColor = {160, 30, 50} ;
-//        		double[] greenColor = {15, 120, 56};
-//        		double[] whiteColor = {255, 255, 255} ;
-//        		double[] blackColor = {0,0,0};
-//        		double[] blueColor = {15,55,110};
-//        		double[] orangeColor = {200,30,30};
-//        		
-//        		Mat gausPhotoMat = new Mat();
-//        		Size size = new Size(0,0);
-//        		Imgproc.GaussianBlur(photoMat, gausPhotoMat, size, 1.5);
-//        		
-//        		double[] pieceColor = new double[3];
-//        		for(int index = 0; index <64; index++){
-//        			//check color at location[index] and compair to colorcode
-//        			int intx  = (int) location[index].x;
-//        			int inty = (int) location[index].y;
-//        			double[] photoColor = gausPhotoMat.get(inty, intx);
-//        			for (int i = 0; i < 3; i++) pieceColor[i] = photoColor[i];
-//        			
-//        			//pieceColor[0] =red
-//        			//pieceColor[1] =green
-//        			//pieceColor[2] =blue	
-//        			
-//        			double[] dists = new double[6];
-//        			
-//        			double distToRed = dist(pieceColor, redColor);
-//        			dists[0] = distToRed;
-//        			double distToGreen = dist(pieceColor, greenColor);
-//        			dists[1] = distToGreen;
-//        			double distToBlue = dist(pieceColor, blueColor);
-//        			dists[2] = distToBlue;
-//        			double distToOrange = dist(pieceColor, orangeColor);
-//        			dists[3] = distToOrange;
-//        			double distToWhite = dist(pieceColor, whiteColor);
-//        			dists[4] = distToWhite;      			
-//        			double distToBlack = dist(pieceColor, blackColor);
-//        			dists[5] = distToBlack;
-//        			
-//        			int minIndex = getMinIndex(dists);
-//        			
-//        			String name = "";
-//        			switch (minIndex) {
-//        			case 0: name = "O"; break;
-//        			case 1: name = "T"; break;
-//        			case 2: name = "o"; break;
-//        			case 3: name = "t"; break;
-//        			case 4: name = "E"; break;
-//        			default: name = "X";break;
-//        			}
-//        			stringBuilder.append(name); 	
-//        		}
-//        		String state = stringBuilder.toString();
-//        		Log.d("State", state);
-// 
-//        		Intent intent2 = new Intent(this, CorrectionActivity.class);
-//        		intent2.putExtra("boardStateString", state);     		
-//        		startActivity(intent2);
+    			
         	}catch (Exception e) {
         		Log.d(TAG, "Exception in firstUse onActResult: "+ e.getMessage());
         		Toast.makeText(getApplicationContext(), "We were not able to calibrate from that picture, please try again.",
@@ -287,14 +185,4 @@ public class FirstUse extends Activity {
 	     }  
 	    return minIndex;  
 	}
-	
-//	private String ColorToString(double[] color){
-//	StringBuilder sb = new StringBuilder();
-//	for(int i =0; i < 3; i++){
-//		sb.append(String.valueOf(color[i]));
-//	}
-//	String strColor = sb.toString();
-//	return strColor;
-//}
-//
 }

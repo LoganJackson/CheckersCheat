@@ -149,11 +149,7 @@ public class Home extends Activity {
         			int inty = (int) location[index].y;
         			double[] photoColor = gausPhotoMat.get(inty, intx);
         			for (int i = 0; i < 3; i++) pieceColor[i] = photoColor[i];
-        			
-        			//pieceColor[0] =red
-        			//pieceColor[1] =green
-        			//pieceColor[2] =blue	
-        			
+        		
         			double[] dists = new double[6];
         			
         			double distToRed = dist(pieceColor, redColor);
